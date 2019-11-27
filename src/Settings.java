@@ -17,6 +17,8 @@ public class Settings implements EventHandler<ActionEvent> {
 	private BorderPane mainLayout;
 	private Scene scene;
 	
+	private Button apply;
+	private Button cancel;
 	
 	public Settings() {
 		scene();
@@ -65,11 +67,13 @@ public class Settings implements EventHandler<ActionEvent> {
 		//cancel apply.
 		
 		HBox cancelApply=new HBox(20);
-		Button cancel= new Button("cancel");
+		cancel= new Button("cancel");
 		cancel.getStyleClass().add("sideButton");
 		
-		Button apply= new Button("Apply");
+		apply= new Button("Apply");
 		apply.getStyleClass().add("sideButton");
+		
+		
 		
 		cancelApply.getChildren().addAll(apply,cancel);
 		cancelApply.setAlignment(Pos.CENTER_RIGHT);
@@ -111,6 +115,22 @@ public class Settings implements EventHandler<ActionEvent> {
 
 	public void setScene(Scene scene) {
 		this.scene = scene;
+	}
+
+	public Button getApply() {
+		return apply;
+	}
+
+	public void setApply(Button apply) {
+		this.apply = apply;
+	}
+
+	public Button getCancel() {
+		return cancel;
+	}
+
+	public void setCancel(Button cancel) {
+		this.cancel = cancel;
 	}
 	
 	

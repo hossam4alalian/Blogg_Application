@@ -28,7 +28,7 @@ import javafx.stage.Stage;
 
 public class ExploreBloggs {
 	
-	Menus menus = new Menus();
+	private Menus menus = new Menus();
 	
 	private Scene scene;
 	private HBox mainLayout;
@@ -289,6 +289,16 @@ public class ExploreBloggs {
 
 	public void setScene(Scene scene) {
 		this.scene = scene;
+	}
+
+
+	public Menus getMenus() {
+		return menus;
+	}
+
+
+	public void setMenus(Menus menus) {
+		this.menus = menus;
 	}
 	
 	

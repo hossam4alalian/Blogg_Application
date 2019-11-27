@@ -72,10 +72,11 @@ public class Menus {
 	}
 	
 
+	private Button setings;
 	public void sideMenu() {
 		Label username=new Label("Niles ahmad");
 		Label likes=new Label("Likes: 217");
-		Button setings=new Button("Setings");
+		setings=new Button("Setings");
 		
 		sideMenu=new VBox(100);
 		sideMenu.setPrefHeight(1000);
@@ -141,6 +142,14 @@ public class Menus {
 
 	public void setSideMenu(VBox sideMenu) {
 		this.sideMenu = sideMenu;
+	}
+
+	public Button getSetings() {
+		return setings;
+	}
+
+	public void setSetings(Button setings) {
+		this.setings = setings;
 	}
 	
 	
