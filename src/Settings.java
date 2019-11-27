@@ -2,6 +2,7 @@ import backend_request.Post;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -13,13 +14,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 public class Settings implements EventHandler<ActionEvent> {
-	private Scene scene;
 	private BorderPane mainLayout;
+	private Scene scene;
 	
-	private TextField nameInput;
-	private TextField passInput;
-	private Button login;
-	private Button skip;
 	
 	public Settings() {
 		scene();
@@ -29,64 +26,59 @@ public class Settings implements EventHandler<ActionEvent> {
 		mainLayout= new BorderPane();
 		scene =new Scene(mainLayout, 800, 600);
 		scene.getStylesheets().add("main.css");
-		loginDesign();
+		settings();
 		
 		
 		
 	}
 	
-	public void loginDesign() {
+	public void settings() {
 		
-		Label loginText= new Label("Login:");
-		loginText.setFont(new Font("Arial", 30));
+		Label settingsLabel= new Label("Settings:");
+		settingsLabel.setFont(new Font("Arial", 30));
+		settingsLabel.setPadding(new Insets(80, 20, 20, 20));
 		
-		
-		VBox top= new VBox(20);
-		top.getChildren().add(loginText);
-		top.getStyleClass().add("loginTop");
-		top.setMargin(top, new Insets(50, 0, 0, 0));
-		
-		GridPane loginBox = new GridPane();
-		loginBox.setPadding(new Insets(10,10,10,10));
-		loginBox.setVgap(8);
-		loginBox.setHgap(10);
+		Button Languege=new Button("Languege");	
+		Languege.getStyleClass().add("sideButton");
 		
 		
-		Label username= new Label("Username: ");
-		loginBox.add(username, 1, 1);
 		
-		nameInput= new TextField();
-		nameInput.setPromptText("username");
-		loginBox.add(nameInput, 2, 1);
 		
-		Label password= new Label("Password: ");
-		loginBox.add(password, 1, 2);
+		VBox pass=new VBox(20);
+		pass.setAlignment(Pos.CENTER);
 		
-		 passInput= new TextField();
-		passInput.setPromptText("password");
-		loginBox.add(passInput, 2, 2);
+		Label changePassword= new Label("Change password");
+		changePassword.setFont(new Font("Arial", 20));
 		
-		login= new Button("Login");
-		login.setOnAction(this);
-		loginBox.add(login,  2, 3);
+		TextField username=new TextField();
+		username.setPromptText("username");
 		
-		VBox middle= new VBox(20);
-		middle.getChildren().add(loginBox);
-		middle.getStyleClass().add("loginCenter");
-		middle.setMargin(middle, new Insets(50, 0, 0, 0));
+		TextField password=new TextField();
+		password.setPromptText("password");
 		
-		skip= new Button("Skip -------->");
-		skip.setOnAction(this);
-	
+		TextField comfirmPassword=new TextField();
+		comfirmPassword.setPromptText("comfirm Password");
 		
-		VBox bottom= new VBox(20);
-		bottom.getChildren().add(skip);
-		bottom.getStyleClass().add("loginBottom");
-		bottom.setMargin(bottom, new Insets(50, 0, 0, 0));
+		pass.getChildren().addAll(changePassword,username,password,comfirmPassword);
+		pass.setPadding(new Insets(40));
 		
-		VBox center= new VBox();
-		center.getChildren().addAll(top, middle, bottom);
-		center.getStyleClass().add("center");
+		//cancel apply.
+		
+		HBox cancelApply=new HBox(20);
+		Button cancel= new Button("cancel");
+		cancel.getStyleClass().add("sideButton");
+		
+		Button apply= new Button("Apply");
+		apply.getStyleClass().add("sideButton");
+		
+		cancelApply.getChildren().addAll(apply,cancel);
+		cancelApply.setAlignment(Pos.CENTER_RIGHT);
+		
+		VBox center= new VBox(40);
+		
+		center.getChildren().addAll(settingsLabel,Languege,pass,cancelApply);
+		center.setAlignment(Pos.TOP_CENTER);
+		center.getStyleClass().add("settings");
 		center.setMaxSize(300, 800);
 		
 		
@@ -98,22 +90,21 @@ public class Settings implements EventHandler<ActionEvent> {
 	
 	@Override
 	public void handle(ActionEvent event) {
-		if(event.getSource()==login) {
-			String name=nameInput.getText();
-			String password=passInput.getText();
+		if(event.getSource()==null) {
 			
-			try {
-				//måste fixas. fungerar inte!!!!!!!!
-				String shit=Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=login&anamn="+name+"&losenord="+password+"&rollid=4");
-				System.out.println(shit);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
+			
 		}
 	}
-	
-	
+
+	public BorderPane getMainLayout() {
+		return mainLayout;
+	}
+
+	public void setMainLayout(BorderPane mainLayout) {
+		this.mainLayout = mainLayout;
+	}
+
 	public Scene getScene() {
 		return scene;
 	}
@@ -121,6 +112,8 @@ public class Settings implements EventHandler<ActionEvent> {
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
+	
+	
 
 	
 }

@@ -11,7 +11,7 @@ public class Main extends Application{
 
 	Login login = new Login();
 	ExploreBloggs explore=new ExploreBloggs();
-	
+	Settings settings=new Settings();
 	
 	Stage window;
 	HBox mainLayout;
@@ -26,7 +26,7 @@ public class Main extends Application{
 		
 		mainLayout = new HBox();
 		Scene scene= new Scene(mainLayout, 800, 600);
-		window.setScene(explore.getScene());
+		window.setScene(settings.getScene());
 		window.show();
 		
 		
