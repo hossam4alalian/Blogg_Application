@@ -1,0 +1,142 @@
+.root{
+	-fx-font-family:"Arial";
+	-fx-background-color:grey;
+}
+
+
+.sideMenu{
+	-fx-background-color:rgb(40,40,40);
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 8, 0, 0, 0);
+	
+}
+.userInfo{
+	-fx-background-color:rgb(40,40,40);
+	-fx-text-fill:rgb(255,255,255);
+	-fx-font-size: 16px;
+}
+
+.sideButton{
+	-fx-background-color:rgb(90,90,90);
+	-fx-text-fill:rgb(255,255,255);
+}
+
+.loginButton{
+	-fx-background-color:rgb(90,90,90);
+	-fx-text-fill:rgb(255,255,255);
+	-fx-font-size: 20px;
+}
+
+.sideButton:hover{
+	-fx-background-color:rgb(40,40,40);
+	-fx-text-fill:rgb(225,225,225);
+	
+}
+
+.upper{
+	-fx-background-color:rgb(40,40,40);
+	-fx-text-fill:rgb(255,255,255);
+	-fx-font-size: 16px;
+}
+
+.middle{
+	-fx-background-color:rgb(40,40,40);
+	-fx-alignment: top-center; 
+}
+
+.lower{
+	-fx-background-color:rgb(40,40,40);
+	
+}
+
+
+.searchMenu{
+	-fx-background-color: black;
+	-fx-padding-right:50px;
+	
+}
+.center{
+	
+	-fx-background-color: white;
+	-fx-alignment: center;
+	
+}
+.loginCenter{
+	-fx-padding-top:100px;
+	-fx-background-color: white;
+	-fx-alignment: center;
+	
+}
+
+.loginTop{
+	
+	-fx-background-color: white;
+	-fx-alignment: center;
+	
+}
+.loginBottom{
+	
+
+
+	-fx-background-color: white;
+	-fx-alignment: bottom-center;
+	
+}
+
+.leftTop{
+	-fx-background-color:red;
+}
+
+.rightTop{
+	-fx-background-color:black;
+}
+
+.leftBlogg{
+	
+	-fx-text-fill:white;
+	-fx-alignment: center; 
+	-fx-border-style: hidden dashed dashed hidden;
+  	-fx-border-color: red red red red;
+  	-fx-border-width: 2;
+	
+}
+
+.rightBlogg{
+	
+	-fx-text-fill:white;
+	-fx-alignment: center; 
+	-fx-border-style: hidden hidden dashed hidden;
+  	-fx-border-color: red red red red;
+  	-fx-border-width: 2;
+	
+	
+}
+
+.leftBloggText{
+	
+	-fx-text-fill:black;
+	-fx-alignment: center; 
+	
+	
+}
+
+.rightBloggText{
+	-fx-text-fill:black;
+	-fx-alignment: center; 
+	
+}
+
+.refreshField{
+	-fx-background-color:black;
+	-fx-alignment: center;
+}
+
+
+
+
+
+
+
+
+
+
+

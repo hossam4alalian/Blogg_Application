@@ -1,9 +1,34 @@
 
-public class Main {
 
+import org.json.JSONObject;
+
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
+public class Main extends Application{
+
+	Login login = new Login();
+	Stage window;
+	HBox mainLayout;
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		launch(args);
 
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		window = primaryStage;
+		
+		mainLayout = new HBox();
+		Scene scene= new Scene(mainLayout, 800, 600);
+		window.setScene(login.getScene());
+		window.show();
+		
+		
+		
+		
 	}
 
 }
