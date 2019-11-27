@@ -10,6 +10,9 @@ import javafx.stage.Stage;
 public class Main extends Application{
 
 	Login login = new Login();
+	ExploreBloggs explore=new ExploreBloggs();
+	
+	
 	Stage window;
 	HBox mainLayout;
 	public static void main(String[] args) {
@@ -23,7 +26,7 @@ public class Main extends Application{
 		
 		mainLayout = new HBox();
 		Scene scene= new Scene(mainLayout, 800, 600);
-		window.setScene(login.getScene());
+		window.setScene(explore.getScene());
 		window.show();
 		
 		

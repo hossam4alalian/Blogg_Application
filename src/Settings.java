@@ -12,7 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-public class Login implements EventHandler<ActionEvent> {
+public class Settings implements EventHandler<ActionEvent> {
 	private Scene scene;
 	private BorderPane mainLayout;
 	
@@ -21,7 +21,7 @@ public class Login implements EventHandler<ActionEvent> {
 	private Button login;
 	private Button skip;
 	
-	public Login() {
+	public Settings() {
 		scene();
 	}
 	

@@ -1,5 +1,9 @@
+package backend_request;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import backend_request.Json;
+import backend_request.Post;
 
 public class testing {
 
@@ -22,7 +26,6 @@ public class testing {
 		for(int i=0;i<array.length();i++) {
 			System.out.println(array.getJSONObject(i).getString("id"));
 			System.out.println(array.getJSONObject(i).getString("titel"));
-			System.out.println(array.getJSONObject(i).getString("privat"));
 			System.out.println("");
 		}
 		
