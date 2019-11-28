@@ -133,6 +133,7 @@ public class Menus {
 	public Button getLogin() {
 		return login;
 	}
+	
 
 	public void setLogin(Button login) {
 		this.login = login;
@@ -149,6 +150,7 @@ public class Menus {
 	public VBox getSideMenu() {
 		return sideMenu;
 	}
+	
 
 	public void setSideMenu(VBox sideMenu) {
 		this.sideMenu = sideMenu;

@@ -69,10 +69,11 @@ public class Main extends Application{
 			}
 		});
 		
-		blogg.getMenus().getSetings().setOnAction(new EventHandler<ActionEvent>() {
+		explore.getMenus().getSetings().setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
+				System.out.println("guck ome fucking fuck fan dum !!!!!!!!!!!!!!!!!!!!!!");
 				window.setScene(settings.getScene());
 			}
 		});
