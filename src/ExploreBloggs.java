@@ -1,5 +1,7 @@
 
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,6 +30,8 @@ import javafx.stage.Stage;
 
 public class ExploreBloggs {
 	
+	Blogg bloggClass= new Blogg();
+	
 	private Menus menus = new Menus();
 	
 	private Scene scene;
@@ -43,13 +47,11 @@ public class ExploreBloggs {
 		center.getChildren().add(menus.getTopMenu());
 		mainLayout=new HBox(40);
 		
+		refresh();
+		
 		//bloggs();
 		//addBlogg("niles is good", "Niles ahmad", "142");
 		scrollPaneSetup();
-		
-		
-		
-		
 		
 		mainLayout.getChildren().addAll(menus.getSideMenu(),center);
 		
@@ -192,32 +194,7 @@ public class ExploreBloggs {
 		refresh.setOnAction(e -> {
 			
 			
-			
-			
-			try {
-				String str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON");
-			
-				System.out.println(str);
-				JSONObject json=Json.toJSONObject(str);
-				
-				String name=json.getString("anamn");
-				
-				JSONArray array=json.getJSONArray("bloggar");
-				for(int i=0;i<array.length();i++) {
-					String title=array.getJSONObject(i).getString("titel");
-					addBlogg(title, name, "142");
-				}
-				
-			
-			} catch (Exception ee) {
-				// TODO Auto-generated catch block
-				ee.printStackTrace();
-			}
-			
-			
-			
-			
-			
+			refresh();
 			
 			
 		});
@@ -231,9 +208,35 @@ public class ExploreBloggs {
 	}
 	
 	
+	public void refresh() {
+		
+		scrollPaneBox.getChildren().clear();
+		
+		try {
+			String str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON");
+		
+			System.out.println(str);
+			JSONObject json=Json.toJSONObject(str);
+			
+			String name=json.getString("anamn");
+			
+			JSONArray array=json.getJSONArray("bloggar");
+			for(int i=0;i<array.length();i++) {
+				String title=array.getJSONObject(i).getString("titel");
+				String bloggId=array.getJSONObject(i).getString("id");
+				addBlogg(title, name, "142",bloggId);
+			}
+			
+		
+		} catch (Exception ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+		}
+	}
 	
 	
-	public void addBlogg(String title, String user, String postAmount) {
+	
+	public void addBlogg(String title, String user, String postAmount, String bloggId) {
 		Label bloggsName = new Label(title);
 		bloggsName.getStyleClass().add("leftBloggText");
 		
@@ -244,14 +247,22 @@ public class ExploreBloggs {
 		Label posts= new Label("Post: "+postAmount);
 		posts.getStyleClass().add("leftBloggText");
 		
+		
+		
 		VBox blogg= new VBox();
+		
+		blogg.setUserData(bloggId);
+		
+		
 		blogg.getChildren().addAll(bloggsName, username, posts);
 		blogg.setPrefSize(2000, 100);
-		blogg.getStyleClass().add("leftBlogg");
+		blogg.getStyleClass().add("exploreBlogg");
 		blogg.setOnMouseClicked( ( e ) ->
         {
+       	 System.out.println(blogg.getUserData());
+       	 Main.currentBlogg=Integer.parseInt(blogg.getUserData().toString());
+       	 Main.window.setScene(bloggClass.getScene());
        	 
-       	 System.out.println("Left up");
         });
 		
 		if(scrollPaneBox.getChildren().size()==0){

@@ -1,3 +1,5 @@
+import javax.swing.text.html.Option;
+
 import backend_request.Post;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -5,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -41,9 +44,17 @@ public class Settings implements EventHandler<ActionEvent> {
 		settingsLabel.setPadding(new Insets(80, 20, 20, 20));
 		
 		Button Languege=new Button("Languege");	
-		Languege.getStyleClass().add("sideButton");
+		Languege.getStyleClass().add("settingsButton");
 		
 		
+		ComboBox<String>color=new ComboBox<String>();
+		color.getStyleClass().add("settingsButton");
+		color.setValue("Light");
+		
+		color.getItems().addAll("Light");
+		color.getItems().addAll("Dark");
+		color.getItems().addAll("Red");
+		color.getItems().addAll("Blue");
 		
 		
 		VBox pass=new VBox(20);
@@ -53,7 +64,7 @@ public class Settings implements EventHandler<ActionEvent> {
 		changePassword.setFont(new Font("Arial", 20));
 		
 		TextField username=new TextField();
-		username.setPromptText("username");
+		username.setPromptText("new password");
 		
 		TextField password=new TextField();
 		password.setPromptText("password");
@@ -62,10 +73,11 @@ public class Settings implements EventHandler<ActionEvent> {
 		comfirmPassword.setPromptText("comfirm Password");
 		
 		pass.getChildren().addAll(changePassword,username,password,comfirmPassword);
-		pass.setPadding(new Insets(40));
+		pass.setPadding(new Insets(0,40,0,40));
+		
+		
 		
 		//cancel apply.
-		
 		HBox cancelApply=new HBox(20);
 		cancel= new Button("cancel");
 		cancel.getStyleClass().add("sideButton");
@@ -74,13 +86,12 @@ public class Settings implements EventHandler<ActionEvent> {
 		apply.getStyleClass().add("sideButton");
 		
 		
-		
 		cancelApply.getChildren().addAll(apply,cancel);
 		cancelApply.setAlignment(Pos.CENTER_RIGHT);
 		
-		VBox center= new VBox(40);
 		
-		center.getChildren().addAll(settingsLabel,Languege,pass,cancelApply);
+		VBox center= new VBox(40);
+		center.getChildren().addAll(settingsLabel,Languege,color,pass,cancelApply);
 		center.setAlignment(Pos.TOP_CENTER);
 		center.getStyleClass().add("settings");
 		center.setMaxSize(300, 800);

@@ -10,7 +10,7 @@ public class testing {
 	public static void main(String[] args) {
 		String str;
 		try {
-			str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON");
+			str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg=1&inlagg=3");
 		
 		System.out.println(str);
 		JSONObject json=Json.toJSONObject(str);

@@ -25,6 +25,14 @@ public class Login implements EventHandler<ActionEvent> {
 		scene();
 	}
 	
+	public Button getSkip() {
+		return skip;
+	}
+
+	public void setSkip(Button skip) {
+		this.skip = skip;
+	}
+
 	public void scene() {
 		mainLayout= new BorderPane();
 		scene =new Scene(mainLayout, 800, 600);

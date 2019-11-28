@@ -26,9 +26,10 @@ public class Menus {
 
 	private HBox topMenu;
 	
-
 	private VBox sideMenu;
 	
+	private Button exploreBlogg;
+	private Button yourBlogg;
 	
 	public Menus() {
 		scene();
@@ -44,9 +45,9 @@ public class Menus {
 
 	public void topMenu() {
 		
-		Button exploreBlogg = new Button("Explore Bloggs");
+		exploreBlogg = new Button("Explore Bloggs");
 		
-		Button yourBlogg = new Button("Your Blogg");
+		yourBlogg = new Button("Your Blogg");
 		
 		HBox leftTop = new HBox(20);
 		leftTop.getChildren().addAll(exploreBlogg, yourBlogg);
@@ -73,6 +74,7 @@ public class Menus {
 	
 
 	private Button setings;
+	private Button login;
 	public void sideMenu() {
 		Label username=new Label("Niles ahmad");
 		Label likes=new Label("Likes: 217");
@@ -98,7 +100,7 @@ public class Menus {
 		VBox lower=new VBox(20);
 		
 		
-		Button login=new Button("Logout");
+		login=new Button("Logout");
 		login.setMinWidth(128);
 		login.setMinHeight(40);
 		
@@ -128,6 +130,14 @@ public class Menus {
 	}
 
 
+	public Button getLogin() {
+		return login;
+	}
+
+	public void setLogin(Button login) {
+		this.login = login;
+	}
+
 	public HBox getTopMenu() {
 		return topMenu;
 	}
@@ -150,6 +160,22 @@ public class Menus {
 
 	public void setSetings(Button setings) {
 		this.setings = setings;
+	}
+
+	public Button getExploreBlogg() {
+		return exploreBlogg;
+	}
+
+	public void setExploreBlogg(Button exploreBlogg) {
+		this.exploreBlogg = exploreBlogg;
+	}
+
+	public Button getYourBlogg() {
+		return yourBlogg;
+	}
+
+	public void setYourBlogg(Button yourBlogg) {
+		this.yourBlogg = yourBlogg;
 	}
 	
 	
