@@ -30,9 +30,7 @@ import javafx.stage.Stage;
 
 public class ExploreBloggs {
 	
-	Blogg bloggClass= new Blogg();
 	
-	private Menus menus = new Menus();
 	
 	private Scene scene;
 	private HBox mainLayout;
@@ -44,7 +42,7 @@ public class ExploreBloggs {
 	
 	public ExploreBloggs() {
 		center=new VBox();
-		center.getChildren().add(menus.getTopMenu());
+		center.getChildren().add(Main.menus.getTopMenu());
 		mainLayout=new HBox(40);
 		
 		refresh();
@@ -53,7 +51,7 @@ public class ExploreBloggs {
 		//addBlogg("niles is good", "Niles ahmad", "142");
 		scrollPaneSetup();
 		
-		mainLayout.getChildren().addAll(menus.getSideMenu(),center);
+		mainLayout.getChildren().addAll(Main.menus.getSideMenu(),center);
 		
 		scene=new Scene(mainLayout,800,600);
 		scene.getStylesheets().add("main.css");
@@ -261,7 +259,9 @@ public class ExploreBloggs {
         {
        	 System.out.println(blogg.getUserData());
        	 Main.currentBlogg=Integer.parseInt(blogg.getUserData().toString());
-       	 Main.window.setScene(bloggClass.getScene());
+       	 
+       	 Main.blogg = new Blogg();
+       	 Main.window.setScene(Main.blogg.getScene());
        	 
         });
 		
@@ -303,16 +303,6 @@ public class ExploreBloggs {
 	}
 
 
-	public Menus getMenus() {
-		return menus;
-	}
-
-
-	public void setMenus(Menus menus) {
-		this.menus = menus;
-	}
-	
-	
 	
 	
 	

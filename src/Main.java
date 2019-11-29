@@ -12,11 +12,14 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 public class Main extends Application{
-	Blogg blogg = new Blogg();
-	Login login = new Login();
-	Menus menus = new Menus();
+	static Menus menus = new Menus();
+	static Blogg blogg = new Blogg();
+	static ExploreBloggs explore=new ExploreBloggs();
 	
-	ExploreBloggs explore=new ExploreBloggs();
+	Login login = new Login();
+	
+	
+	
 	Settings settings=new Settings();
 	
 	static Stage window;
@@ -61,7 +64,7 @@ public class Main extends Application{
 			}
 		});
 		
-		blogg.getMenus().getLogin().setOnAction(new EventHandler<ActionEvent>() {
+		menus.getLogin().setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
@@ -69,7 +72,7 @@ public class Main extends Application{
 			}
 		});
 		
-		explore.getMenus().getSetings().setOnAction(new EventHandler<ActionEvent>() {
+		menus.getSetings().setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
@@ -78,11 +81,13 @@ public class Main extends Application{
 			}
 		});
 		
+		
 		menus.getExploreBlogg().setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
 				System.out.println("sadsadsad");
+				explore=new ExploreBloggs();
 				window.setScene(explore.getScene());
 			}
 		});
