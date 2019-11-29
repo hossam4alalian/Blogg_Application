@@ -75,8 +75,9 @@ public class Menus {
 
 	private Button setings;
 	private Button login;
+	private Label username;
 	public void sideMenu() {
-		Label username=new Label("Niles ahmad");
+		username=new Label("Niles ahmad");
 		Label likes=new Label("Likes: 217");
 		setings=new Button("Setings");
 		
@@ -100,7 +101,7 @@ public class Menus {
 		VBox lower=new VBox(20);
 		
 		
-		login=new Button("Logout");
+		login=new Button("Log in");
 		login.setMinWidth(128);
 		login.setMinHeight(40);
 		
@@ -178,6 +179,14 @@ public class Menus {
 
 	public void setYourBlogg(Button yourBlogg) {
 		this.yourBlogg = yourBlogg;
+	}
+
+	public Label getUsername() {
+		return username;
+	}
+
+	public void setUsername(Label username) {
+		this.username = username;
 	}
 	
 	

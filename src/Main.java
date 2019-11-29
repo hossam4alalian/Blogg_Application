@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application{
+	static Scene scene;
+	
 	static Menus menus = new Menus();
 	static ExploreBloggs explore=new ExploreBloggs();
 	static Blogg blogg = new Blogg();
@@ -47,7 +49,7 @@ public class Main extends Application{
 		mainLayout.getChildren().addAll(menus.getSideMenu(),center);
 		
 		
-		Scene scene= new Scene(mainLayout, 800, 600);
+		scene= new Scene(mainLayout, 800, 600);
 		scene.getStylesheets().add("main.css");
 		window.setScene(scene);
 		window.show();
@@ -80,7 +82,16 @@ public class Main extends Application{
 			
 			@Override
 			public void handle(ActionEvent event) {
-				window.setScene(login.getScene());
+				if(login.isLoggedIn()) {
+					System.out.println("log out!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+					Main.menus.getLogin().setText("Log In");
+					login.setUsername("Guest");
+					login.setBloggId("null");
+					login.setLoggedIn(false);
+				}
+				else {
+					window.setScene(login.getScene());
+				}
 			}
 		});
 		

@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-public class Login implements EventHandler<ActionEvent> {
+public class CreateAccount implements EventHandler<ActionEvent> {
 	private Scene scene;
 	private BorderPane mainLayout;
 	
@@ -26,15 +26,7 @@ public class Login implements EventHandler<ActionEvent> {
 	
 	
 	
-	private String username;
-	private String bloggId;
-	private boolean loggedIn=false;
-	
-	
-	public Login() {
-		username="Guest";
-		bloggId="null";
-		
+	public CreateAccount() {
 		scene();
 	}
 	
