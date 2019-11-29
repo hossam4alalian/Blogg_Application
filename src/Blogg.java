@@ -35,6 +35,8 @@ public class Blogg {
 	
 	
 	private ScrollPane scrollPane;
+	private HBox refreshField;
+	
 	private VBox scrollPaneBox= new VBox();
 	
 	public Blogg() {
@@ -102,7 +104,7 @@ public class Blogg {
 		});
 		
 		
-		HBox refreshField = new HBox();
+		refreshField = new HBox();
 		refreshField.getChildren().addAll(refresh);
 		refreshField.getStyleClass().add("refreshField");
 		
@@ -191,6 +193,34 @@ public class Blogg {
 
 	public void setScene(Scene scene) {
 		this.scene = scene;
+	}
+
+
+
+
+	public ScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+
+
+
+	public void setScrollPane(ScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
+
+
+
+
+	public HBox getRefreshField() {
+		return refreshField;
+	}
+
+
+
+
+	public void setRefreshField(HBox refreshField) {
+		this.refreshField = refreshField;
 	}
 
 

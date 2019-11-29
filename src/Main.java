@@ -9,12 +9,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Main extends Application{
 	static Menus menus = new Menus();
-	static Blogg blogg = new Blogg();
 	static ExploreBloggs explore=new ExploreBloggs();
+	static Blogg blogg = new Blogg();
+	
 	
 	Login login = new Login();
 	
@@ -24,6 +26,7 @@ public class Main extends Application{
 	
 	static Stage window;
 	HBox mainLayout;
+	static VBox center;
 	
 	static int currentBlogg=-1;
 	public static void main(String[] args) {
@@ -36,8 +39,17 @@ public class Main extends Application{
 		window = primaryStage;
 		
 		mainLayout = new HBox();
+		
+		center=new VBox();
+		center.getChildren().addAll(menus.getTopMenu(),explore.getScrollPane(),explore.getRefreshField());
+		
+		
+		mainLayout.getChildren().addAll(menus.getSideMenu(),center);
+		
+		
 		Scene scene= new Scene(mainLayout, 800, 600);
-		window.setScene(explore.getScene());
+		scene.getStylesheets().add("main.css");
+		window.setScene(scene);
 		window.show();
 		
 		
@@ -45,14 +57,14 @@ public class Main extends Application{
 			
 			@Override
 			public void handle(ActionEvent event) {
-				window.setScene(explore.getScene());
+				window.setScene(scene);
 			}
 		});
 		settings.getCancel().setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override
 			public void handle(ActionEvent event) {
-				window.setScene(explore.getScene());
+				window.setScene(scene);
 			}
 		});
 		
@@ -60,7 +72,7 @@ public class Main extends Application{
 			
 			@Override
 			public void handle(ActionEvent event) {
-				window.setScene(explore.getScene());
+				window.setScene(scene);
 			}
 		});
 		
@@ -86,9 +98,7 @@ public class Main extends Application{
 			
 			@Override
 			public void handle(ActionEvent event) {
-				System.out.println("sadsadsad");
-				explore=new ExploreBloggs();
-				window.setScene(explore.getScene());
+				loadExplore();
 			}
 		});
 
@@ -103,5 +113,22 @@ public class Main extends Application{
 		
 		
 	}
+	
+	
+	
+	public static void loadBlogg() {
+		Main.center.getChildren().remove(Main.explore.getScrollPane());
+       	Main.center.getChildren().remove(Main.explore.getRefreshField());
+       	
+       	Main.center.getChildren().addAll(Main.blogg.getScrollPane(),Main.blogg.getRefreshField());
+	}
+	public static void loadExplore() {
+		Main.center.getChildren().remove(Main.blogg.getScrollPane());
+       	Main.center.getChildren().remove(Main.blogg.getRefreshField());
+       	
+       	Main.center.getChildren().addAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
+	}
+	
+	
 
 }

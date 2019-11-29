@@ -35,7 +35,7 @@ public class ExploreBloggs {
 	private Scene scene;
 	private HBox mainLayout;
 	private VBox center;
-	
+	private HBox refreshField;
 	
 	private ScrollPane scrollPane;
 	private VBox scrollPaneBox= new VBox();
@@ -60,114 +60,6 @@ public class ExploreBloggs {
 		
 	}
 	
-	
-	public void bloggs(){
-		Label bloggsName = new Label("Give me kisses");
-		bloggsName.getStyleClass().add("leftBloggText");
-		
-
-		Label username= new Label("by: Blah");
-		username.getStyleClass().add("leftBloggText");
-		
-		Label posts= new Label("Posts: 3");
-		posts.getStyleClass().add("leftBloggText");
-		
-		VBox leftBlogg= new VBox();
-		leftBlogg.getChildren().addAll(bloggsName, username, posts);
-		leftBlogg.setPrefSize(2000, 100);
-		leftBlogg.getStyleClass().add("leftBlogg");
-		leftBlogg.setOnMouseClicked( ( e ) ->
-        {
-       	 
-       	 System.out.println("Left up");
-        } );
-		
-		
-		
-		Label bloggsName2 = new Label("Give me kisses");
-		bloggsName2.getStyleClass().add("rightBloggText");
-		
-		Label username2= new Label("by: Blah");
-		username2.getStyleClass().add("rightBloggText");
-		
-		Label posts2= new Label("Posts: 6");
-		posts2.getStyleClass().add("rightBloggText");
-
-		
-		VBox rightBlogg= new VBox();
-		rightBlogg.getChildren().addAll(bloggsName2, username2, posts2);
-		rightBlogg.setPrefSize(2000, 100);
-		rightBlogg.getStyleClass().add("rightBlogg");
-		
-		
-		HBox bloggar = new HBox();
-		bloggar.getChildren().addAll(leftBlogg, rightBlogg);
-		
-		//test
-		Label bloggsNameT = new Label("Give me kisses");
-		bloggsNameT.getStyleClass().add("leftBloggText");
-		
-
-		Label usernameT= new Label("by: Blah");
-		usernameT.getStyleClass().add("leftBloggText");
-		
-		Label postsT= new Label("Posts: 3");
-		postsT.getStyleClass().add("leftBloggText");
-		
-		VBox leftBloggT= new VBox();
-		leftBloggT.getChildren().addAll(bloggsNameT, usernameT, postsT);
-		leftBloggT.setPrefSize(2000, 100);
-		leftBloggT.getStyleClass().add("leftBlogg");
-		
-		
-		
-		Label bloggsName2T = new Label("Give me kisses");
-		bloggsName2T.getStyleClass().add("rightBloggText");
-		
-		Label username2T= new Label("by: Blah");
-		username2T.getStyleClass().add("rightBloggText");
-		
-		Label posts2T= new Label("Posts: 6");
-		posts2T.getStyleClass().add("rightBloggText");
-
-		
-		VBox rightBloggT= new VBox();
-		rightBloggT.getChildren().addAll(bloggsName2T, username2T, posts2T);
-		rightBloggT.setPrefSize(2000, 100);
-		rightBloggT.getStyleClass().add("rightBlogg");
-		
-		
-		HBox bloggarT = new HBox();
-		bloggarT.getChildren().addAll(leftBloggT, rightBloggT);
-		
-		VBox scrollPaneBox= new VBox();
-		scrollPaneBox.getChildren().addAll(bloggar, bloggarT);
-		
-		ScrollPane scrollPane= new ScrollPane();
-		scrollPane.setContent(scrollPaneBox);
-		scrollPane.setPannable(true);
-		scrollPane.setPrefSize(bloggar.getWidth(), 1000);
-		//scrollPane.setFitToWidth(true);
-
-		scrollPane.fitToWidthProperty().set(true);
-		
-		
-		scrollPane.setOnDragDetected(e -> {
-			scrollPane.setCursor(Cursor.DEFAULT);
-		});
-		scrollPane.setStyle("-fx-background-color:transparent;");
-		
-		
-		Button refresh = new Button("Refresh");
-		
-		HBox refreshField = new HBox();
-		refreshField.getChildren().addAll(refresh);
-		refreshField.getStyleClass().add("refreshField");
-		
-		center.getChildren().addAll(scrollPane, refreshField );
-		
-		
-	}
 	
 	
 	
@@ -198,7 +90,7 @@ public class ExploreBloggs {
 		});
 		
 		
-		HBox refreshField = new HBox();
+		refreshField = new HBox();
 		refreshField.getChildren().addAll(refresh);
 		refreshField.getStyleClass().add("refreshField");
 		
@@ -260,8 +152,8 @@ public class ExploreBloggs {
        	 System.out.println(blogg.getUserData());
        	 Main.currentBlogg=Integer.parseInt(blogg.getUserData().toString());
        	 
-       	 Main.blogg = new Blogg();
-       	 Main.window.setScene(Main.blogg.getScene());
+       	 Main.loadBlogg();
+       	 
        	 
         });
 		
@@ -300,6 +192,34 @@ public class ExploreBloggs {
 
 	public void setScene(Scene scene) {
 		this.scene = scene;
+	}
+
+
+
+
+	public ScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+
+
+
+	public void setScrollPane(ScrollPane scrollPane) {
+		this.scrollPane = scrollPane;
+	}
+
+
+
+
+	public HBox getRefreshField() {
+		return refreshField;
+	}
+
+
+
+
+	public void setRefreshField(HBox refreshField) {
+		this.refreshField = refreshField;
 	}
 
 
