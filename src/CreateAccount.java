@@ -5,6 +5,7 @@ import backend_request.Post;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,6 +22,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	
 	private TextField nameInput;
 	private TextField passInput;
+	private TextField passInput2;
 	private Button create;
 	private Button back;
 	
@@ -41,55 +43,48 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	
 	public void loginDesign() {
 		
-		Label loginText= new Label("Login:");
-		loginText.setFont(new Font("Arial", 30));
+		Label header= new Label("Create account:");
+		header.setFont(new Font("Arial", 30));
 		
 		
 		VBox top= new VBox(20);
-		top.getChildren().add(loginText);
+		top.getChildren().add(header);
 		top.getStyleClass().add("loginTop");
-		top.setMargin(top, new Insets(50, 0, 0, 0));
-		
-		GridPane loginBox = new GridPane();
-		loginBox.setPadding(new Insets(10,10,10,10));
-		loginBox.setVgap(8);
-		loginBox.setHgap(10);
+		top.setMargin(top, new Insets(0, 0, 0,0));
 		
 		
-		Label username= new Label("Username: ");
-		loginBox.add(username, 1, 1);
-		
-		nameInput= new TextField();
+		VBox inputs=new VBox(15);
+		inputs.setPadding(new Insets(0, 60, 0, 60));
+		nameInput=new TextField("");
 		nameInput.setPromptText("username");
-		loginBox.add(nameInput, 2, 1);
 		
-		Label password= new Label("Password: ");
-		loginBox.add(password, 1, 2);
-		
-		 passInput= new TextField();
+		passInput=new TextField("");
 		passInput.setPromptText("password");
-		loginBox.add(passInput, 2, 2);
 		
-		create= new Button("Create account");
+		passInput2=new TextField("");
+		passInput2.setPromptText("confirm password");
+		inputs.getChildren().addAll(nameInput,passInput,passInput2);
+		
+		create= new Button("Create");
 		create.setOnAction(this);
-		loginBox.add(create,  2, 3);
+		top.getChildren().addAll(inputs);
 		
-		VBox middle= new VBox(20);
-		middle.getChildren().add(loginBox);
-		middle.getStyleClass().add("loginCenter");
-		middle.setMargin(middle, new Insets(50, 0, 0, 0));
 		
+		HBox middle= new HBox(10);
+		middle.setAlignment(Pos.CENTER_RIGHT);
+		middle.setMargin(top, new Insets(0, 0, 0, 0));
+		
+
 		back= new Button("Back");
 		back.setOnAction(this);
+		
+		middle.getChildren().addAll(create,back);
+		
+		
 	
-		
-		VBox bottom= new VBox(20);
-		bottom.getChildren().add(back);
-		bottom.getStyleClass().add("loginBottom");
-		bottom.setMargin(bottom, new Insets(50, 0, 0, 0));
-		
-		VBox center= new VBox();
-		center.getChildren().addAll(top, middle, bottom);
+		VBox center= new VBox(20);
+		center.setPadding(new Insets(0, 30, 0, 30));
+		center.getChildren().addAll(top,middle);
 		center.getStyleClass().add("center");
 		center.setMaxSize(300, 800);
 		
@@ -156,6 +151,16 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 
 	public void setBack(Button back) {
 		this.back = back;
+	}
+
+
+	public TextField getPassInput2() {
+		return passInput2;
+	}
+
+
+	public void setPassInput2(TextField passInput2) {
+		this.passInput2 = passInput2;
 	}
 	
 	

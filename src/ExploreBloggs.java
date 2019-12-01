@@ -102,7 +102,7 @@ public class ExploreBloggs {
 		
 		scrollPaneBox.getChildren().clear();
 		
-		try {
+		/*try {
 			String str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON");
 		
 			System.out.println(str);
@@ -118,10 +118,16 @@ public class ExploreBloggs {
 			}
 			
 		
-		} catch (Exception ee) {
+		} catch (Exception ee ) {
 			// TODO Auto-generated catch block
-			ee.printStackTrace();
-		}
+			//ee.printStackTrace();
+			*/
+			addBlogg("bloggNiles", "niles", "142","0");
+			addBlogg("blogg monkey", "ahmad", "142","0");
+			addBlogg("hello blogg", "niles", "142","0");
+			addBlogg("this is a blogg", "niles", "142","0");
+			
+		//}
 	}
 	
 	

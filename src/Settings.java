@@ -64,10 +64,10 @@ public class Settings implements EventHandler<ActionEvent> {
 		changePassword.setFont(new Font("Arial", 20));
 		
 		TextField username=new TextField();
-		username.setPromptText("new password");
+		username.setPromptText("password");
 		
 		TextField password=new TextField();
-		password.setPromptText("password");
+		password.setPromptText("new password");
 		
 		TextField comfirmPassword=new TextField();
 		comfirmPassword.setPromptText("comfirm Password");

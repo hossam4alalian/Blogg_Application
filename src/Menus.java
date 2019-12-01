@@ -7,6 +7,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
@@ -28,6 +29,17 @@ public class Menus {
 	
 	private VBox sideMenu;
 	
+	private HBox leftTop;
+	
+	public HBox getLeftTop() {
+		return leftTop;
+	}
+
+	public void setLeftTop(HBox leftTop) {
+		this.leftTop = leftTop;
+	}
+
+
 	private Button exploreBlogg;
 	private Button yourBlogg;
 	
@@ -49,8 +61,13 @@ public class Menus {
 		
 		yourBlogg = new Button("Your Blogg");
 		
-		HBox leftTop = new HBox(20);
+		
+		
+		
+		leftTop = new HBox(20);
 		leftTop.getChildren().addAll(exploreBlogg, yourBlogg);
+		
+		
 		leftTop.setMargin(leftTop, new Insets(20,0,0,75));
 		leftTop.setMinSize(200, 50);
 		leftTop.setPrefSize(2000, 50);

@@ -11,6 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
@@ -41,7 +42,7 @@ public class Blogg {
 	
 	public Blogg() {
 		center=new VBox();
-		center.getChildren().add(Main.menus.getTopMenu());
+		center.getChildren().addAll(Main.menus.getTopMenu());
 		mainLayout=new HBox(40);
 		
 		scrollPaneSetup();
@@ -54,9 +55,6 @@ public class Blogg {
 		//window.setMinHeight(300);
 		
 	}
-	
-	
-	
 	
 	public void scrollPaneSetup() {
 		scrollPane= new ScrollPane();
@@ -154,6 +152,8 @@ public class Blogg {
 		
 		
 	}
+	
+	
 	
 	public void comments(JSONArray array) {
 		try {

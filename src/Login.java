@@ -24,6 +24,7 @@ public class Login implements EventHandler<ActionEvent> {
 	private Button login;
 	private Button skip;
 	
+	private Button createAccount;
 	
 	
 	private String username;
@@ -93,8 +94,11 @@ public class Login implements EventHandler<ActionEvent> {
 		login.setOnAction(this);
 		loginBox.add(login,  2, 3);
 		
+		createAccount=new Button("Create account");
+		
+		
 		VBox middle= new VBox(20);
-		middle.getChildren().add(loginBox);
+		middle.getChildren().addAll(loginBox,createAccount);
 		middle.getStyleClass().add("loginCenter");
 		middle.setMargin(middle, new Insets(50, 0, 0, 0));
 		
@@ -187,6 +191,14 @@ public class Login implements EventHandler<ActionEvent> {
 
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
+	}
+
+	public Button getCreateAccount() {
+		return createAccount;
+	}
+
+	public void setCreateAccount(Button createAccount) {
+		this.createAccount = createAccount;
 	}
 	
 	
