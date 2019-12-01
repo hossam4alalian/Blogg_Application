@@ -8,7 +8,7 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Post {
+public class HttpRequest {
 
 	
 	public static void getData() {

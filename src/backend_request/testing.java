@@ -3,7 +3,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import backend_request.Json;
-import backend_request.Post;
 
 public class testing {
 
@@ -28,7 +27,7 @@ public class testing {
 		
 		String str;
 		try {
-			str = Post.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=1&Titel=niles blogg&bloggAnvandarId=7");
+			str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=1&Titel=niles blogg&bloggAnvandarId=7");
 			//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
 			System.out.println(str);
 			

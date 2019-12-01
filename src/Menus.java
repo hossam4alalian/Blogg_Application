@@ -1,6 +1,6 @@
 
 
-import backend_request.Post;
+import backend_request.HttpRequest;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

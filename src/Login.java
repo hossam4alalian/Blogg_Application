@@ -1,7 +1,7 @@
 import org.json.JSONObject;
 
+import backend_request.HttpRequest;
 import backend_request.Json;
-import backend_request.Post;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -136,7 +136,7 @@ public class Login implements EventHandler<ActionEvent> {
 			try {
 				//String shit=Post.send("Login/login.php","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=login&anamn="+name+"&losenord="+password+"&rollid=4");
 				//måste fixas. fungerar inte!!!!!!!!
-				String shit=Post.send("Login/login.php","&tjanst=blogg&anamn="+name+"&password="+password);//anvandare1: kalle, 123
+				String shit=HttpRequest.send("Login/login.php","&tjanst=blogg&anamn="+name+"&password="+password);//anvandare1: kalle, 123
 				System.out.println(shit);
 				
 				JSONObject object=Json.toJSONObject(shit);

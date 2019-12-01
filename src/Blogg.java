@@ -1,10 +1,12 @@
 
 
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import backend_request.HttpRequest;
 import backend_request.Json;
-import backend_request.Post;
+import backend_request.HttpRequest;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -76,7 +78,7 @@ public class Blogg {
 		refresh.setOnAction(e -> {
 			
 			try {
-				String str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg=3");
+				String str = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg=3");
 			
 				System.out.println(str);
 				JSONObject json=Json.toJSONObject(str);
@@ -157,7 +159,7 @@ public class Blogg {
 	
 	public void comments(JSONArray array) {
 		try {
-			String str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg=3");
+			String str = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg=3");
 		
 			System.out.println(str);
 			JSONObject json=Json.toJSONObject(str);

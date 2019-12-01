@@ -1,7 +1,6 @@
 import org.json.JSONObject;
 
 import backend_request.Json;
-import backend_request.Post;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
