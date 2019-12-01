@@ -87,6 +87,9 @@ public class Main extends Application{
 					Main.menus.getLogin().setText("Log In");
 					login.setUsername("Guest");
 					login.setBloggId("null");
+					
+					menus.getUsername().setText(login.getUsername());
+							
 					login.setLoggedIn(false);
 				}
 				else {

@@ -21,8 +21,8 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	
 	private TextField nameInput;
 	private TextField passInput;
-	private Button login;
-	private Button skip;
+	private Button create;
+	private Button back;
 	
 	
 	
@@ -30,23 +30,12 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 		scene();
 	}
 	
-	public Button getSkip() {
-		return skip;
-	}
-
-	public void setSkip(Button skip) {
-		this.skip = skip;
-	}
 
 	public void scene() {
 		mainLayout= new BorderPane();
 		scene =new Scene(mainLayout, 800, 600);
 		scene.getStylesheets().add("main.css");
 		loginDesign();
-		
-		
-		
-		
 		
 	}
 	
@@ -81,21 +70,21 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 		passInput.setPromptText("password");
 		loginBox.add(passInput, 2, 2);
 		
-		login= new Button("Login");
-		login.setOnAction(this);
-		loginBox.add(login,  2, 3);
+		create= new Button("Create account");
+		create.setOnAction(this);
+		loginBox.add(create,  2, 3);
 		
 		VBox middle= new VBox(20);
 		middle.getChildren().add(loginBox);
 		middle.getStyleClass().add("loginCenter");
 		middle.setMargin(middle, new Insets(50, 0, 0, 0));
 		
-		skip= new Button("Skip -------->");
-		skip.setOnAction(this);
+		back= new Button("Back");
+		back.setOnAction(this);
 	
 		
 		VBox bottom= new VBox(20);
-		bottom.getChildren().add(skip);
+		bottom.getChildren().add(back);
 		bottom.getStyleClass().add("loginBottom");
 		bottom.setMargin(bottom, new Insets(50, 0, 0, 0));
 		
@@ -113,74 +102,64 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	
 	@Override
 	public void handle(ActionEvent event) {
-		if(event.getSource()==login) {
-			System.out.println(loggedIn);
+		if(event.getSource()==create) {
+			System.out.println("click!!!!!!");
 			
-			
-			
-			String name=nameInput.getText();
-			String password=passInput.getText();
-			
-			try {
-				//String shit=Post.send("Login/login.php","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=login&anamn="+name+"&losenord="+password+"&rollid=4");
-				//måste fixas. fungerar inte!!!!!!!!
-				String shit=Post.send("Login/login.php","&tjanst=blogg&anamn="+name+"&password="+password);//anvandare1: kalle, 123
-				System.out.println(shit);
-				
-				JSONObject object=Json.toJSONObject(shit);
-				
-				username=object.getString("anamn");
-				bloggId=object.getString("bloggId");
-				
-				Main.menus.getUsername().setText(username);
-				Main.window.setScene(Main.scene);
-				
-				Main.menus.getLogin().setText("Log out");
-				
-				
-				
-				loggedIn=true;
-				
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 	}
-	
-	
+
+
 	public Scene getScene() {
 		return scene;
 	}
+
 
 	public void setScene(Scene scene) {
 		this.scene = scene;
 	}
 
-	public String getUsername() {
-		return username;
+
+	public TextField getNameInput() {
+		return nameInput;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+
+	public void setNameInput(TextField nameInput) {
+		this.nameInput = nameInput;
 	}
 
-	public String getBloggId() {
-		return bloggId;
+
+	public TextField getPassInput() {
+		return passInput;
 	}
 
-	public void setBloggId(String bloggId) {
-		this.bloggId = bloggId;
+
+	public void setPassInput(TextField passInput) {
+		this.passInput = passInput;
 	}
 
-	public boolean isLoggedIn() {
-		return loggedIn;
+
+	public Button getCreate() {
+		return create;
 	}
 
-	public void setLoggedIn(boolean loggedIn) {
-		this.loggedIn = loggedIn;
+
+	public void setCreate(Button create) {
+		this.create = create;
+	}
+
+
+	public Button getBack() {
+		return back;
+	}
+
+
+	public void setBack(Button back) {
+		this.back = back;
 	}
 	
+	
+
 	
 
 	

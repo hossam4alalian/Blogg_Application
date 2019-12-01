@@ -8,7 +8,52 @@ import backend_request.Post;
 public class testing {
 
 	public static void main(String[] args) {
+		
+		
+		/*String str;
+		try {
+			str = Post.send("Admin/funktioner/skapa.php","funktion=skapaAKonto&anamn=Niles&rollid=4&tjanst=1");
+			//str = Post.send("","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa2&funktion=skapaAKonto&anamn=NilesTest&rollid=4&tjanst=blogg");
+			System.out.println(str);
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		
+		
+		
+		
 		String str;
+		try {
+			str = Post.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=1&Titel=niles blogg&bloggAnvandarId=7");
+			//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
+			System.out.println(str);
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*String str;
 		try {
 			str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg=1&inlagg=3");
 		
@@ -33,7 +78,7 @@ public class testing {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 
 }
