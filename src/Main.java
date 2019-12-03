@@ -100,7 +100,7 @@ public class Main extends Application{
 			
 			@Override
 			public void handle(ActionEvent event) {
-				window.setScene(scene);
+				window.setScene(login.getScene());
 			}
 		});
 		
@@ -147,6 +147,7 @@ public class Main extends Application{
 					System.out.println("need to login");
 				}else {
 					currentBlogg=Integer.parseInt(login.getBloggId());
+					//currentBlogg=13;
 					loadBlogg();
 				}
 			}
@@ -155,6 +156,7 @@ public class Main extends Application{
 	
 	public static void loadBlogg() {
 		if(page==2) {
+			blogg.refresh();
 			return;
 		}
 		
@@ -163,10 +165,7 @@ public class Main extends Application{
 		blogg.getAddField().getChildren().removeAll(blogg.getContent());
 		
 		
-		if(login.getBloggId().equals(currentBlogg+"")) {
-			blogg.getAddField().getChildren().removeAll(blogg.getButtons(),blogg.getPost());
-			blogg.getAddField().getChildren().add(blogg.getAdd());
-		}
+		
 		
        	//adds 
 		
@@ -204,8 +203,9 @@ public class Main extends Application{
        	
 			archive=new ComboBox<String>();
 			archive.getStyleClass().add("settingsButton");
-			Main.blogg.getScrollPaneBox().getChildren().clear();
 			
+			
+			allDates.add("Archive");
 			
 			for (int i = 1; i <= 10; i++) {
 				
@@ -213,57 +213,8 @@ public class Main extends Application{
 				
 	       	     allDates.add(month_name1);
 	       	     cal.add(Calendar.MONTH, -1);
-	       	  
-	       	     
-	       		try {
-					String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
-				
-					
-					
-					JSONObject json=new JSONObject(blogg);
-					
-					JSONArray inlagg=json.getJSONArray("bloggInlagg");
-					
-					for(int ii=0;ii<inlagg.length();ii++) {
-						String inlaggStr = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(ii).getString("id"));
-						
-						
-						JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
-						
-						String date=inlaggJson.getString("datum");
-						
-						String dateMonth = date.substring(0,7);
-						
-						
-						//String selectedMonth =archive.getValue();
-						
-						System.out.println(dateMonth);
-						if(selected.equals(dateMonth)) {
-							
-							System.out.println("blah");
-							
-						/*	String text=inlaggJson.getString("innehall");
-							String title=inlaggJson.getString("titel");
-							
-							JSONArray array=inlaggJson.getJSONArray("gillningar");
-							System.out.println(array.length());
-							int likesAmount=array.length();
-							
-							Main.blogg.post(title, text, likesAmount);
-							
-							*/
-						}
-					
-					}
-				} 
-	       		catch (Exception ee) {
-					// TODO Auto-generated catch block
-					ee.printStackTrace();
-				}
-	       		
-				
 	       	 }
-				
+			
 			archive.setValue("Archive");
 			archive.getItems().addAll(allDates);
 			menus.getLeftTop().getChildren().add(archive);
@@ -275,8 +226,70 @@ public class Main extends Application{
 		        new EventHandler<ActionEvent>() { 
 			  public void handle(ActionEvent e) 
 			  { 
-			      selected= archive.getValue() + ""; 
-			      System.out.println(selected);
+				  selected= archive.getValue(); 
+			     
+			      
+			      try {
+						String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
+					
+						
+						Main.blogg.getScrollPaneBox().getChildren().clear();
+						JSONObject json=new JSONObject(blogg);
+						
+						JSONArray inlagg=json.getJSONArray("bloggInlagg");
+						
+						for(int ii=0;ii<inlagg.length();ii++) {
+							
+							String inlaggStr = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(ii).getString("id"));
+							
+							
+							JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
+							
+							String date=inlaggJson.getString("datum");
+							
+							String dateMonth = date.substring(0,7);
+							
+						
+							if(selected.equals(dateMonth)) {
+								
+								
+								String text=inlaggJson.getString("innehall");
+								String title=inlaggJson.getString("titel");
+								
+								JSONArray array=inlaggJson.getJSONArray("gillningar");
+								
+								int likesAmount=array.length();
+								
+									
+									Main.blogg.post(title, text, likesAmount);
+									
+								
+								
+							}
+							else if(selected.equals("Archive")) {
+								
+								
+									String text=inlaggJson.getString("innehall");
+									String title=inlaggJson.getString("titel");
+									
+									JSONArray array=inlaggJson.getJSONArray("gillningar");
+									
+									int likesAmount=array.length();
+										
+									//comments();
+									
+									Main.blogg.post(title, text, likesAmount);
+									
+							}
+							
+						
+						}
+					} 
+		       		catch (Exception ee) {
+						// TODO Auto-generated catch block
+						ee.printStackTrace();
+					}
+			      
 			  } 
 			  
 				  }; 

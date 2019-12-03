@@ -148,7 +148,8 @@ public class Login implements EventHandler<ActionEvent> {
 				
 				Main.menus.getLogin().setText("Log out");
 				
-				
+				nameInput.setText("");
+				passInput.setText("");
 				
 				loggedIn=true;
 				

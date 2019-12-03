@@ -159,14 +159,34 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 				
 				
 				
-				/*Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Your blogg is created!");
-				alert.setHeaderText(null);
-				alert.setContentText("");
-
-				alert.showAndWait();*/
 				
 				
+				
+				
+				try {
+					//String shit=Post.send("Login/login.php","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=login&anamn="+name+"&losenord="+password+"&rollid=4");
+					//måste fixas. fungerar inte!!!!!!!!
+					String shit=HttpRequest.send("Login/login.php","&tjanst=blogg&anamn="+nameInput.getText()+"&password="+passInput);//anvandare1: kalle, 123
+					System.out.println(shit);
+					
+					JSONObject object=Json.toJSONObject(shit);
+					
+					Main.login.setUsername(object.getString("anamn"));
+					Main.login.setBloggId(object.getString("bloggId"));
+					
+					Main.menus.getUsername().setText(Main.login.getUsername());
+					Main.window.setScene(Main.scene);
+					
+					Main.menus.getLogin().setText("Log out");
+					
+					
+					
+					Main.login.setLoggedIn(true);
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
 				
 				
