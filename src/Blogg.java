@@ -104,19 +104,22 @@ public class Blogg {
 				text.getStyleClass().add("addField");
 				text.setPromptText("Text");
 				
-				text.setOnDragOver(new EventHandler<DragEvent>() {
+				text.setOnDragDropped(new EventHandler<DragEvent>() {
 				    public void handle(DragEvent event) {
-				        /* data is dragged over the target */
-				        /* accept it only if it is not dragged from the same node 
-				         * and if it has a string data */
-				        if (event.getGestureSource() != text &&
-				                event.getDragboard().hasString()) {
-				            /* allow for both copying and moving, whatever user chooses */
-				            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+				        /* data dropped */
+				        /* if there is a string data on dragboard, read it and use it */
+				        Dragboard db = event.getDragboard();
+				        boolean success = false;
+				        if (db.hasString()) {
+				           text.setText(db.getString());
+				           success = true;
 				        }
+				        /* let the source know whether the string was successfully 
+				         * transferred and used */
+				        event.setDropCompleted(success);
 				        
 				        event.consume();
-				    }
+				     }
 				});
 				
 				
