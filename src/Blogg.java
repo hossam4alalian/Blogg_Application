@@ -8,6 +8,7 @@ import backend_request.HttpRequest;
 import backend_request.Json;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,6 +17,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -97,6 +103,22 @@ public class Blogg {
 				
 				text.getStyleClass().add("addField");
 				text.setPromptText("Text");
+				
+				text.setOnDragOver(new EventHandler<DragEvent>() {
+				    public void handle(DragEvent event) {
+				        /* data is dragged over the target */
+				        /* accept it only if it is not dragged from the same node 
+				         * and if it has a string data */
+				        if (event.getGestureSource() != text &&
+				                event.getDragboard().hasString()) {
+				            /* allow for both copying and moving, whatever user chooses */
+				            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+				        }
+				        
+				        event.consume();
+				    }
+				});
+				
 				
 				content.getChildren().add(text);
 			});
