@@ -41,7 +41,7 @@ public class Blogg {
 	
 	private VBox scrollPaneBox= new VBox();
 	
-	
+	private String bloggId="null";//this is bloggId.
 	public Blogg() {
 		addPost();
 		scrollPaneSetup();
@@ -80,6 +80,9 @@ public class Blogg {
 		
 	}
 
+	 double orgSceneX, orgSceneY;
+	    double orgTranslateX, orgTranslateY;
+	
 	public void addPost() {
 		
 		addField = new VBox(20);
@@ -90,6 +93,7 @@ public class Blogg {
 			mainTitle.setPromptText("Title for your post");
 			mainTitle.setMaxWidth(600);
 			mainTitle.getStyleClass().add("addContent");
+			
 			addTextLimiter(mainTitle, 80);
 			content = new VBox(20);
 			content.getStyleClass().add("addContent");
@@ -101,26 +105,26 @@ public class Blogg {
 				text.setMaxWidth(800);
 				text.setWrapText(true);
 				
+				
+				text.setOnDragDetected(new EventHandler<MouseEvent>() {
+				    public void handle(MouseEvent event) {
+				        /* drag was detected, start a drag-and-drop gesture*/
+				        /* allow any transfer mode */
+				        Dragboard db = text.startDragAndDrop(TransferMode.ANY);
+				        
+				        /* Put a string on a dragboard */
+				        ClipboardContent content = new ClipboardContent();
+				        content.putString(text.getText());
+				        db.setContent(content);
+				        
+				        event.consume();
+				    }
+				});
+				
 				text.getStyleClass().add("addField");
 				text.setPromptText("Text");
 				
-				text.setOnDragDropped(new EventHandler<DragEvent>() {
-				    public void handle(DragEvent event) {
-				        /* data dropped */
-				        /* if there is a string data on dragboard, read it and use it */
-				        Dragboard db = event.getDragboard();
-				        boolean success = false;
-				        if (db.hasString()) {
-				           text.setText(db.getString());
-				           success = true;
-				        }
-				        /* let the source know whether the string was successfully 
-				         * transferred and used */
-				        event.setDropCompleted(success);
-				        
-				        event.consume();
-				     }
-				});
+				
 				
 				
 				content.getChildren().add(text);
@@ -133,6 +137,21 @@ public class Blogg {
 				src.setWrapText(true);
 				src.getStyleClass().add("addField");
 				src.setPromptText("Image Source");
+				
+				src.setOnDragDetected(new EventHandler<MouseEvent>() {
+				    public void handle(MouseEvent event) {
+				        /* drag was detected, start a drag-and-drop gesture*/
+				        /* allow any transfer mode */
+				        Dragboard db = src.startDragAndDrop(TransferMode.ANY);
+				        
+				        /* Put a string on a dragboard */
+				        ClipboardContent content = new ClipboardContent();
+				        content.putString(src.getText());
+				        db.setContent(content);
+				        
+				        event.consume();
+				    }
+				});
 				
 				String mediaSrc= src.getText();
 				//Media media = new Media(mediaSrc);
@@ -149,6 +168,21 @@ public class Blogg {
 				
 				text.getStyleClass().add("addField");
 				text.setPromptText("Title");
+				
+				text.setOnDragDetected(new EventHandler<MouseEvent>() {
+				    public void handle(MouseEvent event) {
+				        /* drag was detected, start a drag-and-drop gesture*/
+				        /* allow any transfer mode */
+				        Dragboard db = text.startDragAndDrop(TransferMode.ANY);
+				        
+				        /* Put a string on a dragboard */
+				        ClipboardContent content = new ClipboardContent();
+				        content.putString(text.getText());
+				        db.setContent(content);
+				        
+				        event.consume();
+				    }
+				});
 				
 				addTextLimiter(text, 100);
 				
@@ -173,8 +207,11 @@ public class Blogg {
 		
 		
 		
-		
 	}
+	
+	
+	
+	
 	
 	public static void addTextLimiter(final TextField text, final int maxLength) {
 	    text.textProperty().addListener(new ChangeListener<String>() {
@@ -233,7 +270,7 @@ public class Blogg {
 	
 	
 	
-	
+
 	public void refresh() {
 		getScrollPaneBox().getChildren().clear();
 		
@@ -242,10 +279,11 @@ public class Blogg {
 		
 			//System.out.println(blogg);
 			
-			JSONObject json=new JSONObject(blogg);
+			JSONObject json=new JSONObject(blogg);;
 			
 			String bloggTitle=json.getString("titel");
-			System.out.println(bloggTitle);
+			bloggId=json.getString("bloggId");
+			System.out.println(bloggId);
 			
 			
 			JSONArray inlagg=json.getJSONArray("bloggInlagg");
@@ -254,12 +292,10 @@ public class Blogg {
 				String inlaggStr = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
 				//System.out.println(inlaggStr);
 				
-				
 				JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 				
 				String text=inlaggJson.getString("innehall");
 				String title=inlaggJson.getString("titel");
-				
 				
 				JSONArray array=inlaggJson.getJSONArray("gillningar");
 				System.out.println(array.length());

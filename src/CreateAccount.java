@@ -153,7 +153,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 				
 				
 				String blogg;
-				blogg = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=1&Titel="+bloggTitle.getText()+" blogg&bloggAnvandarId="+userId);
+				blogg = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=1&Titel="+bloggTitle.getText()+"&bloggAnvandarId="+userId);
 				//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
 				System.out.println(blogg);
 				

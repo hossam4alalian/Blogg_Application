@@ -52,6 +52,20 @@ public class testing {
 		
 		
 		
+		String str;
+		try {
+			str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaInlagg&bloggId=13&Title=this is a post title&innehall=this is a lot of text or something");
+			//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
+			System.out.println(str);
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
 		
 		
 		

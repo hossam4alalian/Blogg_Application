@@ -61,10 +61,10 @@ public class HttpRequest {
         }
         
         int responseCode = httpClient.getResponseCode();
-        System.out.println("\nSending 'POST' request to URL : " + url);
-        System.out.println("Post parameters : " + postValues);
-        System.out.println("Response Code : " + responseCode);
-        
+        //System.out.println("\nSending 'POST' request to URL : " + url);
+        //System.out.println("Post parameters : " + postValues);
+        //System.out.println("Response Code : " + responseCode);
+       
         
         
         if(responseCode==500) {

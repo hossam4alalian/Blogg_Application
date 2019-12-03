@@ -104,7 +104,7 @@ public class ExploreBloggs {
 			JSONArray array=json.getJSONArray("bloggar");
 			for(int i=0;i<array.length();i++) {
 				String title=array.getJSONObject(i).getString("titel");
-				String bloggId=array.getJSONObject(i).getString("id");
+				String bloggId=array.getJSONObject(i).getString("bloggId");
 				addBlogg(title, name, "142",bloggId);
 			}
 			
