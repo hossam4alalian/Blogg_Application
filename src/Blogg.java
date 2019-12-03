@@ -9,9 +9,11 @@ import backend_request.Json;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -106,6 +108,7 @@ public class Blogg {
 				text.setWrapText(true);
 				
 				
+				
 				text.setOnDragDetected(new EventHandler<MouseEvent>() {
 				    public void handle(MouseEvent event) {
 				        /* drag was detected, start a drag-and-drop gesture*/
@@ -195,6 +198,41 @@ public class Blogg {
 			
 			post = new Button("Post");
 			post.setOnAction(ee -> {
+				
+				
+				String str;
+				try {
+					
+					String inlagg="";
+					String title="nothing";
+					for(int i=0;i<content.getChildren().size();i++) {
+						if(i==0) {
+							title=((TextField) content.getChildren().get(i)).getText();
+							System.out.println(title);
+							
+						}
+						else {
+							
+							String line=((TextArea) content.getChildren().get(i)).getText();
+							System.out.println(line);
+							inlagg+=line;
+						}
+					}
+					
+					str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaInlagg&bloggId="+Main.currentBlogg+"&Title="+title+"&innehall="+inlagg);
+					
+					
+					
+					
+					
+				} catch (Exception eee) {
+					// TODO Auto-generated catch block
+					eee.printStackTrace();
+				}
+				
+				
+				
+				
 				addField.getChildren().removeAll(content, buttons, post);
 				addField.getChildren().add(add);
 			});
@@ -252,6 +290,9 @@ public class Blogg {
 			getScrollPaneBox().getChildren().add(bloggar);
 		}
 		else {
+			/*if(getScrollPaneBox().getChildren().size()-1==0) {
+				return;
+			}*/
 			HBox lastBloggContainer=(HBox) getScrollPaneBox().getChildren().get(getScrollPaneBox().getChildren().size()-1);
 			
 			if(lastBloggContainer.getChildren().size()==1){
@@ -277,13 +318,18 @@ public class Blogg {
 		try {
 			String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
 		
-			//System.out.println(blogg);
+			System.out.println(blogg);
 			
-			JSONObject json=new JSONObject(blogg);;
+			JSONObject json=new JSONObject(blogg);
 			
 			String bloggTitle=json.getString("titel");
 			bloggId=json.getString("bloggId");
 			System.out.println(bloggId);
+			
+			
+			/*Label labelTitle=new Label(bloggTitle);
+			labelTitle.setAlignment(Pos.CENTER);
+			getScrollPaneBox().getChildren().add(labelTitle);*/
 			
 			
 			JSONArray inlagg=json.getJSONArray("bloggInlagg");
@@ -305,6 +351,13 @@ public class Blogg {
 				
 				post(title, text, likesAmount);
 				
+			}
+			
+			
+			
+			if(Main.login.getBloggId().equals(Main.currentBlogg+"") /*|| currentBlogg==13*/) {
+				getAddField().getChildren().removeAll(getButtons(),getPost());
+				getAddField().getChildren().add(getAdd());
 			}
 			
 			

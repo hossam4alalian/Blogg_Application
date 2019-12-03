@@ -59,7 +59,7 @@ public class Menus {
 		
 		exploreBlogg = new Button("Explore Bloggs");
 		
-		yourBlogg = new Button("Your Blogg");
+		yourBlogg = new Button("My Blogg");
 		
 		
 		
