@@ -5,6 +5,7 @@ import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import backend_request.HttpRequest;
 import backend_request.Json;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -31,18 +32,13 @@ public class ExploreBloggs {
 	
 	
 	
-	private Scene scene;
-	private HBox mainLayout;
-	private VBox center;
+
 	private HBox refreshField;
 	
 	private ScrollPane scrollPane;
 	private VBox scrollPaneBox= new VBox();
 	
 	public ExploreBloggs() {
-		center=new VBox();
-		center.getChildren().add(Main.menus.getTopMenu());
-		mainLayout=new HBox(40);
 		
 		refresh();
 		
@@ -50,10 +46,6 @@ public class ExploreBloggs {
 		//addBlogg("niles is good", "Niles ahmad", "142");
 		scrollPaneSetup();
 		
-		mainLayout.getChildren().addAll(Main.menus.getSideMenu(),center);
-		
-		scene=new Scene(mainLayout,800,600);
-		scene.getStylesheets().add("main.css");
 		//window.setMinWidth(600);
 		//window.setMinHeight(300);
 		
@@ -93,7 +85,7 @@ public class ExploreBloggs {
 		refreshField.getChildren().addAll(refresh);
 		refreshField.getStyleClass().add("refreshField");
 		
-		center.getChildren().addAll(scrollPane, refreshField );
+		
 	}
 	
 	
@@ -101,8 +93,8 @@ public class ExploreBloggs {
 		
 		scrollPaneBox.getChildren().clear();
 		
-		/*try {
-			String str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON");
+		try {
+			String str = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON");
 		
 			System.out.println(str);
 			JSONObject json=Json.toJSONObject(str);
@@ -120,13 +112,13 @@ public class ExploreBloggs {
 		} catch (Exception ee ) {
 			// TODO Auto-generated catch block
 			//ee.printStackTrace();
-			*/
+			
 			addBlogg("bloggNiles", "niles", "142","0");
 			addBlogg("blogg monkey", "ahmad", "142","0");
 			addBlogg("hello blogg", "niles", "142","0");
 			addBlogg("this is a blogg", "niles", "142","0");
 			
-		//}
+		}
 	}
 	
 	
@@ -186,20 +178,6 @@ public class ExploreBloggs {
 		
 		
 	}
-
-	
-	
-
-	public Scene getScene() {
-		return scene;
-	}
-
-
-	public void setScene(Scene scene) {
-		this.scene = scene;
-	}
-
-
 
 
 	public ScrollPane getScrollPane() {

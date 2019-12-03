@@ -155,6 +155,18 @@
 	
 }
 
+.addField{
+	-fx-alignment: center; 
+	-fx-border-style: dashed dashed dashed dashed;
+  	-fx-border-color: grey grey grey grey;
+  	-fx-border-width: 2;
+}
+
+.addContent{
+	-fx-alignment: center; 
+	
+}
+
 
 
 

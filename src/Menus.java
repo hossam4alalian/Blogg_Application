@@ -69,7 +69,7 @@ public class Menus {
 		
 		
 		leftTop.setMargin(leftTop, new Insets(20,0,0,75));
-		leftTop.setMinSize(200, 50);
+		leftTop.setMinSize(180, 50);
 		leftTop.setPrefSize(2000, 50);
 		leftTop.getStyleClass().add("leftTop");
 		
@@ -81,7 +81,7 @@ public class Menus {
 		HBox rightTop = new HBox();
 		rightTop.getChildren().addAll(search, searchPost);
 		rightTop.setMargin(rightTop, new Insets(20));
-		rightTop.setMinSize(250, 50);
+		rightTop.setMinSize(350, 50);
 		rightTop.getStyleClass().add("rightTop");
 		
 		topMenu = new HBox(20);
@@ -94,8 +94,8 @@ public class Menus {
 	private Button login;
 	private Label username;
 	public void sideMenu() {
-		username=new Label("Niles ahmad");
-		Label likes=new Label("Likes: 217");
+		username=new Label("Guest");
+		Label likes=new Label("");
 		setings=new Button("Setings");
 		
 		sideMenu=new VBox(100);

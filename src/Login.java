@@ -8,6 +8,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -49,11 +50,9 @@ public class Login implements EventHandler<ActionEvent> {
 
 	public void scene() {
 		mainLayout= new BorderPane();
-		scene =new Scene(mainLayout, 800, 600);
+		scene =new Scene(mainLayout, 1000, 800);
 		scene.getStylesheets().add("main.css");
 		loginDesign();
-		
-		
 		
 		
 		
@@ -86,7 +85,7 @@ public class Login implements EventHandler<ActionEvent> {
 		Label password= new Label("Password: ");
 		loginBox.add(password, 1, 2);
 		
-		 passInput= new TextField();
+		 passInput= new PasswordField();
 		passInput.setPromptText("password");
 		loginBox.add(passInput, 2, 2);
 		
@@ -114,7 +113,7 @@ public class Login implements EventHandler<ActionEvent> {
 		VBox center= new VBox();
 		center.getChildren().addAll(top, middle, bottom);
 		center.getStyleClass().add("center");
-		center.setMaxSize(300, 800);
+		center.setMaxSize(400, 800);
 		
 		
 		

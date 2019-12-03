@@ -9,9 +9,12 @@ import java.net.URL;
 import javax.net.ssl.HttpsURLConnection;
 
 public class HttpRequest {
-
+	public static boolean on=true;
 	
 	public static void getData() {
+		if(!on) {
+			return;
+		}
 		String url="http://10.130.216.101/TP/Blogg/";
 		
 		try {
@@ -26,7 +29,6 @@ public class HttpRequest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	
@@ -34,6 +36,9 @@ public class HttpRequest {
 	
 	
 	public static String send(String postValues) throws Exception {
+		if(!on) {
+			return "";
+		}
 		
 		// url is missing?
         //String url = "https://selfsolve.apple.com/wcResults.do";

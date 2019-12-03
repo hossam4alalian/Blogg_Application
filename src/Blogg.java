@@ -6,53 +6,40 @@ import org.json.JSONObject;
 
 import backend_request.HttpRequest;
 import backend_request.Json;
-import backend_request.HttpRequest;
-import javafx.application.Application;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.effect.ImageInput;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import javafx.scene.media.Media;
 
 public class Blogg {
-	
-	
-	private Scene scene;
-	private HBox mainLayout;
-	private VBox center;
-	
+
 	
 	private ScrollPane scrollPane;
 	private HBox refreshField;
+	private VBox addField;
+	
+	private VBox content;
+	
+	private HBox buttons;
+	private Button post;
+	private Button add;
 	
 	private VBox scrollPaneBox= new VBox();
 	
+	
 	public Blogg() {
-		center=new VBox();
-		center.getChildren().addAll(Main.menus.getTopMenu());
-		mainLayout=new HBox(40);
-		
+		addPost();
 		scrollPaneSetup();
 		
-		mainLayout.getChildren().addAll(Main.menus.getSideMenu(),center);
-		
-		scene=new Scene(mainLayout,800,600);
-		scene.getStylesheets().add("main.css");
 		//window.setMinWidth(600);
 		//window.setMinHeight(300);
 		
@@ -60,7 +47,7 @@ public class Blogg {
 	
 	public void scrollPaneSetup() {
 		scrollPane= new ScrollPane();
-		scrollPane.setContent(scrollPaneBox);
+		scrollPane.setContent(getScrollPaneBox());
 		scrollPane.setPannable(true);
 		scrollPane.setPrefSize(/*bloggar.getWidth()*/200, 1000);
 		//scrollPane.setFitToWidth(true);
@@ -76,31 +63,7 @@ public class Blogg {
 		Button refresh = new Button("Refresh");
 		
 		refresh.setOnAction(e -> {
-			
-			try {
-				String str = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg=3");
-			
-				System.out.println(str);
-				JSONObject json=Json.toJSONObject(str);
-				
-				String text=json.getString("innehall");
-				String title=json.getString("titel");
-				
-				
-				JSONArray array=json.getJSONArray("gillningar");
-				System.out.println(array.length());
-				int likesAmount=array.length();
-				
-					
-				//comments();
-				
-				addPost(title, text, likesAmount);
-			
-			} catch (Exception ee) {
-				// TODO Auto-generated catch block
-				ee.printStackTrace();
-			}
-			
+			refresh();
 		});
 		
 		
@@ -108,11 +71,99 @@ public class Blogg {
 		refreshField.getChildren().addAll(refresh);
 		refreshField.getStyleClass().add("refreshField");
 		
-		center.getChildren().addAll(scrollPane, refreshField );
+		
+	}
+
+	public void addPost() {
+		
+		addField = new VBox(20);
+		addField.getStyleClass().add("addField");
+		add = new Button("What is on your mind?");
+		add.setOnAction(e -> {
+			TextField mainTitle = new TextField();
+			mainTitle.setPromptText("Title for your post");
+			mainTitle.setMaxWidth(600);
+			mainTitle.getStyleClass().add("addContent");
+			addTextLimiter(mainTitle, 80);
+			content = new VBox(20);
+			content.getStyleClass().add("addContent");
+			content.getChildren().add(mainTitle);
+			
+			Button addText = new Button("Add Text");
+			addText.setOnAction(ee -> {
+				TextArea text = new TextArea();
+				text.setMaxWidth(800);
+				text.setWrapText(true);
+				
+				text.getStyleClass().add("addField");
+				text.setPromptText("Text");
+				
+				content.getChildren().add(text);
+			});
+			
+			Button addPic = new Button("Add Pic");
+			addPic.setOnAction(ee -> {
+				TextArea src = new TextArea();
+				src.setMaxWidth(800);
+				src.setWrapText(true);
+				src.getStyleClass().add("addField");
+				src.setPromptText("Image Source");
+				
+				String mediaSrc= src.getText();
+				//Media media = new Media(mediaSrc);
+				
+				System.out.println(mediaSrc);
+				content.getChildren().addAll(src);
+			});
+			
+			Button addTitle = new Button("Add Title");
+			addTitle.setOnAction(ee -> {
+				TextField text = new TextField();
+				text.setMaxWidth(800);
+				
+				
+				text.getStyleClass().add("addField");
+				text.setPromptText("Title");
+				
+				addTextLimiter(text, 100);
+				
+				content.getChildren().add(text);
+			});
+			
+			buttons = new HBox(20);
+			buttons.getChildren().addAll(addText,addPic,addTitle);
+			
+			
+			post = new Button("Post");
+			post.setOnAction(ee -> {
+				addField.getChildren().removeAll(content, buttons, post);
+				addField.getChildren().add(add);
+			});
+				addField.getChildren().addAll(content, buttons, post);
+			
+				addField.getChildren().remove(add);
+				
+		});
+		
+		
+		
+		
+		
 	}
 	
+	public static void addTextLimiter(final TextField text, final int maxLength) {
+	    text.textProperty().addListener(new ChangeListener<String>() {
+	        @Override
+	        public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+	            if (text.getText().length() > maxLength) {
+	                String s = text.getText().substring(0, maxLength);
+	                text.setText(s);
+	            }
+	        }
+	    });
+	}
 	
-	public void addPost(String title, String text, int likesAmount) {
+	public void post(String title, String text, int likesAmount) {
 		Label bloggsName = new Label(title);
 		bloggsName.getStyleClass().add("leftBloggText");
 		
@@ -133,18 +184,18 @@ public class Blogg {
        	 System.out.println("Left up");
         });
 		
-		if(scrollPaneBox.getChildren().size()==0){
+		if(getScrollPaneBox().getChildren().size()==0){
 			HBox bloggar = new HBox();
 			bloggar.getChildren().add(blogg);
-			scrollPaneBox.getChildren().add(bloggar);
+			getScrollPaneBox().getChildren().add(bloggar);
 		}
 		else {
-			HBox lastBloggContainer=(HBox) scrollPaneBox.getChildren().get(scrollPaneBox.getChildren().size()-1);
+			HBox lastBloggContainer=(HBox) getScrollPaneBox().getChildren().get(getScrollPaneBox().getChildren().size()-1);
 			
 			if(lastBloggContainer.getChildren().size()==1){
 				HBox bloggar = new HBox();
 				bloggar.getChildren().add(blogg);
-				scrollPaneBox.getChildren().add(bloggar);
+				getScrollPaneBox().getChildren().add(bloggar);
 			}
 			else {
 				System.out.println("Error!!!!!");
@@ -155,6 +206,70 @@ public class Blogg {
 		
 	}
 	
+	
+	
+	
+	public void refresh() {
+		getScrollPaneBox().getChildren().clear();
+		
+		try {
+			String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
+		
+			//System.out.println(blogg);
+			
+			JSONObject json=new JSONObject(blogg);
+			
+			String bloggTitle=json.getString("titel");
+			System.out.println(bloggTitle);
+			
+			
+			JSONArray inlagg=json.getJSONArray("bloggInlagg");
+			
+			for(int i=0;i<inlagg.length();i++) {
+				String inlaggStr = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
+				//System.out.println(inlaggStr);
+				
+				
+				JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
+				
+				String text=inlaggJson.getString("innehall");
+				String title=inlaggJson.getString("titel");
+				
+				
+				JSONArray array=inlaggJson.getJSONArray("gillningar");
+				System.out.println(array.length());
+				int likesAmount=array.length();
+					
+				//comments();
+				
+				post(title, text, likesAmount);
+				
+			}
+			
+			
+			/*JSONObject json=Json.toJSONObject(str);
+			
+			String text=json.getString("innehall");
+			String title=json.getString("titel");
+			
+			
+			JSONArray array=json.getJSONArray("gillningar");
+			System.out.println(array.length());
+			int likesAmount=array.length();
+				
+			//comments();
+			
+			addPost(title, text, likesAmount);*/
+		
+		} catch (Exception ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+		}
+		
+		
+	}
+	
+
 	
 	
 	public void comments(JSONArray array) {
@@ -188,15 +303,6 @@ public class Blogg {
 		
 	}
 
-	public Scene getScene() {
-		return scene;
-	}
-
-
-	public void setScene(Scene scene) {
-		this.scene = scene;
-	}
-
 
 
 
@@ -225,9 +331,56 @@ public class Blogg {
 		this.refreshField = refreshField;
 	}
 
+	public VBox getAddField() {
+		return addField;
+	}
+
+	public void setAddField(VBox addField) {
+		this.addField = addField;
+	}
 
 
-	
+	public HBox getButtons() {
+		return buttons;
+	}
+
+	public void setButtons(HBox buttons) {
+		this.buttons = buttons;
+	}
+
+	public Button getPost() {
+		return post;
+	}
+
+	public void setPost(Button post) {
+		this.post = post;
+	}
+
+	public VBox getContent() {
+		return content;
+	}
+
+	public void setContent(VBox content) {
+		this.content = content;
+	}
+
+
+	public Button getAdd() {
+		return add;
+	}
+
+	public void setAdd(Button add) {
+		this.add = add;
+	}
+
+	public VBox getScrollPaneBox() {
+		return scrollPaneBox;
+	}
+
+	public void setScrollPaneBox(VBox scrollPaneBox) {
+		this.scrollPaneBox = scrollPaneBox;
+	}
+
 	
 	
 

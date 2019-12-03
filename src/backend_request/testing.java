@@ -11,7 +11,21 @@ public class testing {
 		
 		/*String str;
 		try {
-			str = Post.send("Admin/funktioner/skapa.php","funktion=skapaAKonto&anamn=Niles&rollid=4&tjanst=1");
+			str = HttpRequest.send("Admin/funktioner/skapa.php","funktion=skapaAKonto&anamn=Niles ahmad&rollid=4&tjanst=1");
+			//str = Post.send("","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa2&funktion=skapaAKonto&anamn=NilesTest&rollid=4&tjanst=blogg");
+			System.out.println(str);
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		
+		
+		/*String str;
+		try {
+			str = HttpRequest.send("Admin/funktioner/redigera.php","funktion=redigeraKonto&anvandarid=13&losenord=ahmad");
 			//str = Post.send("","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa2&funktion=skapaAKonto&anamn=NilesTest&rollid=4&tjanst=blogg");
 			System.out.println(str);
 			
@@ -24,8 +38,7 @@ public class testing {
 		
 		
 		
-		
-		String str;
+		/*String str;
 		try {
 			str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=1&Titel=niles blogg&bloggAnvandarId=7");
 			//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
@@ -35,7 +48,7 @@ public class testing {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		
 		

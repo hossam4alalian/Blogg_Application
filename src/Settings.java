@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -28,7 +29,7 @@ public class Settings implements EventHandler<ActionEvent> {
 	
 	public void scene() {
 		mainLayout= new BorderPane();
-		scene =new Scene(mainLayout, 800, 600);
+		scene =new Scene(mainLayout, 1000, 800);
 		scene.getStylesheets().add("main.css");
 		settings();
 		
@@ -42,8 +43,12 @@ public class Settings implements EventHandler<ActionEvent> {
 		settingsLabel.setFont(new Font("Arial", 30));
 		settingsLabel.setPadding(new Insets(80, 20, 20, 20));
 		
-		Button Languege=new Button("Languege");	
-		Languege.getStyleClass().add("settingsButton");
+		ComboBox<String>languege=new ComboBox<String>();
+		languege.getStyleClass().add("settingsButton");
+		languege.setValue("English");
+		languege.getItems().addAll("Swedish");
+		languege.getItems().addAll("English");
+		languege.getItems().addAll("Arabic");
 		
 		
 		ComboBox<String>color=new ComboBox<String>();
@@ -62,16 +67,16 @@ public class Settings implements EventHandler<ActionEvent> {
 		Label changePassword= new Label("Change password");
 		changePassword.setFont(new Font("Arial", 20));
 		
-		TextField username=new TextField();
-		username.setPromptText("password");
+		PasswordField oldPassword=new PasswordField();
+		oldPassword.setPromptText("old password");
 		
-		TextField password=new TextField();
+		PasswordField password=new PasswordField();
 		password.setPromptText("new password");
 		
-		TextField comfirmPassword=new TextField();
+		PasswordField comfirmPassword=new PasswordField();
 		comfirmPassword.setPromptText("comfirm Password");
 		
-		pass.getChildren().addAll(changePassword,username,password,comfirmPassword);
+		pass.getChildren().addAll(changePassword,oldPassword,password,comfirmPassword);
 		pass.setPadding(new Insets(0,40,0,40));
 		
 		
@@ -90,7 +95,7 @@ public class Settings implements EventHandler<ActionEvent> {
 		
 		
 		VBox center= new VBox(40);
-		center.getChildren().addAll(settingsLabel,Languege,color,pass,cancelApply);
+		center.getChildren().addAll(settingsLabel,languege,color,pass,cancelApply);
 		center.setAlignment(Pos.TOP_CENTER);
 		center.getStyleClass().add("settings");
 		center.setMaxSize(300, 800);

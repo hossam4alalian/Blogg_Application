@@ -1,7 +1,10 @@
-import java.awt.Menu;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
-import org.json.JSONObject;
-
+import backend_request.HttpRequest;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,13 +25,14 @@ public class Main extends Application{
 	static ExploreBloggs explore=new ExploreBloggs();
 	static Blogg blogg = new Blogg();
 	
-	Login login = new Login();
+	static Login login = new Login();
 	Settings settings=new Settings();
 	CreateAccount createAccount=new CreateAccount();
 	
 	static Stage window;
 	static HBox mainLayout;
 	static VBox center;
+	
 	
 	static int currentBlogg=-1;
 	public static void main(String[] args) {
@@ -37,6 +41,8 @@ public class Main extends Application{
 	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		
 		window = primaryStage;
 		
 		mainLayout = new HBox();
@@ -47,11 +53,12 @@ public class Main extends Application{
 		
 		mainLayout.getChildren().addAll(menus.getSideMenu(),center);
 		
-		scene= new Scene(mainLayout, 800, 600);
+		scene= new Scene(mainLayout, 1000, 800);
 		scene.getStylesheets().add("main.css");
 		window.setScene(scene);
-		window.show();
 		
+		window.show();
+		//window.setMaximized(true);
 		
 		settings.getApply().setOnAction(new EventHandler<ActionEvent>() {
 			
@@ -80,6 +87,7 @@ public class Main extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				window.setScene(createAccount.getScene());
+				
 			}
 		});
 		
@@ -96,7 +104,7 @@ public class Main extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				if(login.isLoggedIn()) {
-					System.out.println("log out!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+					System.out.println("log out!!!!!!!!!");
 					Main.menus.getLogin().setText("Log In");
 					login.setUsername("Guest");
 					login.setBloggId("null");
@@ -116,6 +124,7 @@ public class Main extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				window.setScene(settings.getScene());
+				
 			}
 		});
 		menus.getExploreBlogg().setOnAction(new EventHandler<ActionEvent>() {
@@ -129,40 +138,89 @@ public class Main extends Application{
 		menus.getYourBlogg().setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				window.setScene(blogg.getScene());
-				System.out.println("blah");
+				if(login.getBloggId()=="null") {
+					System.out.println("need to login");
+				}else {
+					currentBlogg=Integer.parseInt(login.getBloggId());
+					loadBlogg();
+				}
 			}
 		});
 	}
 	
 	public static void loadBlogg() {
-		Main.center.getChildren().remove(Main.explore.getScrollPane());
-       	Main.center.getChildren().remove(Main.explore.getRefreshField());
-       	
-       	Main.center.getChildren().addAll(Main.blogg.getScrollPane(),Main.blogg.getRefreshField());
+		if(page==2) {
+			return;
+		}
+		
+		//remove explore nodes
+		Main.center.getChildren().removeAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
+		blogg.getAddField().getChildren().removeAll(blogg.getContent());
+		
+		
+		if(login.getBloggId().equals(currentBlogg+"")) {
+			blogg.getAddField().getChildren().removeAll(blogg.getButtons(),blogg.getPost());
+			blogg.getAddField().getChildren().add(blogg.getAdd());
+		}
+		
+       	//adds 
+		
+       	Main.center.getChildren().addAll(blogg.getAddField(),Main.blogg.getScrollPane(),Main.blogg.getRefreshField());
        	page=2;
        	System.out.println(page);
        	
+       	blogg.refresh();
        	
-			archive=new ComboBox<String>();
-			archive.getStyleClass().add("settingsButton");
-			archive.setValue("this month");
-			
-			for (int i=0; i<12; i++) {
-				archive.getItems().addAll("blah "+ i);
-			}
-			menus.getLeftTop().getChildren().add(archive);
-			System.out.println("blah");
+       	archive();
+       
 		
        	
 	}
 	public static void loadExplore() {
-		Main.center.getChildren().remove(Main.blogg.getScrollPane());
-       	Main.center.getChildren().remove(Main.blogg.getRefreshField());
+		if(page==1) {
+			return;
+		}
+		//remove blogg nodes.
+		Main.center.getChildren().removeAll(Main.blogg.getScrollPane(),Main.blogg.getRefreshField(),Main.blogg.getAddField());
+		blogg.getAddField().getChildren().removeAll(blogg.getContent(), blogg.getButtons(), blogg.getPost(),blogg.getAdd());
        	Main.center.getChildren().addAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
        	page=1;
        	System.out.println(page);
        	menus.getLeftTop().getChildren().remove(archive);
+	}
+	
+	public static void archive() {
+		
+		
+       	List<String> allDates = new ArrayList<>();
+       	SimpleDateFormat monthDate = new SimpleDateFormat("MMM-yyyy");
+       	Calendar cal = Calendar.getInstance();
+       	/*try {
+			cal.setTime(monthDate.parse(maxDate));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+       	
+       	
+			archive=new ComboBox<String>();
+			archive.getStyleClass().add("settingsButton");
+			
+			
+			
+			
+			for (int i = 1; i <= 10; i++) {
+				
+				String month_name1= monthDate.format(cal.getTime());
+				
+	       	     allDates.add(month_name1);
+	       	     cal.add(Calendar.MONTH, -1);
+	       	     
+	       	}
+			archive.setValue("Archive");
+			archive.getItems().addAll(allDates);
+			menus.getLeftTop().getChildren().add(archive);
+			
 	}
 	
 }

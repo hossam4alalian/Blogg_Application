@@ -1,16 +1,22 @@
+import java.util.Optional;
+
 import org.json.JSONObject;
 
+import backend_request.HttpRequest;
 import backend_request.Json;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -20,11 +26,12 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	private BorderPane mainLayout;
 	
 	private TextField nameInput;
-	private TextField passInput;
-	private TextField passInput2;
+	private PasswordField passInput;
+	private PasswordField passInput2;
 	private Button create;
 	private Button back;
 	
+	private TextField bloggTitle;
 	
 	
 	public CreateAccount() {
@@ -34,9 +41,10 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 
 	public void scene() {
 		mainLayout= new BorderPane();
-		scene =new Scene(mainLayout, 800, 600);
+		scene =new Scene(mainLayout, 1000, 800);
 		scene.getStylesheets().add("main.css");
 		loginDesign();
+		
 		
 	}
 	
@@ -53,16 +61,20 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 		
 		
 		VBox inputs=new VBox(15);
-		inputs.setPadding(new Insets(0, 60, 0, 60));
+		inputs.setPadding(new Insets(0, 50, 0, 50));
 		nameInput=new TextField("");
 		nameInput.setPromptText("username");
 		
-		passInput=new TextField("");
+		passInput=new PasswordField();
 		passInput.setPromptText("password");
 		
-		passInput2=new TextField("");
+		passInput2=new PasswordField();
 		passInput2.setPromptText("confirm password");
-		inputs.getChildren().addAll(nameInput,passInput,passInput2);
+		
+		bloggTitle=new TextField("");
+		bloggTitle.setPromptText("blogg title");
+		
+		inputs.getChildren().addAll(nameInput,passInput,passInput2,bloggTitle);
 		
 		create= new Button("Create");
 		create.setOnAction(this);
@@ -82,10 +94,10 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 		
 	
 		VBox center= new VBox(20);
-		center.setPadding(new Insets(0, 30, 0, 30));
+		center.setPadding(new Insets(0, 20, 0, 20));
 		center.getChildren().addAll(top,middle);
 		center.getStyleClass().add("center");
-		center.setMaxSize(300, 800);
+		center.setMaxSize(400, 800);
 		
 		
 		
@@ -97,7 +109,74 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource()==create) {
-			System.out.println("click!!!!!!");
+			if(!passInput.getText().equals(passInput2.getText())) {
+				System.out.println("password not maching");
+				return;
+			}
+			
+			
+			
+			
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("");
+			alert.setHeaderText("your bloggs title will be "+bloggTitle.getText());
+			alert.setContentText("Are you ok with this?");
+
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.get() == ButtonType.OK){
+			    // ... user chose OK
+			} else {
+			    return;
+			}
+			
+			
+			String str;
+			try {
+				str = HttpRequest.send("Admin/funktioner/skapa.php","funktion=skapaAKonto&anamn="+nameInput.getText()+"&rollid=4&tjanst=1");
+				//str = Post.send("","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa2&funktion=skapaAKonto&anamn=NilesTest&rollid=4&tjanst=blogg");
+				//System.out.println(str);
+				
+				
+				JSONObject user=Json.toJSONObject(str);
+				String userId=user.getString("userid");
+				String password=passInput.getText();
+			
+			
+			
+				String str2;
+				str2 = HttpRequest.send("Admin/funktioner/redigera.php","funktion=redigeraKonto&anvandarid="+userId+"&losenord="+password);
+				//str = Post.send("","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa2&funktion=skapaAKonto&anamn=NilesTest&rollid=4&tjanst=blogg");
+				//System.out.println(str2);
+				
+				
+				
+				
+				
+				String blogg;
+				blogg = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=1&Titel="+bloggTitle.getText()+" blogg&bloggAnvandarId="+userId);
+				//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
+				System.out.println(blogg);
+				
+				
+				
+				/*Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Your blogg is created!");
+				alert.setHeaderText(null);
+				alert.setContentText("");
+
+				alert.showAndWait();*/
+				
+				
+				
+				
+				
+				Main.window.setScene(Main.scene);
+				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 			
 		}
 	}
@@ -128,7 +207,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	}
 
 
-	public void setPassInput(TextField passInput) {
+	public void setPassInput(PasswordField passInput) {
 		this.passInput = passInput;
 	}
 
@@ -158,7 +237,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	}
 
 
-	public void setPassInput2(TextField passInput2) {
+	public void setPassInput2(PasswordField passInput2) {
 		this.passInput2 = passInput2;
 	}
 	
