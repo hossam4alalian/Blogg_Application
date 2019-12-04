@@ -96,7 +96,7 @@ public class ExploreBloggs {
 		try {
 			String str = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON");
 		
-			System.out.println(str);
+			
 			JSONObject json=Json.toJSONObject(str);
 			
 			String name=json.getString("anamn");
@@ -146,7 +146,6 @@ public class ExploreBloggs {
 		blogg.getStyleClass().add("exploreBlogg");
 		blogg.setOnMouseClicked( ( e ) ->
         {
-       	 System.out.println(blogg.getUserData());
        	 Main.currentBlogg=Integer.parseInt(blogg.getUserData().toString());
        	 
        	 Main.loadBlogg();

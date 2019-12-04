@@ -27,6 +27,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
+import javafx.scene.text.Font;
 
 public class Blogg {
 
@@ -40,6 +41,8 @@ public class Blogg {
 	private HBox buttons;
 	private Button post;
 	private Button add;
+	
+	private Label labelTitle;
 	
 	private VBox scrollPaneBox= new VBox();
 	
@@ -159,13 +162,14 @@ public class Blogg {
 				String mediaSrc= src.getText();
 				//Media media = new Media(mediaSrc);
 				
-				System.out.println(mediaSrc);
+				
+			
 				content.getChildren().addAll(src);
 			});
 			
 			Button addTitle = new Button("Add Title");
 			addTitle.setOnAction(ee -> {
-				TextField text = new TextField();
+				TextArea text = new TextArea();
 				text.setMaxWidth(800);
 				
 				
@@ -187,7 +191,7 @@ public class Blogg {
 				    }
 				});
 				
-				addTextLimiter(text, 100);
+				//addTextLimiter(text, 100);
 				
 				content.getChildren().add(text);
 			});
@@ -208,13 +212,12 @@ public class Blogg {
 					for(int i=0;i<content.getChildren().size();i++) {
 						if(i==0) {
 							title=((TextField) content.getChildren().get(i)).getText();
-							System.out.println(title);
+							
 							
 						}
 						else {
-							
 							String line=((TextArea) content.getChildren().get(i)).getText();
-							System.out.println(line);
+							System.out.println("line");
 							inlagg+=line;
 						}
 					}
@@ -281,7 +284,7 @@ public class Blogg {
 		blogg.setOnMouseClicked( ( e ) ->
         {
        	 
-       	 System.out.println("Left up");
+       	 
         });
 		
 		if(getScrollPaneBox().getChildren().size()==0){
@@ -290,9 +293,7 @@ public class Blogg {
 			getScrollPaneBox().getChildren().add(bloggar);
 		}
 		else {
-			/*if(getScrollPaneBox().getChildren().size()-1==0) {
-				return;
-			}*/
+			
 			HBox lastBloggContainer=(HBox) getScrollPaneBox().getChildren().get(getScrollPaneBox().getChildren().size()-1);
 			
 			if(lastBloggContainer.getChildren().size()==1){
@@ -318,19 +319,20 @@ public class Blogg {
 		try {
 			String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
 		
-			System.out.println(blogg);
+			
 			
 			JSONObject json=new JSONObject(blogg);
 			
 			String bloggTitle=json.getString("titel");
 			bloggId=json.getString("bloggId");
-			System.out.println(bloggId);
+			//System.out.println(bloggId);
 			
-			
-			/*Label labelTitle=new Label(bloggTitle);
-			labelTitle.setAlignment(Pos.CENTER);
-			getScrollPaneBox().getChildren().add(labelTitle);*/
-			
+			if(Main.page==1) {
+				labelTitle=new Label(bloggTitle);
+				labelTitle.setFont(new Font(40));
+				labelTitle.setAlignment(Pos.CENTER);
+				labelTitle.setPrefWidth(4000);
+			}
 			
 			JSONArray inlagg=json.getJSONArray("bloggInlagg");
 			
@@ -344,7 +346,7 @@ public class Blogg {
 				String title=inlaggJson.getString("titel");
 				
 				JSONArray array=inlaggJson.getJSONArray("gillningar");
-				System.out.println(array.length());
+				
 				int likesAmount=array.length();
 					
 				//comments();
@@ -356,7 +358,7 @@ public class Blogg {
 			
 			
 			if(Main.login.getBloggId().equals(Main.currentBlogg+"") /*|| currentBlogg==13*/) {
-				getAddField().getChildren().removeAll(getButtons(),getPost());
+				getAddField().getChildren().removeAll(getButtons(),getPost(),getAdd());
 				getAddField().getChildren().add(getAdd());
 			}
 			
@@ -493,6 +495,14 @@ public class Blogg {
 
 	public void setScrollPaneBox(VBox scrollPaneBox) {
 		this.scrollPaneBox = scrollPaneBox;
+	}
+
+	public Label getLabelTitle() {
+		return labelTitle;
+	}
+
+	public void setLabelTitle(Label labelTitle) {
+		this.labelTitle = labelTitle;
 	}
 
 	

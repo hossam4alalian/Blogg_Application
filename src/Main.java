@@ -164,20 +164,15 @@ public class Main extends Application{
 		Main.center.getChildren().removeAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
 		blogg.getAddField().getChildren().removeAll(blogg.getContent());
 		
-		
-		
-		
-       	//adds 
-		
+       	
        	Main.center.getChildren().addAll(blogg.getAddField(),Main.blogg.getScrollPane(),Main.blogg.getRefreshField());
-       	page=2;
-       	System.out.println(page);
        	
        	blogg.refresh();
-       	
+       	page=2;
+       	//add
        	archive();
-       
-		
+       	center.getChildren().add(1,blogg.getLabelTitle());
+    	
        	
 	}
 	public static void loadExplore() {
@@ -185,14 +180,16 @@ public class Main extends Application{
 			return;
 		}
 		//remove blogg nodes.
-		Main.center.getChildren().removeAll(Main.blogg.getScrollPane(),Main.blogg.getRefreshField(),Main.blogg.getAddField());
+		Main.center.getChildren().removeAll(Main.blogg.getScrollPane(),Main.blogg.getRefreshField(),Main.blogg.getAddField(),blogg.getLabelTitle());
 		blogg.getAddField().getChildren().removeAll(blogg.getContent(), blogg.getButtons(), blogg.getPost(),blogg.getAdd());
        	Main.center.getChildren().addAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
        	page=1;
-       	System.out.println(page);
+       	
        	menus.getLeftTop().getChildren().remove(archive);
 	}
 	
+	
+	static boolean onGoing=true;
 	static String selected="";
 	public static void archive() {
 		
@@ -207,7 +204,7 @@ public class Main extends Application{
 			
 			allDates.add("Archive");
 			
-			for (int i = 1; i <= 10; i++) {
+			/*for (int i = 1; i <= 10; i++) {
 				
 				String month_name1= monthDate.format(cal.getTime());
 				
@@ -215,11 +212,60 @@ public class Main extends Application{
 	       	     cal.add(Calendar.MONTH, -1);
 	       	 }
 			
-			archive.setValue("Archive");
-			archive.getItems().addAll(allDates);
-			menus.getLeftTop().getChildren().add(archive);
+			
+			*/
 			
 			
+			 try {
+					String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
+				
+					
+					JSONObject json=new JSONObject(blogg);
+					
+					JSONArray inlagg=json.getJSONArray("bloggInlagg");
+					
+						
+							
+							String firstDate = inlagg.getJSONObject(0).getString("datum");
+							
+						
+							String firstMonth = firstDate.substring(0,7);
+							
+							String month_name1= monthDate.format(cal.getTime());
+							System.out.println(firstMonth);
+							while(onGoing) {
+								if(!month_name1.equals(firstMonth)) {
+									allDates.add(month_name1);
+									
+								}
+								
+								else {
+									
+									
+									System.out.println("blah");
+									onGoing=false;
+									break;
+								}
+								
+									cal.add(Calendar.MONTH, -1);
+									
+							}
+								
+							
+							
+							
+						
+					
+				} 
+	       		catch (Exception ee) {
+					// TODO Auto-generated catch block
+					ee.printStackTrace();
+				}
+			
+			 archive.setValue("Archive");
+				archive.getItems().addAll(allDates);
+				menus.getLeftTop().getChildren().add(archive);
+			allDates.add("Test");
 			
 			
 			  EventHandler<ActionEvent> event = 
@@ -238,52 +284,45 @@ public class Main extends Application{
 						
 						JSONArray inlagg=json.getJSONArray("bloggInlagg");
 						
-						for(int ii=0;ii<inlagg.length();ii++) {
-							
-							String inlaggStr = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(ii).getString("id"));
-							
-							
-							JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
-							
-							String date=inlaggJson.getString("datum");
-							
-							String dateMonth = date.substring(0,7);
-							
 						
-							if(selected.equals(dateMonth)) {
+						
+							for(int ii=0;ii<inlagg.length();ii++) {
 								
+								String inlaggStr = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(ii).getString("id"));
 								
-								String text=inlaggJson.getString("innehall");
-								String title=inlaggJson.getString("titel");
+								JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 								
-								JSONArray array=inlaggJson.getJSONArray("gillningar");
+								String date=inlaggJson.getString("datum");
 								
-								int likesAmount=array.length();
+								String dateMonth = date.substring(0,7);
 								
+								if(selected.equals(dateMonth)) {
 									
-									Main.blogg.post(title, text, likesAmount);
 									
-								
-								
-							}
-							else if(selected.equals("Archive")) {
-								
-								
 									String text=inlaggJson.getString("innehall");
 									String title=inlaggJson.getString("titel");
 									
 									JSONArray array=inlaggJson.getJSONArray("gillningar");
 									
 									int likesAmount=array.length();
-										
-									//comments();
 									
 									Main.blogg.post(title, text, likesAmount);
 									
+								}
+								else if(selected.equals("Archive")) {
+									String text=inlaggJson.getString("innehall");
+										String title=inlaggJson.getString("titel");
+										
+										JSONArray array=inlaggJson.getJSONArray("gillningar");
+										
+										int likesAmount=array.length();
+											
+										//comments();
+										Main.blogg.post(title, text, likesAmount);
+										
+								}
 							}
-							
 						
-						}
 					} 
 		       		catch (Exception ee) {
 						// TODO Auto-generated catch block
@@ -293,6 +332,9 @@ public class Main extends Application{
 			  } 
 			  
 				  }; 
+				  
+				 
+				  
 				  archive.setOnAction(event);
 			}
 	
