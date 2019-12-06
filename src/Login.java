@@ -128,15 +128,15 @@ public class Login implements EventHandler<ActionEvent> {
 			System.out.println(loggedIn);
 			
 			
-			
 			String name=nameInput.getText();
 			String password=passInput.getText();
+			
 			
 			try {
 				//String shit=Post.send("Login/login.php","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=login&anamn="+name+"&losenord="+password+"&rollid=4");
 				//måste fixas. fungerar inte!!!!!!!!
 				String shit=HttpRequest.send("Login/login.php","&tjanst=blogg&anamn="+name+"&password="+password);//anvandare1: kalle, 123
-				System.out.println(shit);
+				
 				
 				JSONObject object=Json.toJSONObject(shit);
 				

@@ -38,9 +38,9 @@ public class testing {
 		
 		
 		
-		/*String str;
+		String str;
 		try {
-			str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=1&Titel=niles blogg&bloggAnvandarId=7");
+			str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=37&Titel=niles blogg&bloggAnvandarId=37");
 			//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
 			System.out.println(str);
 			
@@ -48,11 +48,11 @@ public class testing {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}*/
+		}
 		
 		
 		
-		String str;
+		/*String str;
 		try {
 			str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaInlagg&bloggId=13&Title=this is a post title&innehall=this is a lot of text or something");
 			//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
@@ -62,7 +62,7 @@ public class testing {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		
 		
@@ -105,6 +105,27 @@ public class testing {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
+		
+		
+		
+		
+		
+		/*String str;
+		try {
+			str = HttpRequest.send("Admin/funktioner/redigera.php","funktion=redigeraKonto&anvandarid=34&losenord=123");
+			//str = Post.send("","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa2&funktion=skapaAKonto&anamn=NilesTest&rollid=4&tjanst=blogg");
+			System.out.println(str);
+			
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		
+		
+		
+		
+		
 	}
 
 }

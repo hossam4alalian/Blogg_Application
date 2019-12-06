@@ -37,7 +37,9 @@ public class Main extends Application{
 	static Stage window;
 	static HBox mainLayout;
 	static VBox center;
+	//JIOAJWWNPA259FB2
 	
+	//McDubRVdlwAzu3z4
 	
 	static int currentBlogg=-1;//this is tjanstId
 	public static void main(String[] args) {
@@ -109,7 +111,6 @@ public class Main extends Application{
 			@Override
 			public void handle(ActionEvent event) {
 				if(login.isLoggedIn()) {
-					System.out.println("log out!!!!!!!!!");
 					Main.menus.getLogin().setText("Log In");
 					login.setUsername("Guest");
 					login.setBloggId("null");
@@ -177,19 +178,23 @@ public class Main extends Application{
 	}
 	public static void loadExplore() {
 		if(page==1) {
+			explore.refresh();
 			return;
 		}
+		
 		//remove blogg nodes.
 		Main.center.getChildren().removeAll(Main.blogg.getScrollPane(),Main.blogg.getRefreshField(),Main.blogg.getAddField(),blogg.getLabelTitle());
 		blogg.getAddField().getChildren().removeAll(blogg.getContent(), blogg.getButtons(), blogg.getPost(),blogg.getAdd());
        	Main.center.getChildren().addAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
        	page=1;
        	
+       	explore.refresh();
+       	
        	menus.getLeftTop().getChildren().remove(archive);
 	}
 	
 	
-	static boolean onGoing=true;
+	
 	static String selected="";
 	public static void archive() {
 		
@@ -217,45 +222,35 @@ public class Main extends Application{
 			
 			
 			 try {
-					String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
+					String blogg = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
 				
 					
 					JSONObject json=new JSONObject(blogg);
 					
 					JSONArray inlagg=json.getJSONArray("bloggInlagg");
 					
-						
+					
+						if(inlagg.length()>0) {
+							
 							
 							String firstDate = inlagg.getJSONObject(0).getString("datum");
-							
-						
-							String firstMonth = firstDate.substring(0,7);
-							
-							String month_name1= monthDate.format(cal.getTime());
-							System.out.println(firstMonth);
+							 boolean onGoing=true;
 							while(onGoing) {
-								if(!month_name1.equals(firstMonth)) {
-									allDates.add(month_name1);
-									
-								}
+								String firstMonth = firstDate.substring(0,7);
 								
-								else {
-									
-									
-									System.out.println("blah");
-									onGoing=false;
-									break;
-								}
+								String month_name1= monthDate.format(cal.getTime());
+								
+									allDates.add(month_name1);
+								
 								
 									cal.add(Calendar.MONTH, -1);
-									
+									if(month_name1.equals(firstMonth)) {
+										onGoing=false;
+										break;
+									}
 							}
-								
-							
-							
-							
+						}
 						
-					
 				} 
 	       		catch (Exception ee) {
 					// TODO Auto-generated catch block
@@ -265,7 +260,6 @@ public class Main extends Application{
 			 archive.setValue("Archive");
 				archive.getItems().addAll(allDates);
 				menus.getLeftTop().getChildren().add(archive);
-			allDates.add("Test");
 			
 			
 			  EventHandler<ActionEvent> event = 
@@ -276,19 +270,16 @@ public class Main extends Application{
 			     
 			      
 			      try {
-						String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
+						String blogg = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
 					
-						
 						Main.blogg.getScrollPaneBox().getChildren().clear();
 						JSONObject json=new JSONObject(blogg);
 						
 						JSONArray inlagg=json.getJSONArray("bloggInlagg");
 						
-						
-						
-							for(int ii=0;ii<inlagg.length();ii++) {
+						for(int ii=0;ii<inlagg.length();ii++) {
 								
-								String inlaggStr = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(ii).getString("id"));
+								String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(ii).getString("id"));
 								
 								JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 								
@@ -333,14 +324,7 @@ public class Main extends Application{
 			  
 				  }; 
 				  
-				 
-				  
 				  archive.setOnAction(event);
 			}
-	
-
-
-			
-		
 	
 }

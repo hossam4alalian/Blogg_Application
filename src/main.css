@@ -148,11 +148,19 @@
 .post{
 	
 	-fx-text-fill:white;
-	-fx-alignment: center; 
+	/*-fx-alignment: center; */
 	-fx-border-style: hidden hidden dashed hidden;
   	-fx-border-color: red red red red;
   	-fx-border-width: 2;
 	
+}
+.postTitle{
+	-fx-text-fill:rgb(0,0,0);
+	-fx-font-size: 28px;
+}
+.postInnerTitle{
+	-fx-text-fill:rgb(0,0,0);
+	-fx-font-size: 24px;
 }
 
 .addField{
@@ -167,7 +175,16 @@
 	
 }
 
+.noResult{
+	-fx-alignment: center; 
+	-fx-font-size: 28px;
+	
 
+}
+
+.hashtag{
+	
+}
 
 
 

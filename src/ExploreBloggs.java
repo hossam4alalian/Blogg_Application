@@ -94,8 +94,7 @@ public class ExploreBloggs {
 		scrollPaneBox.getChildren().clear();
 		
 		try {
-			String str = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON");
-		
+			String str = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON");
 			
 			JSONObject json=Json.toJSONObject(str);
 			
@@ -111,7 +110,7 @@ public class ExploreBloggs {
 		
 		} catch (Exception ee ) {
 			// TODO Auto-generated catch block
-			//ee.printStackTrace();
+			ee.printStackTrace();
 			
 			addBlogg("bloggNiles", "niles", "142","0");
 			addBlogg("blogg monkey", "ahmad", "142","0");

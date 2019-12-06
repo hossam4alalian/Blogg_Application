@@ -134,14 +134,15 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 			try {
 				str = HttpRequest.send("Admin/funktioner/skapa.php","funktion=skapaAKonto&anamn="+nameInput.getText()+"&rollid=4&tjanst=1");
 				//str = Post.send("","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa2&funktion=skapaAKonto&anamn=NilesTest&rollid=4&tjanst=blogg");
-				//System.out.println(str);
+				System.out.println(str);
 				
 				
 				JSONObject user=Json.toJSONObject(str);
 				String userId=user.getString("userid");
 				String password=passInput.getText();
 			
-			
+				System.out.println(nameInput.getText());
+				System.out.println(password);
 			
 				String str2;
 				str2 = HttpRequest.send("Admin/funktioner/redigera.php","funktion=redigeraKonto&anvandarid="+userId+"&losenord="+password);
@@ -153,7 +154,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 				
 				
 				String blogg;
-				blogg = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=1&Titel="+bloggTitle.getText()+"&bloggAnvandarId="+userId);
+				blogg = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=37&Titel="+bloggTitle.getText()+"&bloggAnvandarId="+userId);
 				//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
 				System.out.println(blogg);
 				
@@ -166,7 +167,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 				try {
 					//String shit=Post.send("Login/login.php","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=login&anamn="+name+"&losenord="+password+"&rollid=4");
 					//måste fixas. fungerar inte!!!!!!!!
-					String shit=HttpRequest.send("Login/login.php","&tjanst=blogg&anamn="+nameInput.getText()+"&password="+passInput);//anvandare1: kalle, 123
+					String shit=HttpRequest.send("Login/login.php","&tjanst=blogg&anamn="+nameInput.getText()+"&password="+passInput.getText());//anvandare1: kalle, 123
 					System.out.println(shit);
 					
 					JSONObject object=Json.toJSONObject(shit);
@@ -175,6 +176,8 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 					Main.login.setBloggId(object.getString("bloggId"));
 					
 					Main.menus.getUsername().setText(Main.login.getUsername());
+					
+					Main.explore.refresh();
 					Main.window.setScene(Main.scene);
 					
 					Main.menus.getLogin().setText("Log out");
