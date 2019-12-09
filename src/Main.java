@@ -15,6 +15,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -37,7 +39,6 @@ public class Main extends Application{
 	static Stage window;
 	static HBox mainLayout;
 	static VBox center;
-	//JIOAJWWNPA259FB2
 	
 	//McDubRVdlwAzu3z4
 	
@@ -56,6 +57,11 @@ public class Main extends Application{
 		
 		center=new VBox();
 		center.getChildren().addAll(menus.getTopMenu(),explore.getScrollPane(),explore.getRefreshField());
+		
+		
+		
+		
+		
 		
 		
 		mainLayout.getChildren().addAll(menus.getSideMenu(),center);

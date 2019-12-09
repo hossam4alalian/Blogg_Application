@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import backend_request.HttpRequest;
@@ -27,6 +28,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -37,6 +39,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 
 public class Blogg {
@@ -59,6 +62,7 @@ public class Blogg {
 	private HBox hashtagField;
 
 	private TextArea src;
+	private TextArea linkText;
 	
 	private VBox scrollPaneBox= new VBox();
 	
@@ -156,7 +160,11 @@ public class Blogg {
 			
 			Button addPic = new Button("Add Pic");
 			addPic.setOnAction(ee -> {
+				FileChooser fileChooser = new FileChooser();
+				fileChooser.setTitle("Open Resource File");
 				
+				
+			        
 				src = new TextArea();
 				
 				//src.setMaxWidth(800);
@@ -181,25 +189,28 @@ public class Blogg {
 				});
 				
 				
-				FileChooser fileChooser = new FileChooser();
-				fileChooser.setTitle("Open Resource File");
-				
-				
-				 Button button = new Button("Select File");
-			        button.setOnAction(eee -> {
-			            selectedFile = fileChooser.showOpenDialog(null);
-			            src.setText(selectedFile.getPath());
-			        });
+				   selectedFile = fileChooser.showOpenDialog(null);
+		            src.setText(selectedFile.getPath());
 
-				
-			
-				
-				content.getChildren().add(button);
-				
 				content.getChildren().add(src);
 				
+			});
+			
+			Button addLink = new Button("Add Link");
+			addLink.setOnAction(ee -> {
 				
-
+				linkText = new TextArea();
+				
+				//src.setMaxWidth(800);
+				linkText.setWrapText(true);
+				linkText.getStyleClass().add("addField");
+				linkText.setPromptText("Image Source");
+				
+				
+				linkText.setUserData("3");
+				
+				content.getChildren().add(linkText);
+				
 			});
 			
 			Button addTitle = new Button("Add Title");
@@ -234,7 +245,7 @@ public class Blogg {
 			});
 			
 			buttons = new HBox(20);
-			buttons.getChildren().addAll(addText,addPic,addTitle);
+			buttons.getChildren().addAll(addText,addPic,addLink,addTitle);
 			
 			
 			
@@ -259,7 +270,7 @@ public class Blogg {
 				
 				//final File file = new File(src.getText());
 				
-				MultipartUtility(src.getText());
+				
 				String str;
 				try {
 					
@@ -280,7 +291,11 @@ public class Blogg {
 								inlagg+="<!text"+line+">";
 							}
 							else if(((TextArea)content.getChildren().get(i)).getUserData()=="2") {
-								inlagg+="<!img"+line+">";
+								String imgSrc=MultipartUtility(line);
+								inlagg+="<!img"+imgSrc+">";
+							}
+							else if(((TextArea)content.getChildren().get(i)).getUserData()=="3") {
+								inlagg+="<!link"+line+">";
 							}
 						}
 					}
@@ -350,6 +365,16 @@ public class Blogg {
 		String tag="";
 		String action="";
 		ArrayList<Label>labelTexts=new ArrayList<Label>();
+		
+		//images
+		ArrayList<ImageView>images=new ArrayList<ImageView>();
+		
+		ArrayList<WebView>links=new ArrayList<WebView>();
+		
+		
+		
+		
+		
 		int startIndex=0;
 		for(int i=0;i<text.length();i++) {
 			if(text.charAt(i)=='<') {
@@ -399,6 +424,21 @@ public class Blogg {
 			
 			if(text.charAt(i)=='<') {
 				if(text.charAt(i+1)=='!') {
+					if(text.charAt(i+2)=='l') {
+						if(text.charAt(i+3)=='i') {
+							if(text.charAt(i+4)=='n') {
+								if(text.charAt(i+5)=='k') {
+									action="link";
+									startIndex=i+6;
+								}
+							}
+						}
+					}
+				}	
+			}
+			
+			if(text.charAt(i)=='<') {
+				if(text.charAt(i+1)=='!') {
 					if(text.charAt(i+2)=='t') {
 						if(text.charAt(i+3)=='a') {
 							if(text.charAt(i+4)=='g') {
@@ -424,10 +464,43 @@ public class Blogg {
 					labelTexts.get(labelTexts.size()-1).getStyleClass().add("postInnerTitle");
 				}
 				if(action.equals("img")) {
+					System.out.println("location is: "+subText);
+					String path =subText;
+					try {
+						
+						Image image = new Image(path);
+						ImageView imageView = new ImageView(image);
+						
+						double ratio=image.getWidth()/image.getHeight();
+						double scale=300;
+						imageView.setFitWidth(scale);
+						imageView.setFitHeight(scale*ratio);
+					
+						images.add(imageView);
+					}
+					catch (IllegalArgumentException e) {
+						// TODO: handle exception
+					}
+				}
+				if(action.equals("link")) {
+					String path =subText;
+					try {
+						
+						WebView webView = new WebView();
+						
+						    webView.getEngine().load(
+						      path
+						    );
+						links.add(webView);
+					}
+					catch (IllegalArgumentException e) {
+						// TODO: handle exception
+					}
 					
 				}
+				
 				if(action.equals("tag")) {
-					System.out.print("#"+subText+" ");
+					
 					tags+="#"+subText+" ";
 					tag="#"+subText+" ";
 					tagButtons.add(new Button(tag));
@@ -529,7 +602,12 @@ public class Blogg {
 		for(int i=0;i<tagButtons.size();i++) {
 			post.getChildren().add(tagButtons.get(i));
 		}
-		
+		for(int i=0;i<images.size();i++) {
+			post.getChildren().add(images.get(i));
+		}
+		for(int i=0;i<links.size();i++) {
+			post.getChildren().add(links.get(i));
+		}
 		post.getChildren().addAll(likes);
 		
 		post.setPrefWidth(2000);
@@ -666,7 +744,7 @@ public class Blogg {
 	}
 
 	
-	public static void MultipartUtility(String file) {
+	public static String MultipartUtility(String file) {
         String charset = "UTF-8";
         File uploadFile1 = new File(file);
         
@@ -675,6 +753,7 @@ public class Blogg {
  
         String requestURL = "http://10.130.216.101/TP/Blogg/funktioner/skapaBilder.php";
 
+        String location="";
         
         try {
             MultipartUtility multipart = new MultipartUtility(requestURL, charset);
@@ -693,10 +772,23 @@ public class Blogg {
              
             for (String line : response) {
                 System.out.println(line);
+                location += line;
             }
         } catch (IOException ex) {
             System.err.println(ex);
         }
+        System.out.println(location);
+        
+        JSONObject json=Json.toJSONObject(location);
+        String send="";
+        try {
+			send=json.getString("resp");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        System.out.println(send);
+		return send;
     }
 	
 
