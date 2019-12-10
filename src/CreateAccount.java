@@ -188,7 +188,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("something went wrong");
 				}
 				
 				
@@ -264,9 +264,5 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 		this.passInput2 = passInput2;
 	}
 	
-	
-
-	
-
 	
 }

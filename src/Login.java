@@ -155,7 +155,7 @@ public class Login implements EventHandler<ActionEvent> {
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 		}
 	}

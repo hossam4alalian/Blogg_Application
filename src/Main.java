@@ -61,9 +61,6 @@ public class Main extends Application{
 		
 		
 		
-		
-		
-		
 		mainLayout.getChildren().addAll(menus.getSideMenu(),center);
 		
 		scene= new Scene(mainLayout, 1000, 800);
@@ -124,6 +121,8 @@ public class Main extends Application{
 					menus.getUsername().setText(login.getUsername());
 							
 					login.setLoggedIn(false);
+					blogg.refresh();
+					
 				}
 				else {
 					window.setScene(login.getScene());
@@ -161,15 +160,18 @@ public class Main extends Application{
 		});
 	}
 	
+	
 	public static void loadBlogg() {
+		Main.center.getChildren().remove(blogg.getLabelTitle());
 		if(page==2) {
 			blogg.refresh();
+			
 			return;
 		}
 		
 		//remove explore nodes
 		Main.center.getChildren().removeAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
-		blogg.getAddField().getChildren().removeAll(blogg.getContent());
+		blogg.getAddField().getChildren().removeAll(blogg.getContent(),blogg.getHashtagField());
 		
        	
        	Main.center.getChildren().addAll(blogg.getAddField(),Main.blogg.getScrollPane(),Main.blogg.getRefreshField());
@@ -178,7 +180,8 @@ public class Main extends Application{
        	page=2;
        	//add
        	archive();
-       	center.getChildren().add(1,blogg.getLabelTitle());
+       	
+       	//center.getChildren().add(1,blogg.getLabelTitle());
     	
        	
 	}
@@ -190,7 +193,7 @@ public class Main extends Application{
 		
 		//remove blogg nodes.
 		Main.center.getChildren().removeAll(Main.blogg.getScrollPane(),Main.blogg.getRefreshField(),Main.blogg.getAddField(),blogg.getLabelTitle());
-		blogg.getAddField().getChildren().removeAll(blogg.getContent(), blogg.getButtons(), blogg.getPost(),blogg.getAdd());
+		blogg.getAddField().getChildren().removeAll(blogg.getContent(), blogg.getButtons(), blogg.getPost(),blogg.getAdd(),blogg.getHashtagField());
        	Main.center.getChildren().addAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
        	page=1;
        	

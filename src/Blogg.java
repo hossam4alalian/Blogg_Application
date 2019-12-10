@@ -1,10 +1,16 @@
 
 
 
+import java.awt.Desktop;
+import java.awt.Window;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.print.DocFlavor.URL;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,31 +27,31 @@ import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBase;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.Labeled;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.ImageInput;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
 import javafx.scene.text.Font;
-import javafx.scene.text.TextAlignment;
-import javafx.scene.web.WebView;
+import javafx.scene.web.WebEngine;
 import javafx.stage.FileChooser;
 
 public class Blogg {
 
 	
 	private ScrollPane scrollPane;
+	private ScrollPane postScrollPane;
+	
+	
 	private HBox refreshField;
 	private VBox addField;
 	
@@ -63,7 +69,12 @@ public class Blogg {
 
 	private TextArea src;
 	private TextArea linkText;
+	private TextArea text;
 	
+	private HBox titleBox;
+	
+
+
 	private VBox scrollPaneBox= new VBox();
 	
 	private String bloggId="null";//this is bloggId.
@@ -90,6 +101,20 @@ public class Blogg {
 		});
 		scrollPane.setStyle("-fx-background-color:transparent;");
 		
+		postScrollPane= new ScrollPane();
+		postScrollPane.setContent(getAddField());
+		postScrollPane.setPannable(true);
+		postScrollPane.setPrefSize(/*bloggar.getWidth()*/200, 800);
+		//scrollPane.setFitToWidth(true);
+
+		postScrollPane.fitToWidthProperty().set(true);
+		
+		postScrollPane.setOnDragDetected(e -> {
+			postScrollPane.setCursor(Cursor.DEFAULT);
+			System.out.println("blah");
+		});
+		postScrollPane.setStyle("-fx-background-color:transparent;");
+		
 		
 		Button refresh = new Button("Refresh");
 		
@@ -103,6 +128,14 @@ public class Blogg {
 		refreshField.getStyleClass().add("refreshField");
 		
 		
+	}
+
+	public ScrollPane getPostScrollPane() {
+		return postScrollPane;
+	}
+
+	public void setPostScrollPane(ScrollPane postScrollPane) {
+		this.postScrollPane = postScrollPane;
 	}
 
 	double orgSceneX, orgSceneY;
@@ -134,23 +167,11 @@ public class Blogg {
 				
 				text.setUserData("1");
 				
-				text.setOnDragDetected(new EventHandler<MouseEvent>() {
-				    public void handle(MouseEvent event) {
-				        /* drag was detected, start a drag-and-drop gesture*/
-				        /* allow any transfer mode */
-				        Dragboard db = text.startDragAndDrop(TransferMode.ANY);
-				        
-				        /* Put a string on a dragboard */
-				        ClipboardContent content = new ClipboardContent();
-				        content.putString(text.getText());
-				        db.setContent(content);
-				        
-				        event.consume();
-				    }
-				});
+				
 				
 				text.getStyleClass().add("addField");
 				text.setPromptText("Text");
+				
 				
 				
 				
@@ -204,7 +225,7 @@ public class Blogg {
 				//src.setMaxWidth(800);
 				linkText.setWrapText(true);
 				linkText.getStyleClass().add("addField");
-				linkText.setPromptText("Image Source");
+				linkText.setPromptText("type a link here");
 				
 				
 				linkText.setUserData("3");
@@ -215,33 +236,18 @@ public class Blogg {
 			
 			Button addTitle = new Button("Add Title");
 			addTitle.setOnAction(ee -> {
-				TextArea text = new TextArea();
-				text.setMaxWidth(800);
+				TextArea title = new TextArea();
+				title.setMaxWidth(800);
 				
 				
-				text.getStyleClass().add("addField");
-				text.setPromptText("Title");
+				title.getStyleClass().add("addField");
+				title.setPromptText("Title");
 				
-				text.setUserData("0");
-				
-				text.setOnDragDetected(new EventHandler<MouseEvent>() {
-				    public void handle(MouseEvent event) {
-				        /* drag was detected, start a drag-and-drop gesture*/
-				        /* allow any transfer mode */
-				        Dragboard db = text.startDragAndDrop(TransferMode.ANY);
-				        
-				        /* Put a string on a dragboard */
-				        ClipboardContent content = new ClipboardContent();
-				        content.putString(text.getText());
-				        db.setContent(content);
-				        
-				        event.consume();
-				    }
-				});
+				title.setUserData("0");
 				
 				//addTextLimiter(text, 100);
 				
-				content.getChildren().add(text);
+				content.getChildren().add(title);
 			});
 			
 			buttons = new HBox(20);
@@ -322,7 +328,6 @@ public class Blogg {
 			});
 			
 			
-
 			
 			addField.getChildren().addAll(content, buttons,hashtagField, post);
 			addField.getChildren().remove(add);
@@ -360,19 +365,19 @@ public class Blogg {
 		postTitle.getStyleClass().add("postTitle");
 		
 		
-		ArrayList<Button>tagButtons=new ArrayList<Button>();
+		//ArrayList<Button>tagButtons=new ArrayList<Button>();
 		String tags="";
 		String tag="";
 		String action="";
-		ArrayList<Label>labelTexts=new ArrayList<Label>();
+		//ArrayList<Label>labelTexts=new ArrayList<Label>();
 		
 		//images
-		ArrayList<ImageView>images=new ArrayList<ImageView>();
+		//ArrayList<ImageView>images=new ArrayList<ImageView>();
 		
-		ArrayList<WebView>links=new ArrayList<WebView>();
+		//ArrayList<Hyperlink>links=new ArrayList<Hyperlink>();
 		
 		
-		
+		ArrayList<Node>nodes=new ArrayList<Node>();
 		
 		
 		int startIndex=0;
@@ -455,28 +460,28 @@ public class Blogg {
 				String subText=text.substring(startIndex,i);
 				
 				if(action.equals("text")) {
-					labelTexts.add(new Label(subText));
-					labelTexts.get(labelTexts.size()-1).setPadding(new Insets(0, 0, 20, 0));
+					nodes.add(new Label(subText));
+					((Label) nodes.get(nodes.size()-1)).setPadding(new Insets(0, 0, 20, 0));
+					((Label) nodes.get(nodes.size()-1)).setWrapText(true);
 					
 				}
 				if(action.equals("title")) {
-					labelTexts.add(new Label(subText));
-					labelTexts.get(labelTexts.size()-1).getStyleClass().add("postInnerTitle");
+					nodes.add(new Label(subText));
+					nodes.get(nodes.size()-1).getStyleClass().add("postInnerTitle");
 				}
 				if(action.equals("img")) {
-					System.out.println("location is: "+subText);
 					String path =subText;
 					try {
 						
 						Image image = new Image(path);
 						ImageView imageView = new ImageView(image);
 						
-						double ratio=image.getWidth()/image.getHeight();
-						double scale=300;
+						double ratio=image.getHeight()/image.getWidth();
+						double scale=350;
 						imageView.setFitWidth(scale);
 						imageView.setFitHeight(scale*ratio);
 					
-						images.add(imageView);
+						nodes.add(imageView);
 					}
 					catch (IllegalArgumentException e) {
 						// TODO: handle exception
@@ -484,14 +489,28 @@ public class Blogg {
 				}
 				if(action.equals("link")) {
 					String path =subText;
+					
+					
 					try {
 						
-						WebView webView = new WebView();
+						Desktop desktop = Desktop.getDesktop();
+						Hyperlink hyperlink = new Hyperlink();
+						hyperlink.setText(path);
+						hyperlink.setOnAction(e -> {
+							
+							try {
+								desktop.browse(new URI(path));
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (URISyntaxException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+						});
 						
-						    webView.getEngine().load(
-						      path
-						    );
-						links.add(webView);
+						nodes.add(hyperlink);
 					}
 					catch (IllegalArgumentException e) {
 						// TODO: handle exception
@@ -503,21 +522,15 @@ public class Blogg {
 					
 					tags+="#"+subText+" ";
 					tag="#"+subText+" ";
-					tagButtons.add(new Button(tag));
+					nodes.add(new Button(tag));
 					
 					
-					tagButtons.get(tagButtons.size()-1).setOnAction(new EventHandler<ActionEvent>() {
+					((Button) nodes.get(nodes.size()-1)).setOnAction(new EventHandler<ActionEvent>() {
 						
 						@Override
 						public void handle(ActionEvent event) {
 							String tag=((Button) event.getSource()).getText();
-							/*for(int i=scrollPaneBox.getChildren().size()-1;i>=0;i--) {
-								if(!scrollPaneBox.getChildren().get(i).getUserData().toString().contains(tag)) {
-									System.out.println(scrollPaneBox.getChildren().get(i).getUserData()+" tags i: "+i);
-									scrollPaneBox.getChildren().remove(i);
-								}
-								
-							}*/
+							
 							getScrollPaneBox().getChildren().clear();
 							
 							try {
@@ -529,12 +542,12 @@ public class Blogg {
 								bloggId=json.getString("bloggId");
 								//System.out.println(bloggId);
 								
-								if(Main.page==1) {
+								/*if(Main.page==1) {
 									labelTitle=new Label(bloggTitle);
 									labelTitle.setFont(new Font(40));
 									labelTitle.setAlignment(Pos.CENTER);
 									labelTitle.setPrefWidth(4000);
-								}
+								}*/
 								
 								
 								JSONArray inlagg=json.getJSONArray("bloggInlagg");
@@ -549,16 +562,14 @@ public class Blogg {
 									String text=inlaggJson.getString("innehall");
 									
 									
-									
 									JSONArray array=inlaggJson.getJSONArray("gillningar");
 									
 									int likesAmount=array.length();
 										
-									//comments();
+									
 									
 									String newTag=tag.substring(1,tag.length()-1);
 									if(text.contains("<!tag"+newTag+">")) {
-										//System.out.println(newTag);
 										post(title, text, likesAmount);
 									}
 									
@@ -569,19 +580,19 @@ public class Blogg {
 									getAddField().getChildren().removeAll(getButtons(),getPost(),getAdd());
 									getAddField().getChildren().add(getAdd());
 								}
+								
 													
 							} catch (Exception ee) {
 								// TODO Auto-generated catch block
 								ee.printStackTrace();
 							}
 							
-							
 						}
 					});
 					
 				}
+				
 			}
-			
 			
 		}
 		
@@ -596,17 +607,8 @@ public class Blogg {
 		
 		post.getChildren().addAll(postTitle);
 		
-		for(int i=0;i<labelTexts.size();i++) {
-			post.getChildren().add(labelTexts.get(i));
-		}
-		for(int i=0;i<tagButtons.size();i++) {
-			post.getChildren().add(tagButtons.get(i));
-		}
-		for(int i=0;i<images.size();i++) {
-			post.getChildren().add(images.get(i));
-		}
-		for(int i=0;i<links.size();i++) {
-			post.getChildren().add(links.get(i));
+		for(int i=0;i<nodes.size();i++) {
+			post.getChildren().add(nodes.get(i));
 		}
 		post.getChildren().addAll(likes);
 		
@@ -644,11 +646,10 @@ public class Blogg {
 	
 	
 	
-	
 
 	public void refresh() {
 		getScrollPaneBox().getChildren().clear();
-		
+		Main.center.getChildren().remove(labelTitle);
 		try {
 			String blogg = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg);
 		
@@ -658,8 +659,9 @@ public class Blogg {
 			bloggId=json.getString("bloggId");
 			//System.out.println(bloggId);
 			
+			labelTitle=new Label(bloggTitle);
 			if(Main.page==1) {
-				labelTitle=new Label(bloggTitle);
+				//labelTitle=new Label(bloggTitle);
 				labelTitle.setFont(new Font(40));
 				labelTitle.setAlignment(Pos.CENTER);
 				labelTitle.setPrefWidth(4000);
@@ -667,7 +669,7 @@ public class Blogg {
 			
 			
 			JSONArray inlagg=json.getJSONArray("bloggInlagg");
-			for(int i=0;i<inlagg.length();i++) {
+			for(int i=inlagg.length()-1;i>=0;i--) {
 				String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
 				//System.out.println(inlaggStr);
 				
@@ -686,27 +688,33 @@ public class Blogg {
 				
 			}
 			
+			labelTitle=new Label(bloggTitle);
+			labelTitle.setFont(new Font(40));
+			labelTitle.setAlignment(Pos.CENTER);
+			labelTitle.setPrefWidth(4000);
+			
+			titleBox = new HBox();
+			titleBox.getChildren().add(labelTitle);
 			
 			
+			//removes and adds title.
+			
+			Main.center.getChildren().add(1,labelTitle);
+			
+			System.out.println(Main.login.getBloggId()+"  "+Main.currentBlogg);
 			if(Main.login.getBloggId().equals(Main.currentBlogg+"")) {
 				getAddField().getChildren().removeAll(getButtons(),getPost(),getAdd());
 				getAddField().getChildren().add(getAdd());
+				
+				
+			}
+			else {
+				getAddField().getChildren().removeAll(getButtons(),getPost(),getAdd());
 			}
 			
 			
-			/*JSONObject json=Json.toJSONObject(str);
-			
-			String text=json.getString("innehall");
-			String title=json.getString("titel");
 			
 			
-			JSONArray array=json.getJSONArray("gillningar");
-			System.out.println(array.length());
-			int likesAmount=array.length();
-				
-			//comments();
-			
-			addPost(title, text, likesAmount);*/
 		
 		} catch (Exception ee) {
 			// TODO Auto-generated catch block
@@ -715,9 +723,6 @@ public class Blogg {
 		
 		
 	}
-	
-
-	
 	
 	public void comments(JSONArray array) {
 		try {
@@ -742,13 +747,22 @@ public class Blogg {
 		
 		
 	}
-
+	
 	
 	public static String MultipartUtility(String file) {
         String charset = "UTF-8";
         File uploadFile1 = new File(file);
+        String oldPath=uploadFile1.getPath();
         
-       
+        String newPath=oldPath.substring(0, oldPath.length()-4);
+        newPath+=(long)(Math.random()*1000000000)+".png";
+        File newFile=new File(newPath);
+        uploadFile1.renameTo(newFile);
+        
+        System.out.println("name: "+newFile.getName());
+        
+        
+        
         //String requestURL = "http://10.130.216.101/TP/Blogg/funktioner/bilder";
  
         String requestURL = "http://10.130.216.101/TP/Blogg/funktioner/skapaBilder.php";
@@ -763,8 +777,13 @@ public class Blogg {
              
             multipart.addFormField("description", "Cool Pictures");
             multipart.addFormField("keywords", "Java,upload,Spring");
-             
-            multipart.addFilePart("file", uploadFile1);
+            
+            multipart.addFilePart("file", newFile);
+            
+            
+            newFile.renameTo(new File(oldPath));
+            System.out.println("renamed name: "+newFile.getName()+"  oldPath: "+oldPath+"  newPath: "+newPath);
+            
             
             List<String> response = multipart.finish();
              
@@ -787,7 +806,6 @@ public class Blogg {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-        System.out.println(send);
 		return send;
     }
 	
@@ -797,20 +815,14 @@ public class Blogg {
 	}
 
 
-
-
 	public void setScrollPane(ScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
 	}
 
 
-
-
 	public HBox getRefreshField() {
 		return refreshField;
 	}
-
-
 
 
 	public void setRefreshField(HBox refreshField) {
@@ -891,5 +903,12 @@ public class Blogg {
 		this.hashtagField = hashtagField;
 	}
 
+	public HBox getTitleBox() {
+		return titleBox;
+	}
+
+	public void setTitleBox(HBox titleBox) {
+		this.titleBox = titleBox;
+	}
 
 }
