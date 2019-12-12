@@ -35,6 +35,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	private TextField bloggTitle;
 	
 	
+	
 	public CreateAccount() {
 		scene();
 	}
