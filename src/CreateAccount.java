@@ -55,6 +55,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 		header.setFont(new Font("Arial", 30));
 		
 		
+		
 		VBox top= new VBox(20);
 		top.getChildren().add(header);
 		top.getStyleClass().add("loginTop");
