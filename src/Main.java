@@ -1,4 +1,3 @@
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,9 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -121,6 +117,7 @@ public class Main extends Application{
 					menus.getUsername().setText(login.getUsername());
 							
 					login.setLoggedIn(false);
+					
 					blogg.refresh();
 					
 				}
@@ -162,7 +159,6 @@ public class Main extends Application{
 	
 	
 	public static void loadBlogg() {
-		Main.center.getChildren().remove(blogg.getLabelTitle());
 		if(page==2) {
 			blogg.refresh();
 			

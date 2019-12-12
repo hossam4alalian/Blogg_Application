@@ -553,7 +553,6 @@ public class Blogg {
 								JSONArray inlagg=json.getJSONArray("bloggInlagg");
 								for(int i=0;i<inlagg.length();i++) {
 									String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
-									//System.out.println(inlaggStr);
 									
 									JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 									
@@ -619,7 +618,9 @@ public class Blogg {
        	 
         });
 		
-		if(getScrollPaneBox().getChildren().size()==0){
+		getScrollPaneBox().getChildren().add(post);
+		
+		/*if(getScrollPaneBox().getChildren().size()==0){
 			HBox bloggar = new HBox();
 			bloggar.setUserData(tags);
 			bloggar.getChildren().add(post);
@@ -638,7 +639,7 @@ public class Blogg {
 			else {
 				System.out.println("Error!!!!!");
 			}
-		}
+		}*/
 		
 		
 		
@@ -657,21 +658,11 @@ public class Blogg {
 			
 			String bloggTitle=json.getString("titel");
 			bloggId=json.getString("bloggId");
-			//System.out.println(bloggId);
-			
-			labelTitle=new Label(bloggTitle);
-			if(Main.page==1) {
-				//labelTitle=new Label(bloggTitle);
-				labelTitle.setFont(new Font(40));
-				labelTitle.setAlignment(Pos.CENTER);
-				labelTitle.setPrefWidth(4000);
-			}
-			
 			
 			JSONArray inlagg=json.getJSONArray("bloggInlagg");
 			for(int i=inlagg.length()-1;i>=0;i--) {
 				String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
-				//System.out.println(inlaggStr);
+				
 				
 				JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 				
@@ -688,6 +679,7 @@ public class Blogg {
 				
 			}
 			
+			//title for blogg.
 			labelTitle=new Label(bloggTitle);
 			labelTitle.setFont(new Font(40));
 			labelTitle.setAlignment(Pos.CENTER);
