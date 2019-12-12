@@ -491,19 +491,9 @@ public class Blogg {
 		Label postTitle = new Label(title);
 		postTitle.getStyleClass().add("postTitle");
 		
-		
-		//ArrayList<Button>tagButtons=new ArrayList<Button>();
 		String tags="";
 		String tag="";
 		String action="";
-		//ArrayList<Label>labelTexts=new ArrayList<Label>();
-		
-		//images
-		//ArrayList<ImageView>images=new ArrayList<ImageView>();
-		
-		//ArrayList<Hyperlink>links=new ArrayList<Hyperlink>();
-		
-		
 		ArrayList<Node>nodes=new ArrayList<Node>();
 		
 		
@@ -813,18 +803,13 @@ public class Blogg {
 								
 								String bloggTitle=json.getString("titel");
 								bloggId=json.getString("bloggId");
-								//System.out.println(bloggId);
+
 								
-								/*if(Main.page==1) {
-									labelTitle=new Label(bloggTitle);
-									labelTitle.setFont(new Font(40));
-									labelTitle.setAlignment(Pos.CENTER);
-									labelTitle.setPrefWidth(4000);
-								}*/
+								
 								
 								
 								JSONArray inlagg=json.getJSONArray("bloggInlagg");
-								for(int i=0;i<inlagg.length();i++) {
+								for(int i=inlagg.length()-1;i>=0;i--) {
 									String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
 									
 									JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
@@ -935,6 +920,10 @@ public class Blogg {
 	
 
 	public void refresh() {
+		
+		content.getChildren().clear();
+		addField.getChildren().removeAll(content, buttons,hashtagField, post);
+		
 		getScrollPaneBox().getChildren().clear();
 		Main.center.getChildren().remove(labelTitle);
 		try {
@@ -991,14 +980,13 @@ public class Blogg {
 			}
 			
 			
-			
+			Main.archive.setValue("All posts");
 			
 		
 		} catch (Exception ee) {
 			// TODO Auto-generated catch block
 			ee.printStackTrace();
 		}
-		
 		
 	}
 	

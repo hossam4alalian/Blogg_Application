@@ -110,7 +110,7 @@ public class Menus {
 							JSONObject json=new JSONObject(inlaggStr1);
 						
 							JSONArray inlagg=json.getJSONArray("inlagg");
-							for(int i=0;i<inlagg.length();i++) {
+							for(int i=inlagg.length()-1;i>=0;i--) {
 								String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
 								
 								
@@ -123,6 +123,8 @@ public class Menus {
 								
 								int likesAmount=array.length();
 									
+								
+								
 								//comments();
 								
 								Main.blogg.post(title, text, likesAmount);
