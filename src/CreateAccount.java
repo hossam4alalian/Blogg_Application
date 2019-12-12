@@ -49,6 +49,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 		
 	}
 	
+	
 	public void loginDesign() {
 		
 		Label header= new Label("Create account:");
