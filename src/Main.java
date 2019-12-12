@@ -118,7 +118,9 @@ public class Main extends Application{
 							
 					login.setLoggedIn(false);
 					
-					blogg.refresh();
+					if(page==2) {
+						blogg.refresh();
+					}
 					
 				}
 				else {

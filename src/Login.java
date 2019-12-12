@@ -145,6 +145,9 @@ public class Login implements EventHandler<ActionEvent> {
 				
 				Main.menus.getUsername().setText(username);
 				Main.window.setScene(Main.scene);
+				if(Main.page==2) {
+					Main.blogg.refresh();
+				}
 				
 				Main.menus.getLogin().setText("Log out");
 				

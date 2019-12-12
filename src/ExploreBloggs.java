@@ -96,15 +96,25 @@ public class ExploreBloggs {
 		try {
 			String str = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON");
 			
+			
+			
 			JSONObject json=Json.toJSONObject(str);
 			
 			String name=json.getString("anamn");
 			
 			JSONArray array=json.getJSONArray("bloggar");
-			for(int i=0;i<array.length();i++) {
+			for(int i=array.length()-1;i>=0;i--) {
 				String title=array.getJSONObject(i).getString("titel");
 				String bloggId=array.getJSONObject(i).getString("bloggId");
-				addBlogg(title, name, "142",bloggId);
+				
+				
+				String blogg = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+bloggId);
+				
+				JSONObject inlagg=Json.toJSONObject(blogg);
+				JSONArray bloggInlagg=inlagg.getJSONArray("bloggInlagg");
+				
+				
+				addBlogg(title, name, ""+bloggInlagg.length(),bloggId);
 			}
 			
 		

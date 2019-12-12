@@ -442,6 +442,8 @@ public class Blogg {
 				addField.getChildren().removeAll(content, buttons,hashtagField, post);
 				
 				addField.getChildren().add(add);
+				
+				refresh();
 			});
 			
 			
