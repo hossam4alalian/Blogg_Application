@@ -36,6 +36,7 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 	
 	
 	
+	
 	public CreateAccount() {
 		scene();
 	}
