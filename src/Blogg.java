@@ -28,6 +28,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -39,6 +40,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -56,6 +58,8 @@ public class Blogg {
 	private VBox addField;
 	
 	private VBox content;
+	
+	//private GridPane content1;
 	
 	private HBox buttons;
 	private Button post;
@@ -144,6 +148,7 @@ public class Blogg {
 	
 	File selectedFile;
 	public void addPost() {
+		content = new VBox();
 		
 		addField = new VBox(20);
 		addField.getStyleClass().add("addField");
@@ -154,8 +159,9 @@ public class Blogg {
 			mainTitle.setMaxWidth(600);
 			mainTitle.getStyleClass().add("addContent");
 			
+			
 			addTextLimiter(mainTitle, 80);
-			content = new VBox(20);
+			
 			content.getStyleClass().add("addContent");
 			content.getChildren().add(mainTitle);
 			
@@ -166,17 +172,73 @@ public class Blogg {
 				text.setWrapText(true);
 				
 				text.setUserData("1");
+			
+				HBox area = new HBox();
+				area.setUserData("0");
+				ComboBox<String> plusList = new ComboBox<String>();
+				plusList.setValue("add");
+				plusList.getItems().add("Text");
+				plusList.getItems().add("Picture");
+				plusList.getItems().add("Link");
+				plusList.setOnAction(eee -> {
+					System.out.println(plusList.getValue());
 				
-				
+					if(plusList.getValue().equals("Text")) {
+						TextArea secondText = new TextArea();
+						secondText.setMaxWidth(800);
+						secondText.setWrapText(true);
+						secondText.getStyleClass().add("addField");
+						secondText.setPromptText("Text");
+						secondText.setUserData("1");
+						area.getChildren().add(secondText);
+						area.setUserData("1");
+					}
+					else if(plusList.getValue().equals("Picture")) {
+						TextArea secondPic = new TextArea();
+						secondPic.setMaxWidth(800);
+						secondPic.setWrapText(true);
+						secondPic.getStyleClass().add("addField");
+						secondPic.setPromptText("Image Source");
+						secondPic.setUserData("2");
+						area.getChildren().add(secondPic);
+						area.setUserData("1");
+					}
+					else if(plusList.getValue().equals("Link")) {
+						TextArea secondLink = new TextArea();
+						secondLink.setMaxWidth(800);
+						secondLink.setWrapText(true);
+						secondLink.getStyleClass().add("addField");
+						secondLink.setPromptText("Insert a link here");
+						secondLink.setUserData("3");
+						area.getChildren().add(secondLink);
+						area.setUserData("1");
+					}
+					area.getChildren().remove(plusList);
+				});
 				
 				text.getStyleClass().add("addField");
 				text.setPromptText("Text");
 				
+				Button plus = new Button();
+				plus.setOnAction(eee -> {
+					TextArea secondText = new TextArea();
+					secondText.setMaxWidth(800);
+					secondText.setWrapText(true);
+					secondText.getStyleClass().add("addField");
+					
+					
+					area.getChildren().add(secondText);
+					area.getChildren().remove(plus);
+				});
+				
+				
+				area.getChildren().addAll(text,plusList);
+				
+				
+				content.getChildren().add(area);
 				
 				
 				
-				
-				content.getChildren().add(text);
 			});
 			
 			Button addPic = new Button("Add Pic");
@@ -213,7 +275,7 @@ public class Blogg {
 				   selectedFile = fileChooser.showOpenDialog(null);
 		            src.setText(selectedFile.getPath());
 
-				content.getChildren().add(src);
+				//content.getChildren().add(src);
 				
 			});
 			
@@ -230,7 +292,7 @@ public class Blogg {
 				
 				linkText.setUserData("3");
 				
-				content.getChildren().add(linkText);
+				//content.getChildren().add(linkText);
 				
 			});
 			
@@ -247,7 +309,7 @@ public class Blogg {
 				
 				//addTextLimiter(text, 100);
 				
-				content.getChildren().add(title);
+				//content.getChildren().add(title);
 			});
 			
 			buttons = new HBox(20);
@@ -283,27 +345,81 @@ public class Blogg {
 					String inlagg="";
 					String title="";
 					for(int i=0;i<content.getChildren().size();i++) {
+						
 						if(i==0) {
 							title=((TextField) content.getChildren().get(i)).getText();
 							
 						}
-						
-						else {
-							String line=((TextArea) content.getChildren().get(i)).getText();
-							if(((TextArea)content.getChildren().get(i)).getUserData()=="0") {
+							
+						else if(content.getChildren().get(i).getUserData()=="0") {
+							HBox currentArea=(HBox) content.getChildren().get(i);
+							
+							String line=((TextArea) currentArea.getChildren().get(0)).getText();
+							//String line=((TextArea) content.getChildren().get(i)).getText();
+							if(((TextArea)currentArea.getChildren().get(0)).getUserData()=="0") {
 								inlagg+="<!title"+line+">";
 							}
-							else if(((TextArea)content.getChildren().get(i)).getUserData()=="1") {
+							else if(((TextArea)currentArea.getChildren().get(0)).getUserData()=="1") {
 								inlagg+="<!text"+line+">";
 							}
-							else if(((TextArea)content.getChildren().get(i)).getUserData()=="2") {
+							else if(((TextArea)currentArea.getChildren().get(0)).getUserData()=="2") {
 								String imgSrc=MultipartUtility(line);
 								inlagg+="<!img"+imgSrc+">";
 							}
-							else if(((TextArea)content.getChildren().get(i)).getUserData()=="3") {
+							else if(((TextArea)currentArea.getChildren().get(0)).getUserData()=="3") {
 								inlagg+="<!link"+line+">";
 							}
+						
 						}
+						else if(content.getChildren().get(i).getUserData()=="1") {
+							HBox currentArea=(HBox) content.getChildren().get(i);
+							
+							for(int ii=0;ii<currentArea.getChildren().size();ii++) {
+								String line=((TextArea) currentArea.getChildren().get(ii)).getText();
+								if(ii==0) {//if it is on right side.
+									if(((TextArea)currentArea.getChildren().get(ii)).getUserData()=="0") {
+										inlagg+="<!title"+line+">";
+									}
+									else if(((TextArea)currentArea.getChildren().get(ii)).getUserData()=="1") {
+										inlagg+="<!text"+line+">";
+									}
+									else if(((TextArea)currentArea.getChildren().get(ii)).getUserData()=="2") {
+										String imgSrc=MultipartUtility(line);
+										inlagg+="<!img"+imgSrc+">";
+									}
+									else if(((TextArea)currentArea.getChildren().get(ii)).getUserData()=="3") {
+										inlagg+="<!link"+line+">";
+									}
+								}
+								else {
+									if(((TextArea)currentArea.getChildren().get(ii)).getUserData()=="0") {
+										inlagg+="<!title1"+line+">";
+									}
+									else if(((TextArea)currentArea.getChildren().get(ii)).getUserData()=="1") {
+										inlagg+="<!text1"+line+">";
+									}
+									else if(((TextArea)currentArea.getChildren().get(ii)).getUserData()=="2") {
+										String imgSrc=MultipartUtility(line);
+										inlagg+="<!img1"+imgSrc+">";
+									}
+									else if(((TextArea)currentArea.getChildren().get(ii)).getUserData()=="3") {
+										inlagg+="<!link1"+line+">";
+									}
+								}
+								
+							}
+						
+						}
+						
+						
+						
+						else {
+							System.out.println("error");
+						}
+							
+						
+						
+						
 					}
 					
 					//hashtag!!!!!
@@ -322,8 +438,9 @@ public class Blogg {
 					eee.printStackTrace();
 				}
 				
-				
+				content.getChildren().clear();
 				addField.getChildren().removeAll(content, buttons,hashtagField, post);
+				
 				addField.getChildren().add(add);
 			});
 			
@@ -336,6 +453,14 @@ public class Blogg {
 		
 	}
 	
+	public VBox getContent() {
+		return content;
+	}
+
+	public void setContent(VBox content) {
+		this.content = content;
+	}
+
 	public static void addTextLimiter(final TextField text, final int maxLength) {
 	    text.textProperty().addListener(new ChangeListener<String>() {
 	        @Override
@@ -382,15 +507,19 @@ public class Blogg {
 		
 		int startIndex=0;
 		for(int i=0;i<text.length();i++) {
-			if(text.charAt(i)=='<') {
+			boolean done=false;
+			
+			if(text.charAt(i)=='<' && !done) {
 				if(text.charAt(i+1)=='!') {
 					if(text.charAt(i+2)=='t') {
-						if(text.charAt(i+3)=='i') {
-							if(text.charAt(i+4)=='t') {
-								if(text.charAt(i+5)=='l') {
-									if(text.charAt(i+6)=='e') {
-										action="title";
+						if(text.charAt(i+3)=='e') {
+							if(text.charAt(i+4)=='x') {
+								if(text.charAt(i+5)=='t') {
+									if(text.charAt(i+6)=='1') {
+										System.out.println("right text");
+										action="text1";
 										startIndex=i+7;
+										done=true;
 									}
 								}
 							}
@@ -399,7 +528,62 @@ public class Blogg {
 				}	
 			}
 			
-			if(text.charAt(i)=='<') {
+			if(text.charAt(i)=='<' && !done) {
+				if(text.charAt(i+1)=='!') {
+					if(text.charAt(i+2)=='i') {
+						if(text.charAt(i+3)=='m') {
+							if(text.charAt(i+4)=='g') {
+								if(text.charAt(i+5)=='1') {
+									action="img1";
+									startIndex=i+6;
+									done=true;
+								}
+							}
+						}
+					}
+				}	
+			}
+			
+			if(text.charAt(i)=='<' && !done) {
+				if(text.charAt(i+1)=='!') {
+					if(text.charAt(i+2)=='l') {
+						if(text.charAt(i+3)=='i') {
+							if(text.charAt(i+4)=='n') {
+								if(text.charAt(i+5)=='k') {
+									if(text.charAt(i+6)=='1') {
+										action="link1";
+										startIndex=i+7;
+										done=true;
+									}
+								}
+							}
+						}
+					}
+				}	
+			}
+			
+			
+			
+			
+			if(text.charAt(i)=='<' && !done) {
+				if(text.charAt(i+1)=='!') {
+					if(text.charAt(i+2)=='t') {
+						if(text.charAt(i+3)=='i') {
+							if(text.charAt(i+4)=='t') {
+								if(text.charAt(i+5)=='l') {
+									if(text.charAt(i+6)=='e') {
+										action="title";
+										startIndex=i+7;
+										done=true;
+									}
+								}
+							}
+						}
+					}
+				}	
+			}
+			
+			if(text.charAt(i)=='<' && !done) {
 				if(text.charAt(i+1)=='!') {
 					if(text.charAt(i+2)=='t') {
 						if(text.charAt(i+3)=='e') {
@@ -407,6 +591,7 @@ public class Blogg {
 								if(text.charAt(i+5)=='t') {
 									action="text";
 									startIndex=i+6;
+									done=true;
 								}
 							}
 						}
@@ -414,20 +599,21 @@ public class Blogg {
 				}	
 			}
 			
-			if(text.charAt(i)=='<') {
+			if(text.charAt(i)=='<' && !done) {
 				if(text.charAt(i+1)=='!') {
 					if(text.charAt(i+2)=='i') {
 						if(text.charAt(i+3)=='m') {
 							if(text.charAt(i+4)=='g') {
 								action="img";
 								startIndex=i+5;
+								done=true;
 							}
 						}
 					}
 				}	
 			}
 			
-			if(text.charAt(i)=='<') {
+			if(text.charAt(i)=='<' && !done) {
 				if(text.charAt(i+1)=='!') {
 					if(text.charAt(i+2)=='l') {
 						if(text.charAt(i+3)=='i') {
@@ -435,6 +621,7 @@ public class Blogg {
 								if(text.charAt(i+5)=='k') {
 									action="link";
 									startIndex=i+6;
+									done=true;
 								}
 							}
 						}
@@ -442,13 +629,14 @@ public class Blogg {
 				}	
 			}
 			
-			if(text.charAt(i)=='<') {
+			if(text.charAt(i)=='<' && !done) {
 				if(text.charAt(i+1)=='!') {
 					if(text.charAt(i+2)=='t') {
 						if(text.charAt(i+3)=='a') {
 							if(text.charAt(i+4)=='g') {
 								action="tag";
 								startIndex=i+5;
+								done=true;
 							}
 						}
 					}
@@ -456,18 +644,99 @@ public class Blogg {
 			}
 			
 			
+			
+			
 			if(text.charAt(i)=='>') {
 				String subText=text.substring(startIndex,i);
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				if(action.equals("text1")) {
+					System.out.println("ma nigger696969696");
+					nodes.add(new Label(subText));
+					((Label) nodes.get(nodes.size()-1)).setPadding(new Insets(0, 0, 20, 0));
+					((Label) nodes.get(nodes.size()-1)).setWrapText(true);
+					nodes.get(nodes.size()-1).setUserData("1");
+				}
+				if(action.equals("img1")) {
+					String path =subText;
+					try {
+						
+						Image image = new Image(path);
+						ImageView imageView = new ImageView(image);
+						
+						double ratio=image.getHeight()/image.getWidth();
+						double scale=350;
+						imageView.setFitWidth(scale);
+						imageView.setFitHeight(scale*ratio);
+					
+						nodes.add(imageView);
+						nodes.get(nodes.size()-1).setUserData("1");
+					}
+					catch (IllegalArgumentException e) {
+						// TODO: handle exception
+					}
+				}
+				if(action.equals("link1")) {
+					String path =subText;
+					
+					
+					try {
+						
+						Desktop desktop = Desktop.getDesktop();
+						Hyperlink hyperlink = new Hyperlink();
+						hyperlink.setText(path);
+						hyperlink.setOnAction(e -> {
+							
+							try {
+								desktop.browse(new URI(path));
+							} catch (IOException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							} catch (URISyntaxException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+							
+						});
+						
+						nodes.add(hyperlink);
+						nodes.get(nodes.size()-1).setUserData("1");
+					}
+					catch (IllegalArgumentException e) {
+						// TODO: handle exception
+					}
+					
+				}
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
 				
 				if(action.equals("text")) {
 					nodes.add(new Label(subText));
 					((Label) nodes.get(nodes.size()-1)).setPadding(new Insets(0, 0, 20, 0));
 					((Label) nodes.get(nodes.size()-1)).setWrapText(true);
-					
+					nodes.get(nodes.size()-1).setUserData("0");
 				}
 				if(action.equals("title")) {
 					nodes.add(new Label(subText));
 					nodes.get(nodes.size()-1).getStyleClass().add("postInnerTitle");
+					nodes.get(nodes.size()-1).setUserData("0");
 				}
 				if(action.equals("img")) {
 					String path =subText;
@@ -482,6 +751,7 @@ public class Blogg {
 						imageView.setFitHeight(scale*ratio);
 					
 						nodes.add(imageView);
+						nodes.get(nodes.size()-1).setUserData("0");
 					}
 					catch (IllegalArgumentException e) {
 						// TODO: handle exception
@@ -511,6 +781,7 @@ public class Blogg {
 						});
 						
 						nodes.add(hyperlink);
+						nodes.get(nodes.size()-1).setUserData("0");
 					}
 					catch (IllegalArgumentException e) {
 						// TODO: handle exception
@@ -523,7 +794,7 @@ public class Blogg {
 					tags+="#"+subText+" ";
 					tag="#"+subText+" ";
 					nodes.add(new Button(tag));
-					
+					nodes.get(nodes.size()-1).setUserData("0");
 					
 					((Button) nodes.get(nodes.size()-1)).setOnAction(new EventHandler<ActionEvent>() {
 						
@@ -601,13 +872,26 @@ public class Blogg {
 		Label likes= new Label("Likes: "+likesAmount);
 		likes.getStyleClass().add("leftBloggText");
 		
+		
 		VBox post= new VBox();
 		post.setUserData(tags);
 		
 		post.getChildren().addAll(postTitle);
 		
 		for(int i=0;i<nodes.size();i++) {
-			post.getChildren().add(nodes.get(i));
+			System.out.println(nodes.get(i).getUserData());
+			HBox postContent=new HBox();
+			if(nodes.get(i).getUserData()=="0") {
+				postContent.getChildren().add(nodes.get(i));
+				if(i+1!=nodes.size()) {
+					
+					if(nodes.get(i+1).getUserData()=="1") {
+						postContent.getChildren().add(nodes.get(i+1));
+						i++;
+					}
+				}
+			}
+			post.getChildren().add(postContent);
 		}
 		post.getChildren().addAll(likes);
 		
@@ -846,13 +1130,7 @@ public class Blogg {
 		this.post = post;
 	}
 
-	public VBox getContent() {
-		return content;
-	}
-
-	public void setContent(VBox content) {
-		this.content = content;
-	}
+	
 
 
 	public Button getAdd() {
