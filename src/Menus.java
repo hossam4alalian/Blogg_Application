@@ -1,5 +1,3 @@
-
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -93,6 +91,7 @@ public class Menus {
 			
 			System.out.println(searchResult);
 			
+			Label searchResultLabel = new Label(searchResult);
 			
 			
 			 try {
@@ -113,7 +112,6 @@ public class Menus {
 							for(int i=inlagg.length()-1;i>=0;i--) {
 								String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
 								
-								
 								JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 								
 								String title=inlaggJson.getString("titel");
@@ -122,15 +120,23 @@ public class Menus {
 								JSONArray array=inlaggJson.getJSONArray("gillningar");
 								
 								int likesAmount=array.length();
-									
+								String newTitle="";
 								
+								if ( title.toLowerCase().indexOf(searchResult.toLowerCase()) != -1 ) {
+									
+									newTitle=title.replaceAll(searchResult, "|"+searchResult+"|");
+									
+									} else {
+
+									   System.out.println("not found");
+
+									}
 								
 								//comments();
 								
-								Main.blogg.post(title, text, likesAmount);
+								Main.blogg.post(newTitle, text, likesAmount);
 								
 							}
-						
 				} 
 	       		catch (Exception ee) {
 					// TODO Auto-generated catch block
@@ -145,9 +151,6 @@ public class Menus {
 	       			
 					Main.blogg.getScrollPaneBox().getChildren().add(resultBox);
 				}
-			
-			
-			
 		});
 		
 		HBox rightTop = new HBox();

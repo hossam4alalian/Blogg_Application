@@ -21,6 +21,7 @@ import backend_request.Json;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,7 +45,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 
 public class Blogg {
@@ -172,6 +175,18 @@ public class Blogg {
 				text.setWrapText(true);
 				
 				text.setUserData("1");
+				
+				text.setOnKeyReleased(new EventHandler<Event>() {
+
+					@Override
+					public void handle(Event event) {
+						System.out.println("click");
+						resizeTextArea(text);
+					}
+					
+				});
+				
+				
 			
 				HBox area = new HBox();
 				area.setUserData("0");
@@ -487,9 +502,41 @@ public class Blogg {
 	    });
 	}
 	
+	
+	private void resizeTextArea(TextArea txtArea) {
+        String text = txtArea.getText();
+        System.out.println(text);
+        
+        /*if(text.length()>20*amount) {
+        	txtArea.setText(text+"\n");
+        	txtArea.selectEnd();
+        	txtArea.endOfNextWord();
+        	amount++;
+        }*/
+        
+        for(int i=text.length();i>=0;i--) {
+        	
+        }
+        
+        double amount=0;
+        for(int i=0;i<text.length();i++) {
+        	if(text.charAt(i)=='\n') {
+        		amount++;
+        	}
+        }
+        
+        double height = 40+(amount*22);
+        txtArea.setMinHeight(height);
+        txtArea.setMaxHeight(height);
+    }
+	
+	
+	
+	
 	public void post(String title, String text, int likesAmount) {
-		Label postTitle = new Label(title);
+		Text postTitle = new Text(title);
 		postTitle.getStyleClass().add("postTitle");
+		
 		
 		String tags="";
 		String tag="";
@@ -508,7 +555,6 @@ public class Blogg {
 							if(text.charAt(i+4)=='x') {
 								if(text.charAt(i+5)=='t') {
 									if(text.charAt(i+6)=='1') {
-										System.out.println("right text");
 										action="text1";
 										startIndex=i+7;
 										done=true;
@@ -642,15 +688,7 @@ public class Blogg {
 				String subText=text.substring(startIndex,i);
 				
 				
-				
-				
-				
-				
-				
-				
-				
 				if(action.equals("text1")) {
-					System.out.println("ma nigger696969696");
 					nodes.add(new Label(subText));
 					((Label) nodes.get(nodes.size()-1)).setPadding(new Insets(0, 0, 20, 0));
 					((Label) nodes.get(nodes.size()-1)).setWrapText(true);
@@ -706,15 +744,6 @@ public class Blogg {
 					}
 					
 				}
-				
-				
-				
-				
-				
-				
-				
-				
-				
 				
 				
 				
@@ -866,7 +895,6 @@ public class Blogg {
 		post.getChildren().addAll(postTitle);
 		
 		for(int i=0;i<nodes.size();i++) {
-			System.out.println(nodes.get(i).getUserData());
 			HBox postContent=new HBox();
 			if(nodes.get(i).getUserData()=="0") {
 				postContent.getChildren().add(nodes.get(i));
@@ -968,7 +996,6 @@ public class Blogg {
 			
 			Main.center.getChildren().add(1,labelTitle);
 			
-			System.out.println(Main.login.getBloggId()+"  "+Main.currentBlogg);
 			if(Main.login.getBloggId().equals(Main.currentBlogg+"")) {
 				getAddField().getChildren().removeAll(getButtons(),getPost(),getAdd());
 				getAddField().getChildren().add(getAdd());
