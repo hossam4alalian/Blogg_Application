@@ -51,15 +51,13 @@ public class Main extends Application{
 		
 		mainLayout = new HBox();
 		
-		center=new VBox();
+		center=new VBox(6);
 		center.getChildren().addAll(menus.getTopMenu(),explore.getScrollPane(),explore.getRefreshField());
-		
-		
 		
 		
 		mainLayout.getChildren().addAll(menus.getSideMenu(),center);
 		
-		scene= new Scene(mainLayout, 1000, 800);
+		scene= new Scene(mainLayout, 1280, 720);
 		scene.getStylesheets().add("main.css");
 		window.setScene(scene);
 		

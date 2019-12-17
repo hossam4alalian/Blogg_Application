@@ -36,7 +36,7 @@ public class ExploreBloggs {
 	private HBox refreshField;
 	
 	private ScrollPane scrollPane;
-	private VBox scrollPaneBox= new VBox();
+	private VBox scrollPaneBox= new VBox(40);
 	
 	public ExploreBloggs() {
 		
@@ -145,7 +145,9 @@ public class ExploreBloggs {
 		
 		
 		
-		VBox blogg= new VBox();
+		VBox blogg= new VBox(20);
+		blogg.setPadding(new Insets(20));
+	
 		
 		blogg.setUserData(bloggId);
 		
@@ -163,7 +165,7 @@ public class ExploreBloggs {
         });
 		
 		if(scrollPaneBox.getChildren().size()==0){
-			HBox bloggar = new HBox();
+			HBox bloggar = new HBox(40);
 			bloggar.getChildren().add(blogg);
 			scrollPaneBox.getChildren().add(bloggar);
 		}
@@ -174,7 +176,7 @@ public class ExploreBloggs {
 				lastBloggContainer.getChildren().add(blogg);
 			}
 			else if(lastBloggContainer.getChildren().size()==2){
-				HBox bloggar = new HBox();
+				HBox bloggar = new HBox(40);
 				bloggar.getChildren().add(blogg);
 				scrollPaneBox.getChildren().add(bloggar);
 			}
@@ -183,7 +185,8 @@ public class ExploreBloggs {
 			}
 		}
 		
-		
+		scrollPaneBox.setPadding(new Insets(20));
+		scrollPaneBox.getStyleClass().add("center");
 		
 	}
 

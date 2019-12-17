@@ -40,9 +40,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -52,10 +54,8 @@ import javafx.stage.FileChooser;
 
 public class Blogg {
 
-	
 	private ScrollPane scrollPane;
 	private ScrollPane postScrollPane;
-	
 	
 	private HBox refreshField;
 	private VBox addField;
@@ -80,9 +80,7 @@ public class Blogg {
 	
 	private HBox titleBox;
 	
-
-
-	private VBox scrollPaneBox= new VBox();
+	private VBox scrollPaneBox= new VBox(20);
 	
 	private String bloggId="null";//this is bloggId.
 	public Blogg() {
@@ -98,8 +96,8 @@ public class Blogg {
 		scrollPane= new ScrollPane();
 		scrollPane.setContent(getScrollPaneBox());
 		scrollPane.setPannable(true);
-		scrollPane.setPrefSize(/*bloggar.getWidth()*/200, 1000);
-		//scrollPane.setFitToWidth(true);
+		scrollPane.setPrefSize(200, 1000);
+		scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
 		scrollPane.fitToWidthProperty().set(true);
 		
@@ -107,7 +105,7 @@ public class Blogg {
 			scrollPane.setCursor(Cursor.DEFAULT);
 		});
 		scrollPane.setStyle("-fx-background-color:transparent;");
-		
+	
 		postScrollPane= new ScrollPane();
 		postScrollPane.setContent(getAddField());
 		postScrollPane.setPannable(true);
@@ -186,8 +184,6 @@ public class Blogg {
 					
 				});
 				
-				
-			
 				HBox area = new HBox();
 				area.setUserData("0");
 				ComboBox<String> plusList = new ComboBox<String>();
@@ -246,14 +242,9 @@ public class Blogg {
 					area.getChildren().remove(plus);
 				});
 				
-				
 				area.getChildren().addAll(text,plusList);
 				
-				
 				content.getChildren().add(area);
-				
-				
-				
 			});
 			
 			Button addPic = new Button("Add Pic");
@@ -334,6 +325,7 @@ public class Blogg {
 			
 			hashtagField = new HBox();
 			hashtag = new Button("Add #Hashtag");
+			
 			hashtag.setOnAction(ee -> {
 				TextArea hashtagWord = new TextArea();
 				hashtagWord.setMaxWidth(150);
@@ -693,6 +685,7 @@ public class Blogg {
 					((Label) nodes.get(nodes.size()-1)).setPadding(new Insets(0, 0, 20, 0));
 					((Label) nodes.get(nodes.size()-1)).setWrapText(true);
 					nodes.get(nodes.size()-1).setUserData("1");
+					((Label) nodes.get(nodes.size()-1)).setPrefWidth(Main.mainLayout.getWidth());
 				}
 				if(action.equals("img1")) {
 					String path =subText;
@@ -745,19 +738,18 @@ public class Blogg {
 					
 				}
 				
-				
-				
-				
 				if(action.equals("text")) {
 					nodes.add(new Label(subText));
 					((Label) nodes.get(nodes.size()-1)).setPadding(new Insets(0, 0, 20, 0));
 					((Label) nodes.get(nodes.size()-1)).setWrapText(true);
 					nodes.get(nodes.size()-1).setUserData("0");
+					((Label) nodes.get(nodes.size()-1)).setPrefWidth(Main.mainLayout.getWidth());
 				}
 				if(action.equals("title")) {
 					nodes.add(new Label(subText));
 					nodes.get(nodes.size()-1).getStyleClass().add("postInnerTitle");
 					nodes.get(nodes.size()-1).setUserData("0");
+					
 				}
 				if(action.equals("img")) {
 					String path =subText;
@@ -773,6 +765,7 @@ public class Blogg {
 					
 						nodes.add(imageView);
 						nodes.get(nodes.size()-1).setUserData("0");
+						
 					}
 					catch (IllegalArgumentException e) {
 						// TODO: handle exception
@@ -814,7 +807,11 @@ public class Blogg {
 					
 					tags+="#"+subText+" ";
 					tag="#"+subText+" ";
-					nodes.add(new Button(tag));
+					
+					Button tagButton = new Button(tag);
+					tagButton.getStyleClass().add("hashtag");
+					nodes.add(tagButton);
+					
 					nodes.get(nodes.size()-1).setUserData("0");
 					
 					((Button) nodes.get(nodes.size()-1)).setOnAction(new EventHandler<ActionEvent>() {
@@ -833,10 +830,6 @@ public class Blogg {
 								String bloggTitle=json.getString("titel");
 								bloggId=json.getString("bloggId");
 
-								
-								
-								
-								
 								JSONArray inlagg=json.getJSONArray("bloggInlagg");
 								for(int i=inlagg.length()-1;i>=0;i--) {
 									String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
@@ -847,12 +840,9 @@ public class Blogg {
 									
 									String text=inlaggJson.getString("innehall");
 									
-									
 									JSONArray array=inlaggJson.getJSONArray("gillningar");
 									
 									int likesAmount=array.length();
-										
-									
 									
 									String newTag=tag.substring(1,tag.length()-1);
 									if(text.contains("<!tag"+newTag+">")) {
@@ -860,36 +850,31 @@ public class Blogg {
 									}
 									
 								}
-								
-								
 								if(Main.login.getBloggId().equals(Main.currentBlogg+"")) {
 									getAddField().getChildren().removeAll(getButtons(),getPost(),getAdd());
 									getAddField().getChildren().add(getAdd());
 								}
-								
-													
 							} catch (Exception ee) {
 								// TODO Auto-generated catch block
 								ee.printStackTrace();
 							}
-							
 						}
 					});
-					
 				}
-				
 			}
-			
 		}
 		
 		Label labelText= new Label(text);
 		labelText.setWrapText(true);
 	
 		Label likes= new Label("Likes: "+likesAmount);
-		likes.getStyleClass().add("leftBloggText");
 		
+		HBox likeBox= new HBox();
+		likeBox.getStyleClass().add("likes");
+		likeBox.getChildren().add(likes);
 		
-		VBox post= new VBox();
+		VBox post= new VBox(50);
+		post.setPadding(new Insets(20));
 		post.setUserData(tags);
 		
 		post.getChildren().addAll(postTitle);
@@ -908,9 +893,10 @@ public class Blogg {
 			}
 			post.getChildren().add(postContent);
 		}
-		post.getChildren().addAll(likes);
+		post.getChildren().addAll(likeBox);
 		
-		post.setPrefWidth(2000);
+		post.setPrefWidth(Main.mainLayout.getWidth());
+		
 		post.getStyleClass().add("post");
 		post.setOnMouseClicked( ( e ) ->
         {
@@ -918,6 +904,8 @@ public class Blogg {
         });
 		
 		getScrollPaneBox().getChildren().add(post);
+		scrollPaneBox.setPadding(new Insets(0,20,0,20));
+		
 		
 		/*if(getScrollPaneBox().getChildren().size()==0){
 			HBox bloggar = new HBox();
@@ -944,9 +932,6 @@ public class Blogg {
 		
 	}
 	
-	
-	
-
 	public void refresh() {
 		
 		content.getChildren().clear();
@@ -987,8 +972,10 @@ public class Blogg {
 			labelTitle.setFont(new Font(40));
 			labelTitle.setAlignment(Pos.CENTER);
 			labelTitle.setPrefWidth(4000);
+			labelTitle.getStyleClass().add("bloggTitle");
 			
 			titleBox = new HBox();
+			
 			titleBox.getChildren().add(labelTitle);
 			
 			

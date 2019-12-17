@@ -41,8 +41,6 @@ public class Menus {
 		this.leftTop = leftTop;
 	}
 
-
-
 	private Button exploreBlogg;
 	private Button yourBlogg;
 	
@@ -63,19 +61,21 @@ public class Menus {
 	public void topMenu() {
 		
 		exploreBlogg = new Button("Explore Bloggs");
+		exploreBlogg.getStyleClass().add("topButton");
 		
 		yourBlogg = new Button("My Blogg");
-		
+		yourBlogg.getStyleClass().add("topButton");
 		leftTop = new HBox(20);
 		leftTop.getChildren().addAll(exploreBlogg, yourBlogg);
 		
 		
-		leftTop.setMargin(leftTop, new Insets(20,0,0,75));
-		leftTop.setMinSize(180, 50);
-		leftTop.setPrefSize(2000, 50);
-		leftTop.getStyleClass().add("leftTop");
+		leftTop.setMargin(leftTop, new Insets(5,0,0,30));
+		leftTop.setMinSize(180, 28);
+		leftTop.setPrefSize(2000, 10);
+		
 		
 		topMenu = new HBox(20);
+		topMenu.getStyleClass().add("topMenu");
 		topMenu.getChildren().addAll(leftTop);
 		search();
 		
@@ -84,17 +84,14 @@ public class Menus {
 	public void search() {
 		TextField searchPost = new TextField();
 		
-
 		Button search = new Button("Search");
+		search.getStyleClass().add("topButton");
 		search.setOnAction(e -> {
 			String searchResult= searchPost.getText();
 			
 			System.out.println(searchResult);
 			
-			Label searchResultLabel = new Label(searchResult);
-			
-			
-			 try {
+			try {
 					//String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&bloggId="+Main.currentBlogg);
 				
 					Main.blogg.getScrollPaneBox().getChildren().clear();
@@ -155,9 +152,9 @@ public class Menus {
 		
 		HBox rightTop = new HBox();
 		rightTop.getChildren().addAll(search, searchPost);
-		rightTop.setMargin(rightTop, new Insets(20));
-		rightTop.setMinSize(350, 50);
-		rightTop.getStyleClass().add("rightTop");
+		rightTop.setMargin(rightTop, new Insets(5,0,0,30));
+		rightTop.setMinSize(350, 28);
+		
 		topMenu.getChildren().addAll( rightTop);
 	}
 	
@@ -174,45 +171,33 @@ public class Menus {
 		
 		sideMenu.setMinWidth(sideMenu.USE_PREF_SIZE);
 		
-		
 		VBox upper=new VBox(20);
 		upper.getChildren().addAll(username,likes);
 		upper.setPadding(new Insets(120, 20, 20, 20));
-		
 		
 		VBox middle=new VBox(20);
 		middle.setPadding(new Insets(0, 20, 0, 20));
 		middle.setPrefHeight(sideMenu.getPrefHeight());
 		middle.getChildren().addAll(setings);
 		
-		
 		VBox lower=new VBox(20);
-		
 		
 		login=new Button("Log in");
 		login.setMinWidth(128);
 		login.setMinHeight(40);
 		
-		
 		lower.getChildren().add(login);
-		
 		
 		sideMenu.getChildren().addAll(upper,middle,lower);
 		
-		
 		sideMenu.getStyleClass().add("sideMenu");
-		
 		
 		upper.getStyleClass().add("upper");
 		username.getStyleClass().add("upper");
 		likes.getStyleClass().add("upper");
 		
-		
-		
 		middle.getStyleClass().add("middle");
 		setings.getStyleClass().add("sideButton");
-		
-		
 		
 		login.getStyleClass().add("sideButton");
 		lower.getStyleClass().add("loginButton");

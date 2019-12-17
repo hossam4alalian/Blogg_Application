@@ -50,7 +50,7 @@ public class Login implements EventHandler<ActionEvent> {
 
 	public void scene() {
 		mainLayout= new BorderPane();
-		scene =new Scene(mainLayout, 1000, 800);
+		scene =new Scene(mainLayout,  1280, 720);
 		scene.getStylesheets().add("main.css");
 		loginDesign();
 		

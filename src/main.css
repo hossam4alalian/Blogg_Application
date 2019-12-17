@@ -28,6 +28,7 @@
 	-fx-background-color:rgb(40,40,40);
 	-fx-text-fill:rgb(255,255,255);
 	-fx-font-size: 16px;
+	
 }
 
 .sideButton{
@@ -51,6 +52,7 @@
 	-fx-background-color:rgb(40,40,40);
 	-fx-text-fill:rgb(255,255,255);
 	-fx-font-size: 16px;
+	-fx-alignment: center; 
 }
 
 .middle{
@@ -71,20 +73,20 @@
 }
 .center{
 	
-	-fx-background-color: white;
+	-fx-background-color:rgb(245,245,245);
 	-fx-alignment: center;
 	
 }
 .loginCenter{
 	-fx-padding-top:100px;
-	-fx-background-color: white;
+	
 	-fx-alignment: center;
 	
 }
 
 .loginTop{
 	
-	-fx-background-color: white;
+	
 	-fx-alignment: center;
 	
 }
@@ -92,26 +94,32 @@
 	
 
 
-	-fx-background-color: white;
+	
 	-fx-alignment: bottom-center;
 	
 }
 
-.leftTop{
+.topMenu{
+	-fx-background-color:rgb(240,240,240);
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);
+}
+
+/* .leftTop{
 	-fx-background-color:red;
 }
 
 .rightTop{
 	-fx-background-color:black;
-}
+}*/
 
 .exploreBlogg{
 	
 	-fx-text-fill:white;
 	-fx-alignment: center; 
-	-fx-border-style: dashed dashed dashed dashed;
-  	-fx-border-color: red red red red;
-  	-fx-border-width: 2;
+	
+	-fx-background-color:rgb(255,255,255);
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);
+	
 	
 }
 
@@ -146,12 +154,14 @@
 }
 
 .post{
+	-fx-background-color:rgb(255,255,255);
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);
 	
 	-fx-text-fill:white;
 	/*-fx-alignment: center; */
-	-fx-border-style: hidden hidden dashed hidden;
+	/*-fx-border-style: hidden hidden dashed hidden;
   	-fx-border-color: red red red red;
-  	-fx-border-width: 2;
+  	-fx-border-width: 2;*/
 	
 }
 .postTitle{
@@ -183,10 +193,32 @@
 }
 
 .hashtag{
+	-fx-background-color: transparent;
+	-fx-font-weight: bold;
+	-fx-font-size: 16px;
+}
+
+.likes{
 	
+	-fx-alignment: baseline-right; 
+}
+
+.bloggTitle{
+	-fx-background-color:rgb(240,240,240);
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);
+}
+
+.topButton{
+	-fx-background-color:rgb(150,150,150);
+	-fx-text-fill:rgb(255,255,255);
 }
 
 
+.topButton:hover{
+	-fx-background-color:rgb(40,40,40);
+	-fx-text-fill:rgb(225,225,225);
+	
+}
 
 
 
