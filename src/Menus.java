@@ -14,6 +14,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -46,6 +48,7 @@ public class Menus {
 	
 	private Label noResult;
 	
+	private TextField searchPost;
 	public Menus() {
 		scene();
 	}
@@ -82,72 +85,25 @@ public class Menus {
 	}
 	
 	public void search() {
-		TextField searchPost = new TextField();
+		searchPost = new TextField();
+		searchPost.setOnKeyPressed(new EventHandler<KeyEvent>()
+	    {
+	        @Override
+	        public void handle(KeyEvent ke)
+	        {
+	            if (ke.getCode().equals(KeyCode.ENTER))
+	            {
+	            	searching();
+	            }
+	        }
+	    });
 		
 		Button search = new Button("Search");
 		search.getStyleClass().add("topButton");
 		search.setOnAction(e -> {
-			String searchResult= searchPost.getText();
-			
-			System.out.println(searchResult);
-			
-			try {
-					//String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&bloggId="+Main.currentBlogg);
+			searching();
 				
-					Main.blogg.getScrollPaneBox().getChildren().clear();
-				
-					Main.blogg.getScrollPaneBox().getChildren().remove(noResult);
-							
-							String inlaggStr1;
-							
-							inlaggStr1 = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=sokfalt&sok="+ searchResult+"&bloggId="+Main.currentBlogg);
-							System.out.println(inlaggStr1);
-							
-							JSONObject json=new JSONObject(inlaggStr1);
-						
-							JSONArray inlagg=json.getJSONArray("inlagg");
-							for(int i=inlagg.length()-1;i>=0;i--) {
-								String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
-								
-								JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
-								
-								String title=inlaggJson.getString("titel");
-								String text=inlaggJson.getString("innehall");
-								
-								JSONArray array=inlaggJson.getJSONArray("gillningar");
-								
-								int likesAmount=array.length();
-								String newTitle="";
-								
-								if ( title.toLowerCase().indexOf(searchResult.toLowerCase()) != -1 ) {
-									
-									newTitle=title.replaceAll(searchResult, "|"+searchResult+"|");
-									
-									} else {
-
-									   System.out.println("not found");
-
-									}
-								
-								//comments();
-								
-								Main.blogg.post(newTitle, text, likesAmount);
-								
-							}
-				} 
-	       		catch (Exception ee) {
-					// TODO Auto-generated catch block
-					//ee.printStackTrace();
-	       			Main.blogg.getScrollPaneBox().getChildren().remove(noResult);
-	       			noResult = new Label("No results...");
-	       			noResult.getStyleClass().add("noResult");
-	       			noResult.setPrefWidth(2000);
-	       			HBox resultBox = new HBox();
-	       			resultBox.getChildren().add(noResult);
-	       			resultBox.setMargin(noResult, new Insets(50,50,300,50));
-	       			
-					Main.blogg.getScrollPaneBox().getChildren().add(resultBox);
-				}
+			
 		});
 		
 		HBox rightTop = new HBox();
@@ -156,6 +112,71 @@ public class Menus {
 		rightTop.setMinSize(350, 28);
 		
 		topMenu.getChildren().addAll( rightTop);
+	}
+	
+	public void searching() {
+
+		String searchResult= searchPost.getText();
+		
+		System.out.println(searchResult);
+		
+		try {
+				//String blogg = HttpRequest.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=JSON&bloggId="+Main.currentBlogg);
+			
+				Main.blogg.getScrollPaneBox().getChildren().clear();
+			
+				Main.blogg.getScrollPaneBox().getChildren().remove(noResult);
+						
+						String inlaggStr1;
+						
+						inlaggStr1 = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=sokfalt&sok="+ searchResult+"&bloggId="+Main.currentBlogg);
+						System.out.println(inlaggStr1);
+						
+						JSONObject json=new JSONObject(inlaggStr1);
+					
+						JSONArray inlagg=json.getJSONArray("inlagg");
+						for(int i=inlagg.length()-1;i>=0;i--) {
+							String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
+							
+							JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
+							
+							String title=inlaggJson.getString("titel");
+							String text=inlaggJson.getString("innehall");
+							
+							JSONArray array=inlaggJson.getJSONArray("gillningar");
+							
+							int likesAmount=array.length();
+							String newTitle="";
+							
+							if ( title.toLowerCase().indexOf(searchResult.toLowerCase()) != -1 ) {
+								
+								newTitle=title.replaceAll(searchResult, "|"+searchResult+"|");
+								
+								} else {
+
+								   System.out.println("not found");
+
+								}
+							
+							//comments();
+							
+							Main.blogg.post(newTitle, text, likesAmount);
+							
+						}
+			} 
+       		catch (Exception ee) {
+				// TODO Auto-generated catch block
+				//ee.printStackTrace();
+       			Main.blogg.getScrollPaneBox().getChildren().remove(noResult);
+       			noResult = new Label("No results...");
+       			noResult.getStyleClass().add("noResult");
+       			noResult.setPrefWidth(2000);
+       			HBox resultBox = new HBox();
+       			resultBox.getChildren().add(noResult);
+       			resultBox.setMargin(noResult, new Insets(50,50,300,50));
+       			
+				Main.blogg.getScrollPaneBox().getChildren().add(resultBox);
+			}
 	}
 	
 	private Button setings;

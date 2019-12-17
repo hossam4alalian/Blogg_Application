@@ -1,5 +1,4 @@
 
-
 import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
 
 import org.json.JSONArray;
@@ -30,9 +29,6 @@ import javafx.stage.Stage;
 
 public class ExploreBloggs {
 	
-	
-	
-
 	private HBox refreshField;
 	
 	private ScrollPane scrollPane;
@@ -50,9 +46,6 @@ public class ExploreBloggs {
 		//window.setMinHeight(300);
 		
 	}
-	
-	
-	
 	
 	public void scrollPaneSetup() {
 		scrollPane= new ScrollPane();
@@ -95,8 +88,6 @@ public class ExploreBloggs {
 		
 		try {
 			String str = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON");
-			
-			
 			
 			JSONObject json=Json.toJSONObject(str);
 			
@@ -143,14 +134,10 @@ public class ExploreBloggs {
 		Label posts= new Label("Post: "+postAmount);
 		posts.getStyleClass().add("leftBloggText");
 		
-		
-		
 		VBox blogg= new VBox(20);
 		blogg.setPadding(new Insets(20));
 	
-		
 		blogg.setUserData(bloggId);
-		
 		
 		blogg.getChildren().addAll(bloggsName, username, posts);
 		blogg.setPrefSize(2000, 100);
@@ -196,13 +183,9 @@ public class ExploreBloggs {
 	}
 
 
-
-
 	public void setScrollPane(ScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
 	}
-
-
 
 
 	public HBox getRefreshField() {
@@ -210,15 +193,10 @@ public class ExploreBloggs {
 	}
 
 
-
-
 	public void setRefreshField(HBox refreshField) {
 		this.refreshField = refreshField;
 	}
 
 
-	
-	
-	
 
 }
