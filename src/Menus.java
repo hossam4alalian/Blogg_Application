@@ -71,7 +71,6 @@ public class Menus {
 		leftTop = new HBox(20);
 		leftTop.getChildren().addAll(exploreBlogg, yourBlogg);
 		
-		
 		leftTop.setMargin(leftTop, new Insets(5,0,0,30));
 		leftTop.setMinSize(180, 28);
 		leftTop.setPrefSize(2000, 10);
@@ -117,7 +116,7 @@ public class Menus {
 	public void searching() {
 
 		String searchResult= searchPost.getText();
-		
+		char[] searchArray= searchResult.toCharArray();
 		System.out.println(searchResult);
 		
 		try {
@@ -141,27 +140,27 @@ public class Menus {
 							JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 							
 							String title=inlaggJson.getString("titel");
+							char[] tempTitle=title.toCharArray();
 							String text=inlaggJson.getString("innehall");
 							
 							JSONArray array=inlaggJson.getJSONArray("gillningar");
 							
 							int likesAmount=array.length();
 							String newTitle="";
+							String temp= title.toLowerCase();
+							String found= "|"+searchResult+"|";
 							
-							if ( title.toLowerCase().indexOf(searchResult.toLowerCase()) != -1 ) {
+							if ( temp.indexOf(searchResult.toLowerCase()) != -1 ) {
 								
-								newTitle=title.replaceAll(searchResult, "|"+searchResult+"|");
+								Label word= new Label(found);
+								word.getStyleClass().add("found");
 								
-								} else {
-
-								   System.out.println("not found");
-
-								}
-							
-							//comments();
-							
-							Main.blogg.post(newTitle, text, likesAmount);
-							
+								title=title.replaceAll("(?i)"+searchResult, word.getText());
+								
+								newTitle= title;
+								Main.blogg.post(newTitle, text, likesAmount);
+								
+							}
 						}
 			} 
        		catch (Exception ee) {

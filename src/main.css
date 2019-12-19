@@ -3,6 +3,10 @@
 	
 }
 
+.shadow{
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 6, 0, 0, 0);
+}
+
 
 /*settings*/
 .settingsButton{
@@ -104,13 +108,6 @@
 	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);
 }
 
-/* .leftTop{
-	-fx-background-color:red;
-}
-
-.rightTop{
-	-fx-background-color:black;
-}*/
 
 .exploreBlogg{
 	
@@ -122,6 +119,17 @@
 	
 	
 }
+.exploreBlogg:hover{
+	
+	-fx-text-fill:white;
+	-fx-alignment: center; 
+	
+	-fx-background-color:rgb(220,220,220);
+	-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 8, 0, 0, 0);
+	
+	
+}
+
 
 .rightBlogg{
 	
@@ -195,7 +203,8 @@
 .hashtag{
 	-fx-background-color: transparent;
 	-fx-font-weight: bold;
-	-fx-font-size: 16px;
+	-fx-font-size: 20px;
+	-fx-text-fill:rgb(80,140,240);
 }
 
 .likes{
@@ -218,6 +227,11 @@
 	-fx-background-color:rgb(40,40,40);
 	-fx-text-fill:rgb(225,225,225);
 	
+}
+.found{
+	-fx-font-weight: bold;
+	-fx-background-color:red;
+	-fx-font-size: 25px;
 }
 
 

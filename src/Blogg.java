@@ -42,8 +42,10 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -536,6 +538,9 @@ public class Blogg {
 		ArrayList<Node>nodes=new ArrayList<Node>();
 		
 		
+		ArrayList<HBox>tagBox=new ArrayList<HBox>();
+		//HBox tagBox=new HBox(10);
+		
 		int startIndex=0;
 		for(int i=0;i<text.length();i++) {
 			boolean done=false;
@@ -690,16 +695,23 @@ public class Blogg {
 				if(action.equals("img1")) {
 					String path =subText;
 					try {
+						BorderPane pane = new BorderPane();
+						pane.getStyleClass().add("shadow");
+						pane.setPrefWidth(Main.mainLayout.getWidth());
 						
 						Image image = new Image(path);
 						ImageView imageView = new ImageView(image);
+						
+						
+						
+						pane.setCenter(imageView);
 						
 						double ratio=image.getHeight()/image.getWidth();
 						double scale=350;
 						imageView.setFitWidth(scale);
 						imageView.setFitHeight(scale*ratio);
 					
-						nodes.add(imageView);
+						nodes.add(pane);
 						nodes.get(nodes.size()-1).setUserData("1");
 					}
 					catch (IllegalArgumentException e) {
@@ -731,6 +743,7 @@ public class Blogg {
 						
 						nodes.add(hyperlink);
 						nodes.get(nodes.size()-1).setUserData("1");
+						((Hyperlink) nodes.get(nodes.size()-1)).setPrefWidth(Main.mainLayout.getWidth());
 					}
 					catch (IllegalArgumentException e) {
 						// TODO: handle exception
@@ -805,16 +818,19 @@ public class Blogg {
 				
 				if(action.equals("tag")) {
 					
+					
 					tags+="#"+subText+" ";
 					tag="#"+subText+" ";
 					
 					Button tagButton = new Button(tag);
 					tagButton.getStyleClass().add("hashtag");
-					nodes.add(tagButton);
+					
+					tagBox.getChildren().add(tagButton);
+					nodes.add(tagBox);
 					
 					nodes.get(nodes.size()-1).setUserData("0");
 					
-					((Button) nodes.get(nodes.size()-1)).setOnAction(new EventHandler<ActionEvent>() {
+					tagButton.setOnAction(new EventHandler<ActionEvent>() {
 						
 						@Override
 						public void handle(ActionEvent event) {
@@ -873,7 +889,7 @@ public class Blogg {
 		likeBox.getStyleClass().add("likes");
 		likeBox.getChildren().add(likes);
 		
-		VBox post= new VBox(50);
+		VBox post= new VBox(10);
 		post.setPadding(new Insets(20));
 		post.setUserData(tags);
 		
@@ -928,8 +944,6 @@ public class Blogg {
 			}
 		}*/
 		
-		
-		
 	}
 	
 	public void refresh() {
@@ -977,7 +991,6 @@ public class Blogg {
 			titleBox = new HBox();
 			
 			titleBox.getChildren().add(labelTitle);
-			
 			
 			//removes and adds title.
 			

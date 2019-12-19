@@ -1,31 +1,16 @@
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.HiddenAction;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import backend_request.HttpRequest;
 import backend_request.Json;
-import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
-import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 public class ExploreBloggs {
 	
@@ -66,11 +51,7 @@ public class ExploreBloggs {
 		Button refresh = new Button("Refresh");
 		
 		refresh.setOnAction(e -> {
-			
-			
 			refresh();
-			
-			
 		});
 		
 		

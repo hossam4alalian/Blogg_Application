@@ -33,12 +33,9 @@ public class Settings implements EventHandler<ActionEvent> {
 		scene.getStylesheets().add("main.css");
 		settings();
 		
-		
-		
 	}
 	
 	public void settings() {
-		
 		Label settingsLabel= new Label("Settings:");
 		settingsLabel.setFont(new Font("Arial", 30));
 		settingsLabel.setPadding(new Insets(80, 20, 20, 20));
@@ -50,7 +47,6 @@ public class Settings implements EventHandler<ActionEvent> {
 		languege.getItems().addAll("English");
 		languege.getItems().addAll("Arabic");
 		
-		
 		ComboBox<String>color=new ComboBox<String>();
 		color.getStyleClass().add("settingsButton");
 		color.setValue("Light");
@@ -59,7 +55,6 @@ public class Settings implements EventHandler<ActionEvent> {
 		color.getItems().addAll("Dark");
 		color.getItems().addAll("Red");
 		color.getItems().addAll("Blue");
-		
 		
 		VBox pass=new VBox(20);
 		pass.setAlignment(Pos.CENTER);
@@ -79,8 +74,6 @@ public class Settings implements EventHandler<ActionEvent> {
 		pass.getChildren().addAll(changePassword,oldPassword,password,comfirmPassword);
 		pass.setPadding(new Insets(0,40,0,40));
 		
-		
-		
 		//cancel apply.
 		HBox cancelApply=new HBox(20);
 		cancel= new Button("cancel");
@@ -89,10 +82,8 @@ public class Settings implements EventHandler<ActionEvent> {
 		apply= new Button("Apply");
 		apply.getStyleClass().add("sideButton");
 		
-		
 		cancelApply.getChildren().addAll(apply,cancel);
 		cancelApply.setAlignment(Pos.CENTER_RIGHT);
-		
 		
 		VBox center= new VBox(40);
 		center.getChildren().addAll(settingsLabel,languege,color,pass,cancelApply);
@@ -100,18 +91,13 @@ public class Settings implements EventHandler<ActionEvent> {
 		center.getStyleClass().add("settings");
 		center.setMaxSize(300, 800);
 		
-		
-		
 		mainLayout.setCenter(center);
-		
 	}
 
 	
 	@Override
 	public void handle(ActionEvent event) {
 		if(event.getSource()==null) {
-			
-			
 			
 		}
 	}
@@ -147,8 +133,5 @@ public class Settings implements EventHandler<ActionEvent> {
 	public void setCancel(Button cancel) {
 		this.cancel = cancel;
 	}
-	
-	
-
 	
 }
