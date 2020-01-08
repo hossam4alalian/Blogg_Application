@@ -27,6 +27,7 @@ public class Login implements EventHandler<ActionEvent> {
 	
 	private Button createAccount;
 	
+	private String userId;
 	
 	private String username;
 	private String bloggId;
@@ -127,19 +128,14 @@ public class Login implements EventHandler<ActionEvent> {
 		if(event.getSource()==login) {
 			System.out.println(loggedIn);
 			
-			
 			String name=nameInput.getText();
 			String password=passInput.getText();
 			
-			
 			try {
-				//String shit=Post.send("Login/login.php","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=login&anamn="+name+"&losenord="+password+"&rollid=4");
-				//måste fixas. fungerar inte!!!!!!!!
 				String shit=HttpRequest.send("Login/login.php","&tjanst=blogg&anamn="+name+"&password="+password);//anvandare1: kalle, 123
-				
-				
 				JSONObject object=Json.toJSONObject(shit);
 				
+				userId=object.getString("anvandarId");
 				username=object.getString("anamn");
 				bloggId=object.getString("bloggId");
 				
@@ -157,7 +153,6 @@ public class Login implements EventHandler<ActionEvent> {
 				loggedIn=true;
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				//e.printStackTrace();
 			}
 		}
@@ -203,8 +198,13 @@ public class Login implements EventHandler<ActionEvent> {
 	public void setCreateAccount(Button createAccount) {
 		this.createAccount = createAccount;
 	}
-	
-	
 
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
 	
 }

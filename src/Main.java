@@ -24,12 +24,14 @@ public class Main extends Application{
 	
 	static ComboBox<String>archive;
 	
+	static Settings settings=new Settings();
+	
 	static Menus menus = new Menus();
 	static ExploreBloggs explore=new ExploreBloggs();
 	static Blogg blogg = new Blogg();
 	
 	static Login login = new Login();
-	Settings settings=new Settings();
+	
 	CreateAccount createAccount=new CreateAccount();
 	
 	static Stage window;
@@ -45,7 +47,6 @@ public class Main extends Application{
 	}
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
 		
 		window = primaryStage;
 		
@@ -130,6 +131,13 @@ public class Main extends Application{
 			
 			@Override
 			public void handle(ActionEvent event) {
+				if(login.isLoggedIn()) {
+					settings.getPass().getChildren().clear();
+					settings.createChangePassword();
+				}
+				else {
+					settings.getPass().getChildren().clear();
+				}
 				window.setScene(settings.getScene());
 				
 			}
@@ -271,23 +279,25 @@ public class Main extends Application{
 								if(selected.equals(dateMonth)) {
 									String text=inlaggJson.getString("innehall");
 									String title=inlaggJson.getString("titel");
+									String postId=inlaggJson.getString("id");
 									
 									JSONArray array=inlaggJson.getJSONArray("gillningar");
 									
 									int likesAmount=array.length();
 									
-									Main.blogg.post(title, text, likesAmount);
+									Main.blogg.post(postId,title, text, likesAmount);
 								}
 								else if(selected.equals("All posts")) {
 									String text=inlaggJson.getString("innehall");
 										String title=inlaggJson.getString("titel");
 										
 										JSONArray array=inlaggJson.getJSONArray("gillningar");
+										String postId=inlaggJson.getString("id");
 										
 										int likesAmount=array.length();
 											
 										//comments();
-										Main.blogg.post(title, text, likesAmount);
+										Main.blogg.post(postId,title, text, likesAmount);
 								}
 							}
 					} 

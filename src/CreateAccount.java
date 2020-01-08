@@ -172,7 +172,6 @@ public class CreateAccount implements EventHandler<ActionEvent> {
 					//String shit=Post.send("Login/login.php","nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=login&anamn="+name+"&losenord="+password+"&rollid=4");
 					//måste fixas. fungerar inte!!!!!!!!
 					String shit=HttpRequest.send("Login/login.php","&tjanst=blogg&anamn="+nameInput.getText()+"&password="+passInput.getText());//anvandare1: kalle, 123
-					System.out.println(shit);
 					
 					JSONObject object=Json.toJSONObject(shit);
 					

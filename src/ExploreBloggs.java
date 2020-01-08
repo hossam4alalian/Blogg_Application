@@ -58,17 +58,16 @@ public class ExploreBloggs {
 		refreshField = new HBox();
 		refreshField.getChildren().addAll(refresh);
 		refreshField.getStyleClass().add("refreshField");
-		
-		
 	}
-	
 	
 	public void refresh() {
 		
 		scrollPaneBox.getChildren().clear();
 		
+		
 		try {
 			String str = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON");
+			
 			
 			JSONObject json=Json.toJSONObject(str);
 			
@@ -79,17 +78,14 @@ public class ExploreBloggs {
 				String title=array.getJSONObject(i).getString("titel");
 				String bloggId=array.getJSONObject(i).getString("bloggId");
 				
-				
 				String blogg = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+bloggId);
 				
 				JSONObject inlagg=Json.toJSONObject(blogg);
 				JSONArray bloggInlagg=inlagg.getJSONArray("bloggInlagg");
 				
-				
 				addBlogg(title, name, ""+bloggInlagg.length(),bloggId);
 			}
 			
-		
 		} catch (Exception ee ) {
 			// TODO Auto-generated catch block
 			ee.printStackTrace();
@@ -102,33 +98,47 @@ public class ExploreBloggs {
 		}
 	}
 	
-	
-	
+	static VBox blogg= new VBox(20);
 	public void addBlogg(String title, String user, String postAmount, String bloggId) {
 		Label bloggsName = new Label(title);
-		bloggsName.getStyleClass().add("leftBloggText");
 		
+		if(Main.settings.getColorTheme()=="Light") {
+			bloggsName.getStyleClass().add("exploreBloggTitle");
+		}
+		if(Main.settings.getColorTheme()=="Dark") {
+			bloggsName.getStyleClass().add("exploreBloggTitleDark");
+		}
 
-		Label username= new Label("By: "+user);
-		username.getStyleClass().add("leftBloggText");
+		//Label username= new Label("By: "+user);
+		//username.getStyleClass().add("exploreBloggUser");
 		
 		Label posts= new Label("Post: "+postAmount);
-		posts.getStyleClass().add("leftBloggText");
+		if(Main.settings.getColorTheme()=="Light") {
+			posts.getStyleClass().add("exploreBloggPosts");
+		}if(Main.settings.getColorTheme()=="Dark") {
+			posts.getStyleClass().add("exploreBloggPostsDark");
+		}
 		
 		VBox blogg= new VBox(20);
 		blogg.setPadding(new Insets(20));
 	
 		blogg.setUserData(bloggId);
 		
-		blogg.getChildren().addAll(bloggsName, username, posts);
+		blogg.getChildren().addAll(bloggsName, posts);
 		blogg.setPrefSize(2000, 100);
-		blogg.getStyleClass().add("exploreBlogg");
+		
+		if(Main.settings.getColorTheme()=="Light") {
+			blogg.getStyleClass().add("exploreBlogg");	
+		}
+		if(Main.settings.getColorTheme()=="Dark") {
+			blogg.getStyleClass().add("exploreBloggDark");
+		}
+		
 		blogg.setOnMouseClicked( ( e ) ->
         {
        	 Main.currentBlogg=Integer.parseInt(blogg.getUserData().toString());
        	 
        	 Main.loadBlogg();
-       	 
        	 
         });
 		
@@ -154,7 +164,17 @@ public class ExploreBloggs {
 		}
 		
 		scrollPaneBox.setPadding(new Insets(20));
-		scrollPaneBox.getStyleClass().add("center");
+		
+		
+		if(Main.settings.getColorTheme()=="Light") {
+			scrollPaneBox.getStyleClass().clear();
+			scrollPaneBox.getStyleClass().add("center");
+			
+		}
+		if(Main.settings.getColorTheme()=="Dark") {
+			scrollPaneBox.getStyleClass().clear();
+			scrollPaneBox.getStyleClass().add("centerDark");
+		}
 		
 	}
 
@@ -177,7 +197,4 @@ public class ExploreBloggs {
 	public void setRefreshField(HBox refreshField) {
 		this.refreshField = refreshField;
 	}
-
-
-
 }

@@ -527,10 +527,18 @@ public class Blogg {
 	
 	
 	
-	public void post(String title, String text, int likesAmount) {
-		Text postTitle = new Text(title);
-		postTitle.getStyleClass().add("postTitle");
+	public void post(String postId, String title, String text, int likesAmount) {
 		
+		
+		Label postTitle = new Label(title);
+		if(Main.settings.getColorTheme()=="Light") {
+			postTitle.getStyleClass().clear();
+			postTitle.getStyleClass().add("postTitle");
+		}
+		if(Main.settings.getColorTheme()=="Dark") {
+			postTitle.getStyleClass().clear();
+			postTitle.getStyleClass().add("postTitleDark");
+		}
 		
 		String tags="";
 		String tag="";
@@ -538,7 +546,10 @@ public class Blogg {
 		ArrayList<Node>nodes=new ArrayList<Node>();
 		
 		
-		ArrayList<HBox>tagBox=new ArrayList<HBox>();
+		
+		ArrayList<HBox>tagBox=new ArrayList<HBox>();//new hbox every time the column has 5 tags.
+		tagBox.add(new HBox(10));
+		
 		//HBox tagBox=new HBox(10);
 		
 		int startIndex=0;
@@ -760,7 +771,14 @@ public class Blogg {
 				}
 				if(action.equals("title")) {
 					nodes.add(new Label(subText));
-					nodes.get(nodes.size()-1).getStyleClass().add("postInnerTitle");
+					if(Main.settings.getColorTheme()=="Light") {
+						nodes.get(nodes.size()-1).getStyleClass().clear();
+						nodes.get(nodes.size()-1).getStyleClass().add("postInnerTitle");
+					}
+					if(Main.settings.getColorTheme()=="Dark") {
+						nodes.get(nodes.size()-1).getStyleClass().clear();
+						nodes.get(nodes.size()-1).getStyleClass().add("postInnerTitleDark");
+					}
 					nodes.get(nodes.size()-1).setUserData("0");
 					
 				}
@@ -817,6 +835,9 @@ public class Blogg {
 				}
 				
 				if(action.equals("tag")) {
+					if(tagBox.get(tagBox.size()-1).getChildren().size()>=5) {
+						tagBox.add(new HBox(10));
+					}
 					
 					
 					tags+="#"+subText+" ";
@@ -825,8 +846,12 @@ public class Blogg {
 					Button tagButton = new Button(tag);
 					tagButton.getStyleClass().add("hashtag");
 					
-					tagBox.getChildren().add(tagButton);
-					nodes.add(tagBox);
+					
+					tagBox.get(tagBox.size()-1).getChildren().add(tagButton);
+					
+					for(int ii=0;ii<tagBox.size();ii++) {
+						nodes.add(tagBox.get(ii));
+					}
 					
 					nodes.get(nodes.size()-1).setUserData("0");
 					
@@ -850,9 +875,12 @@ public class Blogg {
 								for(int i=inlagg.length()-1;i>=0;i--) {
 									String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
 									
+
 									JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 									
 									String title=inlaggJson.getString("titel");
+									
+									String postId=inlaggJson.getString("id");
 									
 									String text=inlaggJson.getString("innehall");
 									
@@ -862,7 +890,7 @@ public class Blogg {
 									
 									String newTag=tag.substring(1,tag.length()-1);
 									if(text.contains("<!tag"+newTag+">")) {
-										post(title, text, likesAmount);
+										post(postId,title, text, likesAmount);
 									}
 									
 								}
@@ -883,7 +911,21 @@ public class Blogg {
 		Label labelText= new Label(text);
 		labelText.setWrapText(true);
 	
-		Label likes= new Label("Likes: "+likesAmount);
+		Button likes= new Button("Like: "+likesAmount);
+		likes.setUserData(postId);
+		likes.setOnAction(e -> {
+			if(Main.login.isLoggedIn()) {
+				System.out.println(Main.currentBlogg);
+				try {
+					String str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=gillaInlagg&anvandarId="+Main.login.getUserId()+"&inlaggsId="+likes.getUserData());
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+			refresh();
+			
+		});
 		
 		HBox likeBox= new HBox();
 		likeBox.getStyleClass().add("likes");
@@ -891,8 +933,8 @@ public class Blogg {
 		
 		VBox post= new VBox(10);
 		post.setPadding(new Insets(20));
-		post.setUserData(tags);
-		
+		//post.setUserData(tags);//this might be needed!!!!!
+		post.setUserData(postId);
 		post.getChildren().addAll(postTitle);
 		
 		for(int i=0;i<nodes.size();i++) {
@@ -911,38 +953,42 @@ public class Blogg {
 		}
 		post.getChildren().addAll(likeBox);
 		
+		HBox commentBox = new HBox(10);
+		
+		commentBox.getStyleClass().add("commentBox");
+		TextField commentText = new TextField();
+		commentText.setPrefSize(800, 10);
+		commentBox.setMargin(commentText, new Insets(20,0,0,0));
+		addTextLimiter(commentText, 110);
+		Button comment= new Button("Comment");
+		commentBox.setMargin(comment, new Insets(20,0,0,0));
+		commentBox.getChildren().addAll(commentText,comment);
+		
+		comment.setOnAction(e -> {{
+			
+		}});
+		
+		post.getChildren().add(commentBox);
+		
 		post.setPrefWidth(Main.mainLayout.getWidth());
 		
-		post.getStyleClass().add("post");
+		if(Main.settings.getColorTheme()=="Light") {
+			post.getStyleClass().clear();
+			post.getStyleClass().add("post");
+		}
+		if(Main.settings.getColorTheme()=="Dark") {
+			post.getStyleClass().clear();
+			post.getStyleClass().add("postDark");
+		}
+		
 		post.setOnMouseClicked( ( e ) ->
         {
        	 
         });
 		
+		
 		getScrollPaneBox().getChildren().add(post);
 		scrollPaneBox.setPadding(new Insets(0,20,0,20));
-		
-		
-		/*if(getScrollPaneBox().getChildren().size()==0){
-			HBox bloggar = new HBox();
-			bloggar.setUserData(tags);
-			bloggar.getChildren().add(post);
-			getScrollPaneBox().getChildren().add(bloggar);
-		}
-		else {
-			
-			HBox lastBloggContainer=(HBox) getScrollPaneBox().getChildren().get(getScrollPaneBox().getChildren().size()-1);
-			
-			if(lastBloggContainer.getChildren().size()==1){
-				HBox bloggar = new HBox();
-				bloggar.setUserData(tags);
-				bloggar.getChildren().add(post);
-				getScrollPaneBox().getChildren().add(bloggar);
-			}
-			else {
-				System.out.println("Error!!!!!");
-			}
-		}*/
 		
 	}
 	
@@ -969,6 +1015,7 @@ public class Blogg {
 				JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 				
 				String title=inlaggJson.getString("titel");
+				String postId=inlaggJson.getString("id");
 				String text=inlaggJson.getString("innehall");
 				
 				JSONArray array=inlaggJson.getJSONArray("gillningar");
@@ -977,7 +1024,7 @@ public class Blogg {
 					
 				//comments();
 				
-				post(title, text, likesAmount);
+				post(postId,title, text, likesAmount);
 				
 			}
 			

@@ -23,6 +23,10 @@ public class Settings implements EventHandler<ActionEvent> {
 	private Button apply;
 	private Button cancel;
 	
+	private VBox pass;
+	
+	private String colorTheme="Light";
+	
 	public Settings() {
 		scene();
 	}
@@ -56,10 +60,41 @@ public class Settings implements EventHandler<ActionEvent> {
 		color.getItems().addAll("Red");
 		color.getItems().addAll("Blue");
 		
-		VBox pass=new VBox(20);
+		
+		
+		color.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent arg0) {
+				colorTheme=color.getValue();
+				System.out.println(colorTheme);
+				if(Main.page==1) {
+					Main.explore.refresh();
+				}
+				if(Main.page==2) {
+					Main.blogg.refresh();
+				}
+				
+				if(Main.settings.getColorTheme()=="Light") {
+					Main.menus.getTopMenu().getStyleClass().clear();
+					Main.menus.getTopMenu().getStyleClass().add("topMenu");
+					Main.mainLayout.getStyleClass().clear();
+					Main.mainLayout.getStyleClass().add("topMenu");
+				}
+				if(Main.settings.getColorTheme()=="Dark") {
+					Main.menus.getTopMenu().getStyleClass().clear();
+					Main.menus.getTopMenu().getStyleClass().add("topMenuDark");
+					Main.mainLayout.getStyleClass().clear();
+					Main.mainLayout.getStyleClass().add("topMenuDark");
+				}
+				
+			}
+		});
+		
+		pass=new VBox(20);
 		pass.setAlignment(Pos.CENTER);
 		
-		Label changePassword= new Label("Change password");
+		/*Label changePassword= new Label("Change password");
 		changePassword.setFont(new Font("Arial", 20));
 		
 		PasswordField oldPassword=new PasswordField();
@@ -71,7 +106,7 @@ public class Settings implements EventHandler<ActionEvent> {
 		PasswordField comfirmPassword=new PasswordField();
 		comfirmPassword.setPromptText("comfirm Password");
 		
-		pass.getChildren().addAll(changePassword,oldPassword,password,comfirmPassword);
+		pass.getChildren().addAll(changePassword,oldPassword,password,comfirmPassword);*/
 		pass.setPadding(new Insets(0,40,0,40));
 		
 		//cancel apply.
@@ -101,6 +136,28 @@ public class Settings implements EventHandler<ActionEvent> {
 			
 		}
 	}
+	
+	
+	
+	
+	public void createChangePassword() {
+		Label changePassword= new Label("Change password");
+		changePassword.setFont(new Font("Arial", 20));
+		
+		PasswordField oldPassword=new PasswordField();
+		oldPassword.setPromptText("old password");
+		
+		PasswordField password=new PasswordField();
+		password.setPromptText("new password");
+		
+		PasswordField comfirmPassword=new PasswordField();
+		comfirmPassword.setPromptText("comfirm Password");
+		
+		pass.getChildren().addAll(changePassword,oldPassword,password,comfirmPassword);
+	}
+	
+	
+	
 
 	public BorderPane getMainLayout() {
 		return mainLayout;
@@ -133,5 +190,22 @@ public class Settings implements EventHandler<ActionEvent> {
 	public void setCancel(Button cancel) {
 		this.cancel = cancel;
 	}
+
+	public VBox getPass() {
+		return pass;
+	}
+
+	public void setPass(VBox pass) {
+		this.pass = pass;
+	}
+
+	public String getColorTheme() {
+		return colorTheme;
+	}
+
+	public void setColorTheme(String colorTheme) {
+		this.colorTheme = colorTheme;
+	}
+	
 	
 }

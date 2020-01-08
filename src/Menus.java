@@ -140,6 +140,7 @@ public class Menus {
 							JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
 							
 							String title=inlaggJson.getString("titel");
+							String postId=inlaggJson.getString("id");
 							char[] tempTitle=title.toCharArray();
 							String text=inlaggJson.getString("innehall");
 							
@@ -158,7 +159,7 @@ public class Menus {
 								title=title.replaceAll("(?i)"+searchResult, word.getText());
 								
 								newTitle= title;
-								Main.blogg.post(newTitle, text, likesAmount);
+								Main.blogg.post(postId,newTitle, text, likesAmount);
 								
 							}
 						}
