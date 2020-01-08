@@ -93,8 +93,6 @@
 }
 
 .loginTop{
-	
-	
 	-fx-alignment: center;
 	
 }
@@ -240,6 +238,14 @@
 .postTitle{
 	-fx-text-fill:black;
 	-fx-font-size: 28px;
+}
+.postText{
+	-fx-text-fill:black;
+	-fx-font-size: 16px;
+}
+.postTextDark{
+	-fx-text-fill:white;
+	-fx-font-size: 16px;
 }
 .postTitleDark{
 	-fx-text-fill:rgb(255,255,255);

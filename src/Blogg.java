@@ -768,6 +768,15 @@ public class Blogg {
 					((Label) nodes.get(nodes.size()-1)).setWrapText(true);
 					nodes.get(nodes.size()-1).setUserData("0");
 					((Label) nodes.get(nodes.size()-1)).setPrefWidth(Main.mainLayout.getWidth());
+					
+					if(Main.settings.getColorTheme()=="Light") {
+						nodes.get(nodes.size()-1).getStyleClass().clear();
+						nodes.get(nodes.size()-1).getStyleClass().add("postText");
+					}
+					if(Main.settings.getColorTheme()=="Dark") {
+						nodes.get(nodes.size()-1).getStyleClass().clear();
+						nodes.get(nodes.size()-1).getStyleClass().add("postTextDark");
+					}
 				}
 				if(action.equals("title")) {
 					nodes.add(new Label(subText));
@@ -918,12 +927,13 @@ public class Blogg {
 				System.out.println(Main.currentBlogg);
 				try {
 					String str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=gillaInlagg&anvandarId="+Main.login.getUserId()+"&inlaggsId="+likes.getUserData());
+					refresh();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
-			refresh();
+			
 			
 		});
 		
@@ -966,6 +976,15 @@ public class Blogg {
 		
 		comment.setOnAction(e -> {{
 			
+			if(Main.login.isLoggedIn()) {
+				try {
+					String str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaKommentar&anvandarId="+Main.login.getUserId()+"&inlaggsId="+likes.getUserData()+"&hierarchyID=0"+"&text="+commentText.getText());
+					refresh();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
 		}});
 		
 		post.getChildren().add(commentBox);

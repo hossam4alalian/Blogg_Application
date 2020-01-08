@@ -79,13 +79,13 @@ public class Settings implements EventHandler<ActionEvent> {
 					Main.menus.getTopMenu().getStyleClass().clear();
 					Main.menus.getTopMenu().getStyleClass().add("topMenu");
 					Main.mainLayout.getStyleClass().clear();
-					Main.mainLayout.getStyleClass().add("topMenu");
+					Main.mainLayout.getStyleClass().add("center");
 				}
 				if(Main.settings.getColorTheme()=="Dark") {
 					Main.menus.getTopMenu().getStyleClass().clear();
 					Main.menus.getTopMenu().getStyleClass().add("topMenuDark");
 					Main.mainLayout.getStyleClass().clear();
-					Main.mainLayout.getStyleClass().add("topMenuDark");
+					Main.mainLayout.getStyleClass().add("centerDark");
 				}
 				
 			}
