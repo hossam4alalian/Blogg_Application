@@ -78,15 +78,39 @@ public class Settings implements EventHandler<ActionEvent> {
 				if(Main.settings.getColorTheme()=="Light") {
 					Main.menus.getTopMenu().getStyleClass().clear();
 					Main.menus.getTopMenu().getStyleClass().add("topMenu");
+					
 					Main.mainLayout.getStyleClass().clear();
 					Main.mainLayout.getStyleClass().add("center");
+					
+					Main.menus.getSearchPost().getStyleClass().add("searchDark");
 				}
 				if(Main.settings.getColorTheme()=="Dark") {
 					Main.menus.getTopMenu().getStyleClass().clear();
 					Main.menus.getTopMenu().getStyleClass().add("topMenuDark");
+					
 					Main.mainLayout.getStyleClass().clear();
 					Main.mainLayout.getStyleClass().add("centerDark");
+					
+					
+					
+					//this shit is no good.
+					Main.menus.setSearchPost(new TextField(""));
+					
+					Main.menus.getSearchPost().getStylesheets().clear();
+					Main.menus.getSearchPost().getStyleClass().add("searchDark");
+					Main.menus.getRightTop().getChildren().remove(1);
+					Main.menus.getRightTop().getChildren().add(Main.menus.getSearchPost());
 				}
+				
+				if(Main.page==1) {
+					if(Main.settings.getColorTheme()=="Light") {
+						Main.menus.getExploreBlogg().getStyleClass().add("topButtonOn");
+					}
+					else {
+						Main.menus.getExploreBlogg().getStyleClass().add("topButtonOnDark");
+					}
+				}
+				
 				
 			}
 		});

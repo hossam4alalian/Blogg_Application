@@ -34,6 +34,9 @@ public class Menus {
 	private VBox sideMenu;
 	
 	private HBox leftTop;
+	private HBox rightTop;
+	
+	private HBox refreshField;
 	
 	public HBox getLeftTop() {
 		return leftTop;
@@ -85,6 +88,10 @@ public class Menus {
 	
 	public void search() {
 		searchPost = new TextField();
+		
+		searchPost.getStyleClass().add("search");
+		//Main.menus.getSearchPost().getStyleClass().add("searchDark");
+		
 		searchPost.setOnKeyPressed(new EventHandler<KeyEvent>()
 	    {
 	        @Override
@@ -105,7 +112,7 @@ public class Menus {
 			
 		});
 		
-		HBox rightTop = new HBox();
+		rightTop = new HBox();
 		rightTop.getChildren().addAll(search, searchPost);
 		rightTop.setMargin(rightTop, new Insets(5,0,0,30));
 		rightTop.setMinSize(350, 28);
@@ -182,9 +189,11 @@ public class Menus {
 	private Button setings;
 	private Button login;
 	private Label username;
+	private Label likes;
 	public void sideMenu() {
 		username=new Label("Guest");
-		Label likes=new Label("");
+		
+		likes=new Label();
 		setings=new Button("Setings");
 		
 		sideMenu=new VBox(100);
@@ -222,6 +231,24 @@ public class Menus {
 		
 		login.getStyleClass().add("sideButton");
 		lower.getStyleClass().add("loginButton");
+	}
+	
+	public void refreshField() {
+		
+		Button refresh = new Button("Refresh");
+		
+		refresh.setOnAction(e -> {
+			if(Main.page==1) {
+				Main.blogg.refresh();
+			}
+			if(Main.page==2) {
+				Main.explore.refresh();
+			}
+		});
+		
+		refreshField = new HBox();
+		refreshField.getChildren().addAll(refresh);
+		refreshField.getStyleClass().add("refreshField");
 	}
 
 
@@ -290,6 +317,39 @@ public class Menus {
 
 	public void setNoResult(Label noResult) {
 		this.noResult = noResult;
+	}
+
+	public TextField getSearchPost() {
+		return searchPost;
+	}
+
+	public void setSearchPost(TextField searchPost) {
+		this.searchPost = searchPost;
+	}
+
+	public HBox getRightTop() {
+		return rightTop;
+	}
+
+	public void setRightTop(HBox rightTop) {
+		this.rightTop = rightTop;
+	}
+
+	public Label getLikes() {
+		return likes;
+	}
+
+	public void setLikes(Label likes) {
+		this.likes = likes;
+	}
+	
+	public HBox getRefreshField() {
+		return refreshField;
+	}
+
+
+	public void setRefreshField(HBox refreshField) {
+		this.refreshField = refreshField;
 	}
 
 

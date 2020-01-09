@@ -1,3 +1,4 @@
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import backend_request.HttpRequest;
@@ -31,6 +32,7 @@ public class Login implements EventHandler<ActionEvent> {
 	
 	private String username;
 	private String bloggId;
+	private int likes=0;
 	private boolean loggedIn=false;
 	
 	
@@ -134,7 +136,7 @@ public class Login implements EventHandler<ActionEvent> {
 			try {
 				String shit=HttpRequest.send("Login/login.php","&tjanst=blogg&anamn="+name+"&password="+password);//anvandare1: kalle, 123
 				JSONObject object=Json.toJSONObject(shit);
-				
+				System.out.println(shit);
 				userId=object.getString("anvandarId");
 				username=object.getString("anamn");
 				bloggId=object.getString("bloggId");
@@ -155,10 +157,65 @@ public class Login implements EventHandler<ActionEvent> {
 			} catch (Exception e) {
 				//e.printStackTrace();
 			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			likes=0;
+			try {
+				String blogg = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+getBloggId());
+			
+				JSONObject json=new JSONObject(blogg);
+				System.out.println("blogg");
+				bloggId=json.getString("bloggId");
+
+				JSONArray inlagg=json.getJSONArray("bloggInlagg");
+				for(int i=inlagg.length()-1;i>=0;i--) {
+					String inlaggStr = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+getBloggId()+"&inlagg="+inlagg.getJSONObject(i).getString("id"));
+					
+
+					JSONObject inlaggJson=Json.toJSONObject(inlaggStr);
+					
+					String title=inlaggJson.getString("titel");
+					
+					String postId=inlaggJson.getString("id");
+					
+					String text=inlaggJson.getString("innehall");
+					
+					JSONArray array=inlaggJson.getJSONArray("gillningar");
+					
+					int likesAmount=array.length();
+					
+					likes+=likesAmount;
+					
+				}
+			} catch (Exception ee) {
+				// TODO Auto-generated catch block
+				ee.printStackTrace();
+			}
+			
+			
+			
+			Main.menus.getLikes().setText("Likes:"+getLikes());
+			
+			
 		}
 	}
 	
 	
+	public int getLikes() {
+		return likes;
+	}
+
+	public void setLikes(int likes) {
+		this.likes = likes;
+	}
+
 	public Scene getScene() {
 		return scene;
 	}

@@ -81,7 +81,7 @@
 	-fx-alignment: center;
 }
 .centerDark{
-	-fx-background-color:rgb(18,18,18);
+	-fx-background-color:rgb(20,20,20);
 	-fx-alignment: center;
 }
 
@@ -100,6 +100,17 @@
 	
 	-fx-alignment: bottom-center;
 	
+}
+
+.search{
+	-fx-text-fill:black;
+	-fx-text-box-border:black ;
+	-fx-focus-color: black ;
+}
+.searchDark{
+	-fx-text-fill:white;
+	-fx-text-box-border:white ;
+	-fx-focus-color: white ;
 }
 
 .topMenu{
@@ -138,7 +149,7 @@
 	-fx-text-fill:white;
 	-fx-alignment: center; 
 	
-	-fx-background-color:rgb(29,29,29);
+	-fx-background-color:rgb(32,32,32);
 	
 	
 }
@@ -219,7 +230,7 @@
 
 
 .refreshField{
-	-fx-background-color:black;
+	
 	-fx-alignment: center;
 }
 
@@ -230,7 +241,7 @@
 	-fx-text-fill:white;
 }
 .postDark{
-	-fx-background-color:rgb(29,29,29);
+	-fx-background-color:rgb(32,32,32);
 	
 	-fx-text-fill:white;
 }
@@ -300,13 +311,21 @@
 	-fx-background-color:rgb(90,90,90);
 	-fx-text-fill:rgb(255,255,255);
 }
-
+.topButtonOn{
+	-fx-background-color:rgb(50,50,50);
+	-fx-text-fill:rgb(255,255,255);
+}
+.topButtonOnDark{
+	-fx-background-color:rgb(50,85,235);
+	-fx-text-fill:rgb(255,255,255);
+}
 
 .topButton:hover{
 	-fx-background-color:rgb(40,40,40);
 	-fx-text-fill:rgb(225,225,225);
 	
 }
+
 .found{
 	-fx-font-weight: bold;
 	-fx-background-color:red;
@@ -316,7 +335,20 @@
 	-fx-alignment: center; 
 }
 
+.showComment{
+	
+	-fx-background-color:rgb(230,230,230);
 
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-border-color: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 8, 0, 0, 0);
+	
+}
+.commentText{
+	
+}
 
 
 

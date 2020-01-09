@@ -53,10 +53,12 @@ public class Main extends Application{
 		mainLayout = new HBox();
 		
 		center=new VBox(6);
-		center.getChildren().addAll(menus.getTopMenu(),explore.getScrollPane(),explore.getRefreshField());
+		center.getChildren().addAll(menus.getTopMenu(),explore.getScrollPane());
 		
 		
 		mainLayout.getChildren().addAll(menus.getSideMenu(),center);
+		
+		loadExplore();
 		
 		scene= new Scene(mainLayout, 1280, 720);
 		scene.getStylesheets().add("main.css");
@@ -114,7 +116,8 @@ public class Main extends Application{
 					login.setBloggId("null");
 					
 					menus.getUsername().setText(login.getUsername());
-							
+					menus.getLikes().setText("");
+					
 					login.setLoggedIn(false);
 					
 					if(page==2) {
@@ -164,15 +167,25 @@ public class Main extends Application{
 	}
 	
 	public static void loadBlogg() {
+		if(settings.getColorTheme()=="Light") {
+			menus.getExploreBlogg().getStyleClass().remove("topButtonOn");
+		}
+		else {
+			menus.getExploreBlogg().getStyleClass().remove("topButtonOnDark");
+		}
+		menus.getExploreBlogg().getStyleClass().add("topButton");
+		
+		menus.getLeftTop().getChildren().remove(explore.getRefreshField());
 		if(page==2) {
 			blogg.refresh();
 			return;
 		}
 		//remove explore nodes
-		Main.center.getChildren().removeAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
+		Main.center.getChildren().removeAll(Main.explore.getScrollPane());
 		blogg.getAddField().getChildren().removeAll(blogg.getContent(),blogg.getHashtagField());
-		
-       	Main.center.getChildren().addAll(blogg.getAddField(),Main.blogg.getScrollPane(),Main.blogg.getRefreshField());
+		menus.getLeftTop().getChildren().add(blogg.getRefreshField());
+		menus.getTopMenu().getChildren().add(menus.getRightTop());
+       	Main.center.getChildren().addAll(blogg.getAddField(),Main.blogg.getScrollPane());
        	archive();
        	blogg.refresh();
        	page=2;
@@ -182,20 +195,36 @@ public class Main extends Application{
        	//center.getChildren().add(1,blogg.getLabelTitle());
     }
 	public static void loadExplore() {
+		if(page==2) {
+			menus.getLeftTop().getChildren().add(explore.getRefreshField());
+		}
+		menus.getTopMenu().getChildren().remove(menus.getRightTop());
+		menus.getLeftTop().getChildren().remove(blogg.getRefreshField());
+		
+		if(settings.getColorTheme()=="Light") {
+			menus.getExploreBlogg().getStyleClass().add("topButtonOn");
+		}
+		else {
+			menus.getExploreBlogg().getStyleClass().add("topButtonOnDark");
+		}
+		
 		if(page==1) {
 			explore.refresh();
 			return;
 		}
-		
 		//remove blogg nodes.
-		Main.center.getChildren().removeAll(Main.blogg.getScrollPane(),Main.blogg.getRefreshField(),Main.blogg.getAddField(),blogg.getLabelTitle());
+		Main.center.getChildren().removeAll(Main.blogg.getScrollPane(),Main.blogg.getAddField(),blogg.getLabelTitle());
 		blogg.getAddField().getChildren().removeAll(blogg.getContent(), blogg.getButtons(), blogg.getPost(),blogg.getAdd(),blogg.getHashtagField());
-       	Main.center.getChildren().addAll(Main.explore.getScrollPane(),Main.explore.getRefreshField());
+		
+       	Main.center.getChildren().addAll(Main.explore.getScrollPane());
+       	
        	page=1;
        	
        	explore.refresh();
        	
        	menus.getLeftTop().getChildren().remove(archive);
+       	
+       	
 	}
 
 	static String selected="";

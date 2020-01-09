@@ -1,4 +1,7 @@
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,6 +12,8 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -18,6 +23,8 @@ public class ExploreBloggs {
 	
 	private ScrollPane scrollPane;
 	private VBox scrollPaneBox= new VBox(40);
+	
+	private Image refreshImg;
 	
 	public ExploreBloggs() {
 		
@@ -48,16 +55,31 @@ public class ExploreBloggs {
 		scrollPane.setStyle("-fx-background-color:transparent;");
 		
 		
-		Button refresh = new Button("Refresh");
+	
 		
-		refresh.setOnAction(e -> {
-			refresh();
-		});
-		
-		
-		refreshField = new HBox();
-		refreshField.getChildren().addAll(refresh);
-		refreshField.getStyleClass().add("refreshField");
+		 FileInputStream input;
+			try {
+				input = new FileInputStream("refresh.png");
+				refreshImg = new Image(input);
+				ImageView imageView = new ImageView(refreshImg);
+				imageView.setFitHeight(18);
+				imageView.setFitWidth(15);
+				Button refresh = new Button("",imageView);
+				
+				
+				refresh.setOnAction(e -> {
+					refresh();
+				});
+				
+				
+				refreshField = new HBox();
+				refreshField.getChildren().addAll(refresh);
+				refreshField.getStyleClass().add("refreshField");
+				
+			} catch (FileNotFoundException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 	}
 	
 	public void refresh() {

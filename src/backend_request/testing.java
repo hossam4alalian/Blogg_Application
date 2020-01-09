@@ -36,9 +36,15 @@ public class testing {
 		}*/
 		
 		
+		try {
+			String str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaKommentar&anvandarId=4"+"&inlaggsId=138"+"&hierarchyID=0"+"&text=this");
+			
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		
-		
-		String str;
+		/*String str;
 		try {
 			str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaBlogg2&anvandarId=37&Titel=niles blogg&bloggAnvandarId=37");
 			//str = Post.send("nyckel=JIOAJWWNPA259FB2&tjanst=blogg&typ=function&handling=skapa&funktion=skapaBlogg&anvandarId=1&Titel=titelpåblogg&bloggAnvandarId=7");
@@ -50,7 +56,7 @@ public class testing {
 			e.printStackTrace();
 		}
 		
-		
+		*/
 		
 		/*String str;
 		try {

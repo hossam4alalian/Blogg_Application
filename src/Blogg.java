@@ -4,6 +4,8 @@
 import java.awt.Desktop;
 import java.awt.Window;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -82,6 +84,8 @@ public class Blogg {
 	
 	private HBox titleBox;
 	
+	private Image refreshImg;
+	
 	private VBox scrollPaneBox= new VBox(20);
 	
 	private String bloggId="null";//this is bloggId.
@@ -122,17 +126,34 @@ public class Blogg {
 		});
 		postScrollPane.setStyle("-fx-background-color:transparent;");
 		
+	
+		 FileInputStream input;
+		try {
+			input = new FileInputStream("refresh.png");
+			refreshImg = new Image(input);
+			ImageView imageView = new ImageView(refreshImg);
+			imageView.setFitHeight(18);
+			imageView.setFitWidth(15);
+			Button refresh = new Button("",imageView);
+			
+			refresh.setOnAction(e -> {
+				refresh();
+			});
+			
+			
+			refreshField = new HBox();
+			refreshField.getChildren().addAll(refresh);
+			refreshField.getStyleClass().add("refreshField");
+			
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+			
+	     
 		
-		Button refresh = new Button("Refresh");
-		
-		refresh.setOnAction(e -> {
-			refresh();
-		});
 		
 		
-		refreshField = new HBox();
-		refreshField.getChildren().addAll(refresh);
-		refreshField.getStyleClass().add("refreshField");
 		
 		
 	}
@@ -526,7 +547,7 @@ public class Blogg {
 	
 	
 	
-	
+	Button likes;
 	public void post(String postId, String title, String text, int likesAmount) {
 		
 		
@@ -920,7 +941,7 @@ public class Blogg {
 		Label labelText= new Label(text);
 		labelText.setWrapText(true);
 	
-		Button likes= new Button("Like: "+likesAmount);
+		likes= new Button("Like: "+likesAmount);
 		likes.setUserData(postId);
 		likes.setOnAction(e -> {
 			if(Main.login.isLoggedIn()) {
@@ -975,7 +996,6 @@ public class Blogg {
 		commentBox.getChildren().addAll(commentText,comment);
 		
 		comment.setOnAction(e -> {{
-			
 			if(Main.login.isLoggedIn()) {
 				try {
 					String str = HttpRequest.send("Blogg/funktioner/skapa.php","funktion=skapaKommentar&anvandarId="+Main.login.getUserId()+"&inlaggsId="+likes.getUserData()+"&hierarchyID=0"+"&text="+commentText.getText());
@@ -1005,8 +1025,30 @@ public class Blogg {
        	 
         });
 		
+		HBox showComment= new HBox(20);
+		showComment.getStyleClass().add("showComment");
 		
-		getScrollPaneBox().getChildren().add(post);
+		Label theComment= new Label("hejjj");
+		
+		theComment.setPadding(new Insets(5,20,5,20));
+		
+		HBox theCommentBox = new HBox();
+		theCommentBox.setPrefWidth(1000);
+		theCommentBox.getChildren().add(theComment);
+		
+		Button reply= new Button("Reply");
+		reply.setOnAction(e -> {
+			comments();
+			
+		});
+		
+		HBox replyBox = new HBox();
+		
+		replyBox.getChildren().add(reply);
+		
+		showComment.getChildren().addAll(theCommentBox, replyBox);
+		
+		getScrollPaneBox().getChildren().addAll(post, showComment);
 		scrollPaneBox.setPadding(new Insets(0,20,0,20));
 		
 	}
@@ -1083,7 +1125,7 @@ public class Blogg {
 		
 	}
 	
-	public void comments(JSONArray array) {
+	public void commentsIn(JSONArray array) {
 		try {
 			String str = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg=3");
 		
@@ -1093,8 +1135,32 @@ public class Blogg {
 			array=json.getJSONArray("kommentarer");
 			for(int i=0;i<array.length();i++) {
 				JSONArray array2=array;
-				comments(array2);
+				commentsIn(array2);
 			}
+			
+			System.out.println(array.length());
+				
+		
+		} catch (Exception ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+		}
+		
+		
+	}
+	
+	public void comments() {
+		try {
+			String str = HttpRequest.send("nyckel=XNcV4BpztHN8yKye&tjanst=blogg&typ=JSON&blogg="+Main.currentBlogg+"&inlagg="+likes.getUserData());
+		
+			System.out.println(Main.currentBlogg);
+			
+			System.out.println(str);
+			JSONObject json=Json.toJSONObject(str);
+			JSONArray array;
+			array=json.getJSONArray("kommentarer");
+			
+			System.out.println(array);
 			
 			System.out.println(array.length());
 				
