@@ -127,7 +127,7 @@ public class Blogg {
 		postScrollPane.setStyle("-fx-background-color:transparent;");
 		
 	
-		 FileInputStream input;
+		FileInputStream input;
 		try {
 			input = new FileInputStream("refresh.png");
 			refreshImg = new Image(input);

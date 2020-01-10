@@ -2,6 +2,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,7 +13,11 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -41,6 +46,7 @@ public class Main extends Application{
 	//McDubRVdlwAzu3z4
 	
 	static int currentBlogg=-1;//this is tjanstId
+	
 	public static void main(String[] args) {
 		launch(args);
 		
@@ -157,6 +163,19 @@ public class Main extends Application{
 			public void handle(ActionEvent event) {
 				if(login.getBloggId()=="null") {
 					System.out.println("need to login");
+					
+					Alert alert = new Alert(AlertType.CONFIRMATION);
+					alert.setTitle("");
+					alert.setHeaderText("You need to be a user to use this page!");
+					//alert.setContentText("Are you ok with this?");
+
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.get() == ButtonType.OK){
+					    // ... user chose OK
+						window.setScene(login.getScene());
+					} else {
+					    return;
+					}
 				}else {
 					currentBlogg=Integer.parseInt(login.getBloggId());
 					//currentBlogg=13;
